@@ -8,9 +8,7 @@ import nmarlor.kickabout.company.Company;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "account", 
-	uniqueConstraints = @UniqueConstraint(name="account_email_uk",  columnNames = { "email" }))
-@NamedQuery(name = Account.FIND_BY_EMAIL, query = "select a from Account a where a.email = :email")
+@Table(name = "account")
 public class Account implements java.io.Serializable {
 
 	public static final String FIND_BY_EMAIL = "Account.findByEmail";
@@ -19,18 +17,18 @@ public class Account implements java.io.Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@Column(nullable=false)
+	@Column
 	private String name;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne
 	@JoinColumn(name="company_id", foreignKey=@ForeignKey(name="account_company_id_fk"))
 	private Company company;
 
-	@Column(nullable=false, unique = true)
+	@Column
 	private String email;
 	
 	@JsonIgnore
-	@Column(nullable=false)
+	@Column
 	private String password;
 
 	private String role = "ROLE_USER";
