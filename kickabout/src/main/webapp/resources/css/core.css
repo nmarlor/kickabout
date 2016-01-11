@@ -1,3 +1,8 @@
+html {
+	min-height: 600px;
+	min-width: 1200px;
+}
+
 body {
     padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
     padding-bottom: 40px;
@@ -16,4 +21,59 @@ body {
     -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
        -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
             box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+.sidebar {
+	float: left;
+	height: 100vh;
+	overflow: hidden;
+	color: white;
+	width:190px;
+	background-color: #222;
+	position: absolute;
+	top: 0px;
+	padding-top: 53px;
+	z-index: 1000;
+}
+
+.sidebar ul {
+	padding: 0;
+	list-style-type: none;
+}
+
+.sidebar ul li{
+	border-bottom:1px solid #797979;
+}
+
+.sidebar ul li,.sidebar ul li a{
+	transition:all ease 0.2s;
+}
+
+.sidebar ul li:hover ,.sidebar ul li:hover a{
+	background-color: #0F0F10;
+	color:white;
+}
+
+.sidebar ul li a {
+	display:block;
+	padding:15px;
+	color: #C7C7C7;
+}
+
+.nav-logo {
+	text-decoration: none;
+    font-size: 19px;
+    font-family: sans-serif;
+    color: white;
+    line-height:2.5;
+    display: inline-block;
+    left: 50px;
+    position: relative;
+}
+
+.navbar-color {
+	border-radius: 0px;
+	background-color: #0F0F10;
+	z-index: 1001;
+	border-bottom: 2px solid #D85959;
 }
