@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="col-sm-12">
+		<form th:action="@{/pitches}" method="post">
+			<div class="col-sm-6 no-padding col-centered">
+				<h2>Locations</h2>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th style="width: 150px;">Pitch Owner</th>
+							<th style="width: 250px;">Address</th>
+							<th>Email</th>
+							<th>Telephone</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="pitch : ${pitches}" th:value="${pitch.id}">
+							<td th:text="${pitch.company.name}" ></td>
+							<td th:text="|${pitch.addressLine1}, ${pitch.addressLine2}, ${pitch.city}, ${pitch.county}, ${pitch.postCode}|"></td>
+							<td th:text="${pitch.email}"></td>
+							<td th:text="${pitch.telephone}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
