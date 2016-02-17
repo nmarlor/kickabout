@@ -1,8 +1,18 @@
 package nmarlor.kickabout.account;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import nmarlor.kickabout.company.Company;
 
 @SuppressWarnings("serial")
 @Entity
@@ -15,11 +25,19 @@ public class Account implements java.io.Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
+	
+	@Column
+	private String name;
+	
+	@ManyToOne
+	@JoinColumn(name="company_id", foreignKey=@ForeignKey(name="account_company_id_fk"))
+	private Company company;
 
-	@Column(unique = true)
+	@Column
 	private String email;
 	
 	@JsonIgnore
+	@Column
 	private String password;
 
 	private String role = "ROLE_USER";
@@ -38,7 +56,15 @@ public class Account implements java.io.Serializable {
 		return id;
 	}
 
-    public String getEmail() {
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
 		return email;
 	}
 
@@ -60,5 +86,13 @@ public class Account implements java.io.Serializable {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 }

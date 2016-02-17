@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" class="no-js">
+<head>
+    <title>Kickabout</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link href="assets/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head> 
+    <body>
+    <div th:replace="fragments/newHeader">Header</div>
+    
+    <div class="container-fluid" align="center">
+    	<h1>Welcome to KickAbout.com</h1>
+    	<span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ornare dolor vel faucibus bibendum. Nulla ultricies vel nisi non efficitur. 
+    	Morbi ut scelerisque orci. Ut mauris dui, tempor a mauris id, lacinia interdum est. Ut ut maximus metus. Cras scelerisque auctor lorem, vitae iaculis risus.</span>
+    </div>
+</body>
+</html>
