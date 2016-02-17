@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="col-sm-12">
+	<div class="col-sm-6 pitch-nav">
+	<h2><u>Locations</u></h2>
+	<p>Below you can see all of the pitches available to book on KickAbout.com</p>
+	</div>
+	</div>
+	<div class="col-sm-12">
+		<form th:action="@{/pitches}" method="post">
+			<div class="col-sm-6 no-padding col-centered">
+				<div class="scrollit">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th style="width: 200px;">Pitch Organiser</th>
+							<th style="width: 240px;">Address</th>
+							<th style="width: 150px;">Email</th>
+							<th style="width: 150px;">Telephone</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="pitch : ${pitches}" th:value="${pitch.id}">
+							<td th:text="${pitch.company.name}" ></td>
+							<td th:text="|${pitch.addressLine1}, ${pitch.addressLine2}, ${pitch.city}, ${pitch.county}, ${pitch.postCode}|"></td>
+							<td th:text="${pitch.email}"></td>
+							<td th:text="${pitch.telephone}"></td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<div class="col-sm-6 location-buttons">
+					<button type="button" class="btn btn-info">More Info</button>
+					<button type="button" class="btn btn-success">Book this pitch</button>
+				</div>
+			</div>
+			<div class="col-sm-6 map-position">
+			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2368.3277160323983!2d-2.2965176841524455!3d53.58761398003037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487ba4df34ce636d%3A0x45af05c69198ec3d!2sPlayFootball+Bury!5e0!3m2!1sen!2suk!4v1455633478697" width="720" height="550" frameborder="0" style="border:0"></iframe>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
