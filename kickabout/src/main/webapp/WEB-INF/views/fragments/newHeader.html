@@ -16,7 +16,7 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="#" th:href="@{/}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; KickAbout</a></li>
 				<li><a href="locations" th:href="@{/locations}">Find Your Pitch</a></li>
-				<li><a href="#contact">Contact Us</a></li>
+				<li><a href="#contact" th:href="@{/contact}">Contact Us</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li th:if="${#authorization.expression('!isAuthenticated()')}">
