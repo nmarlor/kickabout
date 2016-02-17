@@ -10,7 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import nmarlor.kickabout.pitch.PitchAvailability;
 
 @Entity
 @Table(name = "bookings")
@@ -23,6 +26,10 @@ public class Booking {
 	@ManyToOne
 	@JoinColumn(name="account_id", foreignKey=@ForeignKey(name="booking_account_id_fk"))
 	private Account account;
+	
+	@OneToOne
+	@JoinColumn(name="pitch_availability_id", foreignKey=@ForeignKey(name="bookings_pitch_availability_id_fk"))
+	private PitchAvailability pitchAvailability;
 	
 	@Column
 	private Integer cost;
@@ -43,6 +50,14 @@ public class Booking {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+
+	public PitchAvailability getPitchAvailability() {
+		return pitchAvailability;
+	}
+
+	public void setPitchAvailability(PitchAvailability pitchAvailability) {
+		this.pitchAvailability = pitchAvailability;
 	}
 
 	public Integer getCost() {

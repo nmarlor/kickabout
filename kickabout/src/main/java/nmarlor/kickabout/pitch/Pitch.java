@@ -30,9 +30,6 @@ public class Pitch {
 	@Column(name = "pitch_size")
 	@Enumerated(EnumType.STRING)
 	private PitchSize pitchSize;
-	
-	@Column(name="available")
-	private boolean available;
 
 	public Long getId() {
 		return id;
@@ -60,13 +57,5 @@ public class Pitch {
 
 	public void setPitchSize(PitchSize pitchSize) {
 		this.pitchSize = pitchSize;
-	}
-
-	public boolean isAvailable() {
-		return available;
-	}
-
-	public void setAvailable(boolean available) {
-		this.available = available;
 	}
 }
