@@ -14,16 +14,14 @@
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="#" th:href="@{/}"><span
-							class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; KickAbout</a></li>
-				<li><a href="locations" th:href="@{/locations}">Locations</a></li>
-				<li><a href="#book">Book a pitch</a></li>
+				<li class="active"><a href="#" th:href="@{/}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; KickAbout</a></li>
+				<li><a href="locations" th:href="@{/locations}">Find Your Pitch</a></li>
 				<li><a href="#contact">Contact Us</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li th:if="${#authorization.expression('!isAuthenticated()')}">
 					<a href="/signup" th:href="@{/signup}"> <span
-						class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Sign up
+						class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Sign Up
 				</a>
 				</li>
 				<li th:if="${#authorization.expression('!isAuthenticated()')}">
@@ -33,7 +31,7 @@
 				</li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}">
 					<a href="/signin" th:href="@{/signin}"> <span
-						class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;Manage account
+						class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;Manage Account
 				</a>
 				</li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}">
