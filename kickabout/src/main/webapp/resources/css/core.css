@@ -48,3 +48,7 @@ body {
 .location-buttons {
 	padding-top: 10px;
 }
+
+.default {
+	background-color: #f5f5f5;
+}
