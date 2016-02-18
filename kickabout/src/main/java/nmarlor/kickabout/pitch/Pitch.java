@@ -1,5 +1,7 @@
 package nmarlor.kickabout.pitch;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -30,6 +32,9 @@ public class Pitch {
 	@Column(name = "pitch_size")
 	@Enumerated(EnumType.STRING)
 	private PitchSize pitchSize;
+	
+	@Column
+	private BigDecimal cost;
 
 	public Long getId() {
 		return id;
@@ -57,5 +62,13 @@ public class Pitch {
 
 	public void setPitchSize(PitchSize pitchSize) {
 		this.pitchSize = pitchSize;
+	}
+
+	public BigDecimal getCost() {
+		return cost;
+	}
+
+	public void setCost(BigDecimal cost) {
+		this.cost = cost;
 	}
 }

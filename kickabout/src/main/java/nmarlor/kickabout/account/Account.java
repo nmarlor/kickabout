@@ -1,10 +1,12 @@
 package nmarlor.kickabout.account;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,6 +32,9 @@ public class Account implements java.io.Serializable {
 	@JsonIgnore
 	@Column
 	private String password;
+	
+	@OneToOne(mappedBy="account", cascade = CascadeType.ALL)
+	private Wallet wallet;
 
 	private String role = "ROLE_USER";
 
@@ -77,5 +82,14 @@ public class Account implements java.io.Serializable {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public Wallet getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(Wallet wallet) {
+		wallet.setAccount(this);
+		this.wallet = wallet;
 	}
 }

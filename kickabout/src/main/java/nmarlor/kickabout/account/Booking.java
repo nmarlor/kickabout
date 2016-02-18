@@ -1,6 +1,6 @@
 package nmarlor.kickabout.account;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,9 +33,13 @@ public class Booking {
 	
 	@Column
 	private Integer cost;
+
+// TODO - Need to check if calendar is correct data type
+//	@Column
+//	private Date date;
 	
 	@Column
-	private Date date;
+	private Calendar date;
 	
 	@Column
 	private String name;
@@ -68,13 +72,13 @@ public class Booking {
 		this.cost = cost;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
+//	public Date getDate() {
+//		return date;
+//	}
+//
+//	public void setDate(Date date) {
+//		this.date = date;
+//	}
 
 	public String getName() {
 		return name;
@@ -83,5 +87,12 @@ public class Booking {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public Calendar getDate() {
+		return date;
+	}
+
+	public void setDate(Calendar date) {
+		this.date = date;
+	}
 }

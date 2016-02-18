@@ -1,6 +1,6 @@
 package nmarlor.kickabout.pitch;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,12 +30,19 @@ public class PitchAvailability {
 	
 	@OneToOne(mappedBy="pitchAvailability", cascade = CascadeType.ALL)
 	private Booking	booking;
+
+// TODO - Need to check if Calendar is correct Type
+//	@Column(name = "booked_from")
+//	private Date bookedFrom;
+
+//	@Column(name = "booked_to")
+//	private Date bookedTo;
 	
 	@Column(name = "booked_from")
-	private Date bookedFrom;
+	private Calendar bookedFrom;
 	
 	@Column(name = "booked_to")
-	private Date bookedTo;
+	private Calendar bookedTo;
 
 	public Long getId() {
 		return id;
@@ -55,5 +62,37 @@ public class PitchAvailability {
 
 	public void setBooking(Booking booking) {
 		this.booking = booking;
+	}
+
+//	public Date getBookedFrom() {
+//		return bookedFrom;
+//	}
+//
+//	public void setBookedFrom(Date bookedFrom) {
+//		this.bookedFrom = bookedFrom;
+//	}
+
+	public Calendar getBookedFrom() {
+		return bookedFrom;
+	}
+
+	public void setBookedFrom(Calendar bookedFrom) {
+		this.bookedFrom = bookedFrom;
+	}
+
+//	public Date getBookedTo() {
+//		return bookedTo;
+//	}
+//
+//	public void setBookedTo(Date bookedTo) {
+//		this.bookedTo = bookedTo;
+//	}
+
+	public Calendar getBookedTo() {
+		return bookedTo;
+	}
+
+	public void setBookedTo(Calendar bookedTo) {
+		this.bookedTo = bookedTo;
 	}
 }
