@@ -12,6 +12,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +43,11 @@ class JpaConfig implements TransactionManagementConfigurer {
     private String dialect;
     @Value("${hibernate.hbm2ddl.auto}")
     private String hbm2ddlAuto;
+    @Value("$(hibernate.hbm2ddl.import_files:}")
+    private String importFiles;
+    
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public DataSource configureDataSource() {
@@ -61,12 +67,17 @@ class JpaConfig implements TransactionManagementConfigurer {
     @Bean
     public LocalContainerEntityManagerFactoryBean configureEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setDataSource(configureDataSource());
+        entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setPackagesToScan("nmarlor.kickabout");
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, dialect);
+        if(null != hbm2ddlAuto && !hbm2ddlAuto.trim().isEmpty())
+            jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, hbm2ddlAuto);
+        if(null != importFiles && !importFiles.isEmpty())
+            jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_IMPORT_FILES, importFiles);
+        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_IMPORT_FILES_SQL_EXTRACTOR, "org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor");
         jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, hbm2ddlAuto);
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
