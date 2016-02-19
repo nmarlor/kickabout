@@ -2,10 +2,16 @@ package nmarlor.kickabout.config;
 
 import java.util.Properties;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import com.googlecode.genericdao.search.MetadataUtil;
+import com.googlecode.genericdao.search.hibernate.HibernateMetadataUtil;
+import com.googlecode.genericdao.search.jpa.JPASearchProcessor;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -70,5 +76,19 @@ class JpaConfig implements TransactionManagementConfigurer {
     @Bean
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return new JpaTransactionManager();
+    }
+    
+    @Bean
+    public JPASearchProcessor jpaSearchProcessor() {
+    	JPASearchProcessor jPASearchProcessor = new JPASearchProcessor(metadataUtil());
+    	return jPASearchProcessor;
+    }
+    
+    @Bean
+    public MetadataUtil metadataUtil() {
+    	EntityManagerFactory entityManagerFactory = configureEntityManagerFactory().getObject();
+    	SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+    	HibernateMetadataUtil metadataUtil = HibernateMetadataUtil.getInstanceForSessionFactory(sessionFactory);
+    	return metadataUtil;
     }
 }
