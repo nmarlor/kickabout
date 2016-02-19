@@ -1,5 +1,6 @@
 package nmarlor.kickabout.pitch;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -16,7 +17,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="pitches")
-public class Pitch {
+public class Pitch implements Serializable{
+
+	private static final long serialVersionUID = -6011741843198883825L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
