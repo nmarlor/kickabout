@@ -7,14 +7,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import nmarlor.kickabout.lib.CRUDDAO;
-
 @Service
 @Transactional
 public class PitchesServiceImpl implements PitchesService{
-	
-	@Autowired
-	private CRUDDAO dao;
 	
 	@Autowired
 	private PitchDAO pitchDAO;
@@ -31,7 +26,7 @@ public class PitchesServiceImpl implements PitchesService{
 
 	@Override
 	public Pitch retrievePitch(Long pitchId) {
-		return dao.retrieve(Pitch.class, pitchId);
+		return pitchDAO.find(pitchId);
 	}
 
 	@Override
