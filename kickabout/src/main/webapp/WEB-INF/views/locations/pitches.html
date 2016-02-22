@@ -21,25 +21,27 @@
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th style="width: 200px;">Pitch Organiser</th>
-							<th style="width: 240px;">Address</th>
-							<th style="width: 150px;">Email</th>
-							<th style="width: 150px;">Telephone</th>
+							<th class="col-xs-4">Pitch Organiser</th>
+							<th class="col-xs-4">Address</th>
+							<th class="col-xs-1">Email</th>
+							<th class="col-xs-2">Telephone</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="pitch : ${pitches}" th:value="${pitch.id}">
-							<td th:text="${pitch.company.name}" ></td>
-							<td th:text="|${pitch.addressLine1}, ${pitch.addressLine2}, ${pitch.city}, ${pitch.county}, ${pitch.postCode}|"></td>
-							<td th:text="${pitch.email}"></td>
-							<td th:text="${pitch.telephone}"></td>
+							<td class="col-xs-4" th:text="${pitch.company.name}"> </td>
+							<td class="col-xs-4" th:text="|${pitch.addressLine1}, ${pitch.addressLine2}, ${pitch.city}, ${pitch.county}, ${pitch.postCode}|"></td>
+							<td class="col-xs-1" th:text="${pitch.email}"></td>
+							<td class="col-xs-2" th:text="${pitch.telephone}"></td>
+							<td class="col-xs-1">
+								<span class="btn-group">
+				  					<a class="btn pitchInfoBtn" th:href="@{pitch(pitchId=${pitch.id})}"><i class="btn btn-info">More Info</i></a>
+				  				</span>
+							</td>
 						</tr>
 					</tbody>
 				</table>
-				</div>
-				<div class="col-sm-6 location-buttons">
-					<button type="button" class="btn btn-info">More Info</button>
-					<button type="button" class="btn btn-success">Book this pitch</button>
 				</div>
 			</div>
 			<div class="col-sm-6 map-position">
@@ -47,5 +49,16 @@
 			</div>
 		</form>
 	</div>
+	
+<!-- 	<script>
+		$(".pitchInfoBtn").click(function(){
+			var pitchId = $(this).attr("id");
+			$.ajax({
+				url:base_url + "locations/pitch",
+			 	data: {id : pitchId},
+			 });
+		});
+	</script> -->
+	<script th:src="@{/resources/js/bootstrap.min.js}"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package nmarlor.kickabout.pitch;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ public class LocationController {
 	
 	@Autowired
 	private PitchLocationDAO pitchLocationDAO;
+	
+	@Autowired
+	private PitchesService pitchesService;
 
 	@RequestMapping(value = "/locations", method = RequestMethod.GET)
 	public ModelAndView Locations() {
@@ -21,6 +25,17 @@ public class LocationController {
 		List<PitchLocation> allPitches = pitchLocationDAO.findAll();
 		mv.addObject("pitches", allPitches);
 		
+		return mv;
+	}
+	
+	@RequestMapping(value = "pitch", method=RequestMethod.GET)
+	public ModelAndView editProductRequest(Long id) {
+		ModelAndView mv = new ModelAndView("/locations/pitch");
+		
+		List<Pitch> pitches = new ArrayList<>();
+		pitches = pitchesService.findPitchesByLocationId(id);
+		
+		mv.addObject("pitches", pitches);
 		return mv;
 	}
 }
