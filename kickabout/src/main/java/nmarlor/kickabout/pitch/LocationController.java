@@ -28,12 +28,12 @@ public class LocationController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "pitch", method=RequestMethod.GET)
-	public ModelAndView editProductRequest(Long pitchId) {
-		ModelAndView mv = new ModelAndView("/locations/pitch");
+	@RequestMapping(value = "pitches", method=RequestMethod.GET)
+	public ModelAndView editProductRequest(Long locationId) {
+		ModelAndView mv = new ModelAndView("/locations/pitches");
 		
 		List<Pitch> pitches = new ArrayList<>();
-		pitches = pitchesService.findPitchesByLocationId(pitchId);
+		pitches = pitchesService.findPitchesByLocationId(locationId);
 		
 		mv.addObject("pitches", pitches);
 		return mv;
