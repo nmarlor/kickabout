@@ -20,20 +20,20 @@ public class LocationController {
 
 	@RequestMapping(value = "/locations", method = RequestMethod.GET)
 	public ModelAndView Locations() {
-		ModelAndView mv = new ModelAndView("locations/pitches");
+		ModelAndView mv = new ModelAndView("locations/locations");
 		
-		List<PitchLocation> allPitches = pitchLocationDAO.findAll();
-		mv.addObject("pitches", allPitches);
+		List<PitchLocation> locations = pitchLocationDAO.findAll();
+		mv.addObject("locations", locations);
 		
 		return mv;
 	}
 	
 	@RequestMapping(value = "pitch", method=RequestMethod.GET)
-	public ModelAndView editProductRequest(Long id) {
+	public ModelAndView editProductRequest(Long pitchId) {
 		ModelAndView mv = new ModelAndView("/locations/pitch");
 		
 		List<Pitch> pitches = new ArrayList<>();
-		pitches = pitchesService.findPitchesByLocationId(id);
+		pitches = pitchesService.findPitchesByLocationId(pitchId);
 		
 		mv.addObject("pitches", pitches);
 		return mv;

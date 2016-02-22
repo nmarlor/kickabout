@@ -15,7 +15,7 @@
 	</div>
 	</div>
 	<div class="col-sm-12">
-		<form th:action="@{/pitches}" method="post">
+		<form th:action="@{/locations}" method="post">
 			<div class="col-sm-6 no-padding col-centered">
 				<div class="scrollit">
 				<table class="table table-striped">
@@ -29,14 +29,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="pitch : ${pitches}" th:value="${pitch.id}">
-							<td class="col-xs-4" th:text="${pitch.company.name}"> </td>
-							<td class="col-xs-4" th:text="|${pitch.addressLine1}, ${pitch.addressLine2}, ${pitch.city}, ${pitch.county}, ${pitch.postCode}|"></td>
-							<td class="col-xs-1" th:text="${pitch.email}"></td>
-							<td class="col-xs-2" th:text="${pitch.telephone}"></td>
+						<tr th:each="location : ${locations}">
+							<td class="col-xs-4" th:text="${location.company.name}"> </td>
+							<td class="col-xs-4" th:text="|${location.addressLine1}, ${location.addressLine2}, ${location.city}, ${location.county}, ${location.postCode}|"></td>
+							<td class="col-xs-1" th:text="${location.email}"></td>
+							<td class="col-xs-2" th:text="${location.telephone}"></td>
 							<td class="col-xs-1">
 								<span class="btn-group">
-				  					<a class="btn pitchInfoBtn" th:href="@{pitch(pitchId=${pitch.id})}"><i class="btn btn-info">More Info</i></a>
+				  					<a class="btn pitchInfoBtn" th:href="@{pitch(pitchId=${location.id})}"><i class="btn btn-info">More Info</i></a>
 				  				</span>
 							</td>
 						</tr>
