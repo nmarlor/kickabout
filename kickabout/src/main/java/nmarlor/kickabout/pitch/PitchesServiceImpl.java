@@ -13,13 +13,9 @@ public class PitchesServiceImpl implements PitchesService{
 	
 	@Autowired
 	private PitchDAO pitchDAO;
-	
-	@Autowired
-	private PitchLocationDAO pitchLocationDAO;
 
 	@Override
-	public List<Pitch> findPitchesByLocationId(Long locationId) {
-		PitchLocation location = pitchLocationDAO.find(locationId);
+	public List<Pitch> findPitchesByLocation(PitchLocation location) {
 		List<Pitch> pitches = pitchDAO.findPitchesByLocation(location);
 		return pitches;
 	}

@@ -9,8 +9,28 @@
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="col-sm-12">
-		<form th:action="@{/locations/pitches}" th:object="${locations}" method="GET">
-			<div></div>
+		<h2><u>Pitches for location</u></h2>
+		<form th:action="@{/locations/pitches}" method="get">
+			<div class="col-sm-6 no-padding col-centered">
+				<div class="scrollit">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th class="col-xs-4">Pitch Number</th>
+							<th class="col-xs-4">Cost</th>
+							<th class="col-xs-4">Size</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="pitch : ${pitches}">
+							<td class="col-xs-4" th:text="${pitch.pitchNumber}"> </td>
+							<td class="col-xs-4" th:text="${pitch.cost}"></td>
+							<td class="col-xs-4" th:text="${pitch.pitchSize}"></td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+			</div>
 		</form>
 	</div>
 </body>

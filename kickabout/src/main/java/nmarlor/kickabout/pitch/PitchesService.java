@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PitchesService 
 {
-	public List<Pitch> findPitchesByLocationId(Long locationId);
+	public List<Pitch> findPitchesByLocation(PitchLocation location);
 	
 	public Pitch retrievePitch(Long pitchId);
 

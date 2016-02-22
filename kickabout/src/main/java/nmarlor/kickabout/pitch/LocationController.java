@@ -13,16 +13,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class LocationController {
 	
 	@Autowired
-	private PitchLocationDAO pitchLocationDAO;
+	private PitchesService pitchesService;
 	
 	@Autowired
-	private PitchesService pitchesService;
+	private PitchLocationService pitchLocationService;
 
 	@RequestMapping(value = "/locations", method = RequestMethod.GET)
 	public ModelAndView Locations() {
 		ModelAndView mv = new ModelAndView("locations/locations");
 		
-		List<PitchLocation> locations = pitchLocationDAO.findAll();
+		List<PitchLocation> locations = pitchLocationService.findAll();
 		mv.addObject("locations", locations);
 		
 		return mv;
@@ -32,9 +32,12 @@ public class LocationController {
 	public ModelAndView editProductRequest(Long locationId) {
 		ModelAndView mv = new ModelAndView("/locations/pitches");
 		
-		List<Pitch> pitches = new ArrayList<>();
-		pitches = pitchesService.findPitchesByLocationId(locationId);
+		PitchLocation location = pitchLocationService.retrieve(locationId);
 		
+		List<Pitch> pitches = new ArrayList<>();
+		pitches = pitchesService.findPitchesByLocation(location);
+		
+		mv.addObject("location", location);
 		mv.addObject("pitches", pitches);
 		return mv;
 	}
