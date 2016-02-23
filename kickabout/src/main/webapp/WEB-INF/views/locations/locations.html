@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
-	<div class="col-sm-12">
+	<div class="col-md-12 col-centered clearfix">
 	<div class="col-sm-6 pitch-nav">
 	<h2><u>Locations</u></h2>
 	<p>Below you can see all of the pitches available to book on KickAbout.com</p>
@@ -21,7 +21,7 @@
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th class="col-xs-4">Pitch Organiser</th>
+							<th class="col-xs-4">Owner</th>
 							<th class="col-xs-4">Address</th>
 							<th class="col-xs-1">Email</th>
 							<th class="col-xs-2">Telephone</th>
@@ -36,7 +36,7 @@
 							<td class="col-xs-2" th:text="${location.telephone}"></td>
 							<td class="col-xs-1">
 								<span class="btn-group">
-				  					<a class="btn pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}"><i class="btn btn-info">Find A Pitch</i></a>
+				  					<a class="btn pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}"><i class="btn btn-info">Pitch Info</i></a>
 				  				</span>
 							</td>
 						</tr>
