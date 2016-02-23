@@ -8,24 +8,39 @@
 </head>
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
-	<div class="col-sm-12">
-		<h2><u>Pitches for location</u></h2>
+	<div class="col-md-12 col-centered clearfix">
+		<div class="col-sm-12 g2s-list-header" align="center">
+			<h2 class="">
+			<span class="header-pitches">Pitches for location</span>
+			</h2>
+			<span class="header-pitches">
+			<p>Below is a list of pitches available for this location.</p> 
+			<p>Click check availability to view the pitches schedule and make a booking.</p>
+			</span>
+		</div>
 		<form th:action="@{/locations/pitches}" method="get">
-			<div class="col-sm-6 no-padding col-centered">
-				<div class="scrollit">
+			<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
+				<div class="pitches-table">
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th class="col-xs-4">Pitch Number</th>
-							<th class="col-xs-4">Cost</th>
-							<th class="col-xs-4">Size</th>
+							<th class="col-sm-2 text-center">Pitch Number</th>
+							<th class="col-sm-3 text-center">Cost Per Session</th>
+							<th class="col-sm-3 text-center">Size Of Pitch</th>
+							<th class="col-sm-2"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="pitch : ${pitches}">
-							<td class="col-xs-4" th:text="${pitch.pitchNumber}"> </td>
-							<td class="col-xs-4" th:text="${pitch.cost}"></td>
-							<td class="col-xs-4" th:text="${pitch.pitchSize}"></td>
+							<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"> </td>
+							<!-- TODO "£" NOT DISPLAYING CORRECTLY! <td class="col-sm-3 text-center" th:text="${'£' + pitch.cost}"></td> -->
+							<td class="col-sm-3 text-center" th:text="${pitch.cost}"></td>
+							<td class="col-sm-3 text-center" th:text="${pitch.pitchSize.prettyName}"></td>
+							<td class="col-sm-2 text-center">
+								<span class="btn-group">
+				  					<a class="btn pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}"><i class="btn btn-info">Check Pitch Availability</i></a>
+				  				</span>
+							</td>
 						</tr>
 					</tbody>
 				</table>
