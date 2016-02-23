@@ -3,8 +3,9 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Kickabout</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
@@ -33,12 +34,11 @@
 					<tbody>
 						<tr th:each="pitch : ${pitches}">
 							<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"> </td>
-							<!-- TODO "£" NOT DISPLAYING CORRECTLY! <td class="col-sm-3 text-center" th:text="${'£' + pitch.cost}"></td> -->
-							<td class="col-sm-3 text-center" th:text="${pitch.cost}"></td>
+							<td class="col-sm-3 text-center" th:text="${'&pound;' + pitch.cost}"></td>
 							<td class="col-sm-3 text-center" th:text="${pitch.pitchSize.prettyName}"></td>
 							<td class="col-sm-2 text-center">
 								<span class="btn-group">
-				  					<a class="btn pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}"><i class="btn btn-info">Check Pitch Availability</i></a>
+				  					<a href="#" class="btn pitchInfoBtn" data-toggle="modal" data-target="#checkDateModal"><i class="btn btn-info">Check Pitch Availability</i></a>
 				  				</span>
 							</td>
 						</tr>
@@ -48,5 +48,32 @@
 			</div>
 		</form>
 	</div>
+	
+	<div class="modal fade" id="checkDateModal" tabindex="-1" role="dialog" aria-labelledby="checkDateModal" aria-hidden="true">
+	    <div class="modal-dialog modal-lg">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	            <h3 class="modal-title" id="myModalLabel">Select a date</h3>
+	            </div>
+	            <div class="modal-body">
+		            <div class="controls">
+			            <div class="input-group date" id='datetimepicker'>
+			                <input type='text' class="form-control" />
+	                    	<span class="input-group-addon">
+	                        	<span class="glyphicon glyphicon-calendar"></span>
+	                    	</span>
+			            </div>
+			        </div>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                <button type="button" class="btn btn-primary">Check this date</button>
+	        	</div>
+	    	</div>
+	  	</div>
+	</div>
+	
+	<script src="https://code.jquery.com/jquery.js"></script>
 </body>
 </html>
