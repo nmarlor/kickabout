@@ -1,6 +1,7 @@
 package nmarlor.kickabout.pitch;
 
-import java.util.Calendar;
+import java.sql.Time;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,19 +31,15 @@ public class PitchAvailability {
 	
 	@OneToOne(mappedBy="pitchAvailability", cascade = CascadeType.ALL)
 	private Booking	booking;
-
-// TODO - Need to check if Calendar is correct Type
-//	@Column(name = "booked_from")
-//	private Date bookedFrom;
-
-//	@Column(name = "booked_to")
-//	private Date bookedTo;
+	
+	@Column(name = "date")
+	private Date date;
 	
 	@Column(name = "booked_from")
-	private Calendar bookedFrom;
+	private Time bookedFrom;
 	
 	@Column(name = "booked_to")
-	private Calendar bookedTo;
+	private Time bookedTo;
 
 	public Long getId() {
 		return id;
@@ -64,35 +61,28 @@ public class PitchAvailability {
 		this.booking = booking;
 	}
 
-//	public Date getBookedFrom() {
-//		return bookedFrom;
-//	}
-//
-//	public void setBookedFrom(Date bookedFrom) {
-//		this.bookedFrom = bookedFrom;
-//	}
+	public Date getDate() {
+		return date;
+	}
 
-	public Calendar getBookedFrom() {
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Time getBookedFrom() {
 		return bookedFrom;
 	}
 
-	public void setBookedFrom(Calendar bookedFrom) {
+	public void setBookedFrom(Time bookedFrom) {
 		this.bookedFrom = bookedFrom;
 	}
 
-//	public Date getBookedTo() {
-//		return bookedTo;
-//	}
-//
-//	public void setBookedTo(Date bookedTo) {
-//		this.bookedTo = bookedTo;
-//	}
-
-	public Calendar getBookedTo() {
+	public Time getBookedTo() {
 		return bookedTo;
 	}
 
-	public void setBookedTo(Calendar bookedTo) {
+	public void setBookedTo(Time bookedTo) {
 		this.bookedTo = bookedTo;
 	}
+
 }
