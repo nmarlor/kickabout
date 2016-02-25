@@ -6,11 +6,14 @@
 	<meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    
+    <link rel="stylesheet" th:href="@{/resources/css/datepicker.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}" />
 </head>
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="col-md-12 col-centered clearfix">
-		<div class="col-sm-12 g2s-list-header" align="center">
+		<div class="col-sm-12" align="center">
 			<h2 class="">
 			<span class="header-pitches">Pitches for location</span>
 			</h2>
@@ -27,18 +30,25 @@
 						<tr>
 							<th class="col-sm-2 text-center">Pitch Number</th>
 							<th class="col-sm-3 text-center">Cost Per Session</th>
-							<th class="col-sm-3 text-center">Size Of Pitch</th>
-							<th class="col-sm-2"></th>
+							<th class="col-sm-2 text-center">Size Of Pitch</th>
+							<th class="col-sm-2 text-center">Date</th>
+							<th class="col-sm-1"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="pitch : ${pitches}">
 							<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"> </td>
 							<td class="col-sm-3 text-center" th:text="${'&pound;' + pitch.cost}"></td>
-							<td class="col-sm-3 text-center" th:text="${pitch.pitchSize.prettyName}"></td>
+							<td class="col-sm-2 text-center" th:text="${pitch.pitchSize.prettyName}"></td>
 							<td class="col-sm-2 text-center">
-								<span class="btn-group">
-				  					<a href="#" class="btn pitchInfoBtn" data-toggle="modal" data-target="#checkDateModal"><i class="btn btn-info">Check Pitch Availability</i></a>
+									<input type="text" placeholder="Select a date" class="form-control" name="date" th:value="${date}"></input>
+							</td>
+							<td class="col-sm-1 text-center">
+								<!-- <span class="btn-group">
+				  					<a href="#" class="btn pitchInfoBtn" data-toggle="modal" data-target="#checkDateModal"><i class="btn btn-info">Check Schedule</i></a>
+				  				</span> -->
+				  				<span class="btn-group">
+				  					<a class="btn pitchInfoBtn" th:href="@{availability(pitchId=${pitch.id}, date=${'25-02-2016'})}"><i class="btn btn-info">Check Schedule</i></a>
 				  				</span>
 							</td>
 						</tr>
@@ -74,6 +84,15 @@
 	  	</div>
 	</div>
 	
-	<script src="https://code.jquery.com/jquery.js"></script>
+    <script type="text/javascript">
+ 	$(document).ready(function () 
+	{
+    	$('#example1').datepicker({
+        format: "dd-mm-yyyy"
+        });  
+    });
+    </script>
+	<script th:src="@{/resources/js/jquery-1.9.1.min.js}"></script>
+	<script th:src="@{/resources/js/boostrap-datepicker.js}"></script>
 </body>
 </html>
