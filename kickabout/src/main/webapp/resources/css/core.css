@@ -70,3 +70,16 @@ body {
 .pitches-table-holder {
 	overflow-y: auto;
 }
+
+.availability-table {
+	display: table;
+	margin-top: 10px;
+	width: 40%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	background-color: transparent;
+}
+
+.pitches-table-holder {
+	overflow-y: auto;
+}

@@ -39,7 +39,10 @@ public class PitchAvailabilityController {
 		
 		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, availabilityDate);
 		
+		mv.addObject("pitch", pitch);
+		mv.addObject("date", date);
 		mv.addObject("pitchAvailabilities", pitchAvailabilities);
+		
 		return mv;
 	}
 }
