@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import nmarlor.kickabout.account.Booking;
+import nmarlor.kickabout.booking.Booking;
 
 @Entity
 @Table(name="pitch_availability")

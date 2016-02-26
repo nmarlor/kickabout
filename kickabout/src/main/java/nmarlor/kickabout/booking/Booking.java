@@ -1,6 +1,7 @@
-package nmarlor.kickabout.account;
+package nmarlor.kickabout.booking;
 
-import java.util.Calendar;
+import java.sql.Time;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.pitch.PitchAvailability;
 
 @Entity
@@ -31,15 +33,17 @@ public class Booking {
 	@JoinColumn(name="pitch_availability_id", foreignKey=@ForeignKey(name="bookings_pitch_availability_id_fk"))
 	private PitchAvailability pitchAvailability;
 	
+	@Column(name = "booked_from")
+	private Time bookedFrom;
+	
+	@Column(name = "booked_to")
+	private Time bookedTo;
+	
 	@Column
 	private Integer cost;
 
-// TODO - Need to check if calendar is correct data type
-//	@Column
-//	private Date date;
-	
-	@Column
-	private Calendar date;
+	@Column(name = "date")
+	private Date date;
 	
 	@Column
 	private String name;
@@ -54,6 +58,30 @@ public class Booking {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+	
+	public Time getBookedFrom() {
+		return bookedFrom;
+	}
+
+	public void setBookedFrom(Time bookedFrom) {
+		this.bookedFrom = bookedFrom;
+	}
+
+	public Time getBookedTo() {
+		return bookedTo;
+	}
+
+	public void setBookedTo(Time bookedTo) {
+		this.bookedTo = bookedTo;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public PitchAvailability getPitchAvailability() {
@@ -72,14 +100,6 @@ public class Booking {
 		this.cost = cost;
 	}
 
-//	public Date getDate() {
-//		return date;
-//	}
-//
-//	public void setDate(Date date) {
-//		this.date = date;
-//	}
-
 	public String getName() {
 		return name;
 	}
@@ -88,11 +108,4 @@ public class Booking {
 		this.name = name;
 	}
 
-	public Calendar getDate() {
-		return date;
-	}
-
-	public void setDate(Calendar date) {
-		this.date = date;
-	}
 }
