@@ -18,7 +18,7 @@
 			<span class="header-pitches" th:text="|${location.company.name} Pitches|"></span>
 			</h2>
 			<span class="header-pitches">Below is a list of pitches available for this location</span>
-			<span class="header-pitches">Click check availability to view the pitches schedule and make a booking</span>
+			<span class="header-pitches">Select a date and click the check schedule button, to view the pitches current bookings</span>
 		</div>
 		<form th:action="@{/locations/pitches}" method="get">
 			<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
@@ -27,24 +27,23 @@
 					<thead>
 						<tr>
 							<th class="col-sm-2 text-center">Pitch Number</th>
-							<th class="col-sm-3 text-center">Cost Per Session</th>
+							<th class="col-sm-2 text-center">Cost Per Session</th>
 							<th class="col-sm-2 text-center">Size Of Pitch</th>
+							<th class="col-sm-2 text-center">Hours</th>
 							<th class="col-sm-2 text-center">Date</th>
-							<th class="col-sm-1"></th>
+							<th class="col-sm-2"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="pitch : ${pitches}">
 							<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"> </td>
-							<td class="col-sm-3 text-center" th:text="${'&pound;' + pitch.cost}"></td>
+							<td class="col-sm-2 text-center" th:text="${'&pound;' + pitch.cost}"></td>
 							<td class="col-sm-2 text-center" th:text="${pitch.pitchSize.prettyName}"></td>
+							<td class="col-sm-2 text-center" th:text="|${pitch.availableFrom} - ${pitch.availableTo}|"></td>
 							<td class="col-sm-2 text-center">
-									<input type="text" placeholder="Select a date" class="form-control" name="date" th:value="${date}"></input>
+								<input type="text" placeholder="Select a date..." class="form-control" name="date" th:value="${date}"></input>
 							</td>
-							<td class="col-sm-1 text-center">
-								<!-- <span class="btn-group">
-				  					<a href="#" class="btn pitchInfoBtn" data-toggle="modal" data-target="#checkDateModal"><i class="btn btn-info">Check Schedule</i></a>
-				  				</span> -->
+							<td class="col-sm-2 text-center">
 				  				<span class="btn-group">
 				  					<a class="btn pitchInfoBtn" th:href="@{availability(pitchId=${pitch.id}, date=${'25-02-2016'})}"><i class="btn btn-info">Check Schedule</i></a>
 				  				</span>
@@ -56,41 +55,5 @@
 			</div>
 		</form>
 	</div>
-	
-	<div class="modal fade" id="checkDateModal" tabindex="-1" role="dialog" aria-labelledby="checkDateModal" aria-hidden="true">
-	    <div class="modal-dialog modal-lg">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	            <h3 class="modal-title" id="myModalLabel">Select a date</h3>
-	            </div>
-	            <div class="modal-body">
-		            <div class="controls">
-			            <div class="input-group date" id='datetimepicker'>
-			                <input type='text' class="form-control" />
-	                    	<span class="input-group-addon">
-	                        	<span class="glyphicon glyphicon-calendar"></span>
-	                    	</span>
-			            </div>
-			        </div>
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	                <button type="button" class="btn btn-primary">Check this date</button>
-	        	</div>
-	    	</div>
-	  	</div>
-	</div>
-	
-    <script type="text/javascript">
- 	$(document).ready(function () 
-	{
-    	$('#example1').datepicker({
-        format: "dd-mm-yyyy"
-        });  
-    });
-    </script>
-	<script th:src="@{/resources/js/jquery-1.9.1.min.js}"></script>
-	<script th:src="@{/resources/js/boostrap-datepicker.js}"></script>
 </body>
 </html>

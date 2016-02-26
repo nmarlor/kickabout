@@ -2,6 +2,7 @@ package nmarlor.kickabout.pitch;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,6 +39,12 @@ public class Pitch implements Serializable{
 	
 	@Column
 	private BigDecimal cost;
+	
+	@Column(name = "available_from")
+	private Time availableFrom;
+	
+	@Column(name = "available_to")
+	private Time availableTo;
 
 	public Long getId() {
 		return id;
@@ -74,4 +81,21 @@ public class Pitch implements Serializable{
 	public void setCost(BigDecimal cost) {
 		this.cost = cost;
 	}
+
+	public Time getAvailableFrom() {
+		return availableFrom;
+	}
+
+	public void setAvailableFrom(Time availableFrom) {
+		this.availableFrom = availableFrom;
+	}
+
+	public Time getAvailableTo() {
+		return availableTo;
+	}
+
+	public void setAvailableTo(Time availableTo) {
+		this.availableTo = availableTo;
+	}
+	
 }
