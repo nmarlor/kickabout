@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="col-md-12 col-centered clearfix">
+	<div class="col-sm-6 pitch-nav">
+	<h2><u>Locations</u></h2>
+	<p>Below you can see all of the pitches available to book on KickAbout.com</p>
+	</div>
+	</div>
+	<div class="col-sm-12">
+		<form th:action="@{/locations}" method="get">
+			<div class="col-sm-6 no-padding col-centered">
+				<div class="scrollit">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th class="col-xs-4">Owner</th>
+							<th class="col-xs-4">Address</th>
+							<th class="col-xs-1">Email</th>
+							<th class="col-xs-2">Telephone</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="location : ${locations}">
+							<td class="col-xs-4" th:text="${location.company.name}"> </td>
+							<td class="col-xs-4" th:text="|${location.addressLine1}, ${location.addressLine2}, ${location.city}, ${location.county}, ${location.postCode}|"></td>
+							<td class="col-xs-1" th:text="${location.email}"></td>
+							<td class="col-xs-2" th:text="${location.telephone}"></td>
+							<td class="col-xs-1">
+								<span class="btn-group">
+				  					<a class="btn pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}"><i class="btn btn-info">Pitch Info</i></a>
+				  				</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+			</div>
+			<div class="col-sm-6 map-position">
+			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2368.3277160323983!2d-2.2965176841524455!3d53.58761398003037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487ba4df34ce636d%3A0x45af05c69198ec3d!2sPlayFootball+Bury!5e0!3m2!1sen!2suk!4v1455633478697" width="720" height="550" frameborder="0" style="border:0"></iframe>
+			</div>
+		</form>
+	</div>
+	
+<!-- 	<script>
+		$(".pitchInfoBtn").click(function(){
+			var pitchId = $(this).attr("id");
+			$.ajax({
+				url:base_url + "locations/pitch",
+			 	data: {id : pitchId},
+			 });
+		});
+	</script> -->
+	<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+</body>
+</html>

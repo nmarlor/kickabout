@@ -1,5 +1,9 @@
 package nmarlor.kickabout.pitch;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Time;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,7 +18,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="pitches")
-public class Pitch {
+public class Pitch implements Serializable{
+
+	private static final long serialVersionUID = -6011741843198883825L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +37,14 @@ public class Pitch {
 	@Enumerated(EnumType.STRING)
 	private PitchSize pitchSize;
 	
-	@Column(name="available")
-	private boolean available;
+	@Column
+	private BigDecimal cost;
+	
+	@Column(name = "available_from")
+	private Time availableFrom;
+	
+	@Column(name = "available_to")
+	private Time availableTo;
 
 	public Long getId() {
 		return id;
@@ -62,11 +74,28 @@ public class Pitch {
 		this.pitchSize = pitchSize;
 	}
 
-	public boolean isAvailable() {
-		return available;
+	public BigDecimal getCost() {
+		return cost;
 	}
 
-	public void setAvailable(boolean available) {
-		this.available = available;
+	public void setCost(BigDecimal cost) {
+		this.cost = cost;
 	}
+
+	public Time getAvailableFrom() {
+		return availableFrom;
+	}
+
+	public void setAvailableFrom(Time availableFrom) {
+		this.availableFrom = availableFrom;
+	}
+
+	public Time getAvailableTo() {
+		return availableTo;
+	}
+
+	public void setAvailableTo(Time availableTo) {
+		this.availableTo = availableTo;
+	}
+	
 }

@@ -1,18 +1,15 @@
 package nmarlor.kickabout.account;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import nmarlor.kickabout.company.Company;
 
 @SuppressWarnings("serial")
 @Entity
@@ -28,10 +25,6 @@ public class Account implements java.io.Serializable {
 	
 	@Column
 	private String name;
-	
-	@ManyToOne
-	@JoinColumn(name="company_id", foreignKey=@ForeignKey(name="account_company_id_fk"))
-	private Company company;
 
 	@Column
 	private String email;
@@ -39,6 +32,9 @@ public class Account implements java.io.Serializable {
 	@JsonIgnore
 	@Column
 	private String password;
+	
+	@OneToOne(mappedBy="account", cascade = CascadeType.ALL)
+	private Wallet wallet;
 
 	private String role = "ROLE_USER";
 
@@ -88,11 +84,12 @@ public class Account implements java.io.Serializable {
 		this.role = role;
 	}
 
-	public Company getCompany() {
-		return company;
+	public Wallet getWallet() {
+		return wallet;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setWallet(Wallet wallet) {
+		wallet.setAccount(this);
+		this.wallet = wallet;
 	}
 }

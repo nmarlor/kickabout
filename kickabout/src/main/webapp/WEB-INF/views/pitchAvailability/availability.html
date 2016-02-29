@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="col-md-12 col-centered clearfix">
+		<div class="col-sm-12" align="center">
+			<h2 class="">
+			<span class="header-pitches">Pitch Availability</span>
+			</h2>
+			<span class="header-pitches">The list below shows the pitches schedule for the selected day</span>
+			<span class="header-pitches">If your booking time can't be found, this means it is available - click the make a booking button to secure your slot now!</span>
+		</div>
+	</div>
+	<form th:action="@{/availability}" method="get">
+		<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
+				<div class="availability-table">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th class="col-sm-3 text-center" th:text="|${pitch.pitchLocation.company.name} Pitch ${pitch.pitchNumber} - Booking Schedule - ${date}|"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="availability : ${pitchAvailabilities}">
+							<td class="col-sm-3 text-center" th:text="|${availability.bookedFrom} - ${availability.bookedTo}|"> </td>
+						</tr>
+						
+					</tbody>
+				</table>
+					<span class="btn-group">
+				  		<a class="btn bookingBtn"><i class="btn btn-success">Make a booking!</i></a>
+				  	</span>
+				</div>
+			</div>
+	</form>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package nmarlor.kickabout.pitch;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -14,7 +16,9 @@ import nmarlor.kickabout.company.Company;
 
 @Entity
 @Table(name="pitch_locations")
-public class PitchLocation {
+public class PitchLocation implements Serializable{
+
+	private static final long serialVersionUID = -1883000624842805068L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,12 +1,11 @@
 package nmarlor.kickabout.company;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,9 +17,9 @@ public class CompanyDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne
-	@JoinColumn(name="company_id", foreignKey=@ForeignKey(name="company_details_company_id_fk"))
-	private Company company;
+	@OneToOne(mappedBy="companyDetails", cascade = CascadeType.ALL)
+	private Company	company;
+	
 	
 	@Column
 	private String email;
@@ -52,6 +51,7 @@ public class CompanyDetails {
 	}
 
 	public void setCompany(Company company) {
+		company.setCompanyDetails(this);
 		this.company = company;
 	}
 

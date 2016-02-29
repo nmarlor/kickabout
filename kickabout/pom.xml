@@ -87,6 +87,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- Generic DAO - Utility classes so that only one Hibernate DAO is needed. -->
+		<dependency>
+			<groupId>com.googlecode.genericdao</groupId>
+			<artifactId>dao-hibernate</artifactId>
+			<version>1.2.0</version> 
+		</dependency>
         <!-- Avoid: javax.validation.ValidationException: HV000183: Unable to load 'javax.el.ExpressionFactory' -->
         <dependency>
             <groupId>javax.el</groupId>
