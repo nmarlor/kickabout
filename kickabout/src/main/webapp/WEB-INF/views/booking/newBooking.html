@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+		
+		<div class="container">
+			<div class="jumbotron text-center default">
+				<h2>Make booking</h2>
+			<form method="post" th:action="@{/booking/newBooking}" th:object="${booking}">
+				<input type="hidden" th:field="*{id}"/>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-user"></i></span>
+						<input type="text" class="form-control" id="name-input" placeholder="Enter Name..." th:field="*{name}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-envelope-square"></i></span>
+						<input type="text" class="form-control" id="email-input" placeholder="Enter Email..." th:field="*{name}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						<input type="text" class="form-control" id="date-input" placeholder="Date..." th:field="*{email}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+						<input type="text" class="form-control" id="from-input" placeholder="Time From..." th:field="*{bookedFrom}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+						<input type="text" class="form-control" id="to-input" placeholder="Time To..." th:field="*{bookedTo}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-gbp"></i></span>
+						<input type="text" class="form-control" id="cost-input" placeholder="Cost..." th:field="*{cost}"/>
+					</div>
+				</div>
+				<div class="create-btn col-sm-2">
+					<input type="submit" value="Book this pitch!" class="btn btn-block btn-success create-button" onclick="window.location.href=BookingSuccessful.html" />
+				</div>
+			</form>
+		</div>
+		</div>
+</body>
+</html>
