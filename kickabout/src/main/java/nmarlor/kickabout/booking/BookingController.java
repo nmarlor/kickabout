@@ -24,8 +24,10 @@ public class BookingController {
 	public ModelAndView viewNewBooking(Long pitchId, String date){
 		ModelAndView result = new ModelAndView("booking/newBooking");
 		
-		Booking booking = new Booking();
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		
+		Booking booking = new Booking();
+		booking.setCost(pitch.getCost());
 		
 		result.addObject("booking", booking);
 		result.addObject("pitch", pitch);
@@ -37,6 +39,7 @@ public class BookingController {
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.POST)
 	public ModelAndView makeBooking(@ModelAttribute Booking booking, BindingResult result){
 		ModelAndView mv = new ModelAndView("booking/bookingSuccessful");
+		bookingService.createBooking(booking);
 		mv.addObject("booking", booking);
 		return mv;
 	}

@@ -26,14 +26,14 @@
 				<div class="col-sm-12">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-envelope-square"></i></span>
-						<input type="text" class="form-control" id="email-input" placeholder="Enter Email..." th:field="*{name}"/>
+						<input type="text" class="form-control" id="email-input" placeholder="Enter Email..." th:field="*{email}"/>
 					</div>
 				</div>
 				
 				<div class="col-sm-12">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input type="text" class="form-control" id="date-input" placeholder="Date..." th:field="*{email}"/>
+						<input type="text" class="form-control" id="date-input" placeholder="Date..." th:field="*{date}"/>
 					</div>
 				</div>
 				
@@ -54,9 +54,10 @@
 				<div class="col-sm-12">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-gbp"></i></span>
-						<input type="text" class="form-control" id="cost-input" placeholder="Cost..." th:field="*{cost}"/>
+						<input type="text" class="form-control" id="cost-input" th:field="*{cost}" readonly="readonly"/>
 					</div>
 				</div>
+				
 				<div class="create-btn col-sm-2">
 					<input type="submit" value="Book this pitch!" class="btn btn-block btn-success create-button" onclick="window.location.href=BookingSuccessful.html" />
 				</div>
