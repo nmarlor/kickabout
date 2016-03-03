@@ -1,8 +1,8 @@
 package nmarlor.kickabout.pitch;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,29 +19,28 @@ public class PitchAvailabilityController {
 	
 	@Autowired
 	private PitchesService pitchesService;
-
+	
+	@Autowired
+	private PitchFeatureService PitchFeatureService;
+	
 	@RequestMapping(value = "/availability", method = RequestMethod.GET)
-	public ModelAndView pitchAvailability(Long pitchId, String date){
-		ModelAndView mv = new ModelAndView("pitchAvailability/availability");
+	public ModelAndView pitchAvailability(Long pitchId){
+		ModelAndView mv = new ModelAndView("pitchAvailability/availabilityAndFeatures");
 		
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		Date availabilityDate = null;
+		List<PitchFeature> pitchFeatures = PitchFeatureService.findPitchFeaturesByPitch(pitch);
 		
-		try {
-
-			availabilityDate = formatter.parse(date);
-
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, availabilityDate);
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
+//		LocalDate availabilityDate = LocalDate.parse(date, formatter);
+//		Date checkDate = Date.valueOf(availabilityDate);
+//		
+//		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, checkDate);
 		
 		mv.addObject("pitch", pitch);
-		mv.addObject("date", date);
-		mv.addObject("pitchAvailabilities", pitchAvailabilities);
+		mv.addObject("pitchFeatures", pitchFeatures);
+//		mv.addObject("date", date);
+//		mv.addObject("pitchAvailabilities", pitchAvailabilities);
 		
 		return mv;
 	}
