@@ -1,7 +1,7 @@
 package nmarlor.kickabout.pitch;
 
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -60,7 +60,7 @@ public class PitchAvailability {
 	public void setBooking(Booking booking) {
 		this.booking = booking;
 	}
-
+	
 	public Date getDate() {
 		return date;
 	}
