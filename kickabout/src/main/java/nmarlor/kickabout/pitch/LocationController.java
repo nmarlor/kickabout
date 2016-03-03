@@ -29,7 +29,7 @@ public class LocationController {
 	}
 	
 	@RequestMapping(value = "pitches", method=RequestMethod.GET)
-	public ModelAndView editProductRequest(Long locationId) {
+	public ModelAndView pitches(Long locationId) {
 		ModelAndView mv = new ModelAndView("/locations/pitches");
 		
 		PitchLocation location = pitchLocationService.retrieve(locationId);
