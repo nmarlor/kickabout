@@ -80,6 +80,20 @@ body {
 	background-color: transparent;
 }
 
-.pitches-table-holder {
+.features-table {
+	display: table;
+	margin-top: 20px;
+	width: 85%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	background-color: transparent;
+}
+
+.features-table-holder {
 	overflow-y: auto;
+}
+
+.pitch-gallery {
+	margin-top: 20px;
+	width: 100%;
 }

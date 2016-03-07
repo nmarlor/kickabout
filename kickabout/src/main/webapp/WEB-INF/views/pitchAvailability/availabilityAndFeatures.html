@@ -11,10 +11,35 @@
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="col-md-12 col-centered clearfix">
 		<div class="col-sm-12" align="center">
-			<h2 class="">
+			<h2>
 			<span class="header-pitches" th:text="|${pitch.pitchLocation.company.name} Pitch ${pitch.pitchNumber}|"></span>
 			</h2>			
 		</div>
 	</div>
+	<form th:action="@{/availability}" method="get">
+	<div class="col-sm-12">
+		<div class="col-sm-6" align="center">
+			<div class ="features-table">
+			<table class="table">
+				<thead>
+					<tr>
+						<th class="col-sm-6 text-center h3" th:text="Features"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="pitchFeature : ${pitchFeatures}">
+						<td class="col-sm-6 text-center" th:text="${pitchFeature.feature}"> </td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class ="pitch-gallery">
+				<img src="../../../resources/images/pitch.jpg" th:src="@{/resources/images/pitch.jpg}" class ="img-responsive"/>
+			</div>
+		</div>
+	</div>	
+	</form>
 </body>
 </html>
