@@ -3,6 +3,7 @@ package nmarlor.kickabout.pitch;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -32,23 +33,31 @@ public class PitchAvailabilityController {
 		ModelAndView mv = new ModelAndView("pitchAvailability/availabilityAndFeatures");
 		
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		Date date = getTodaysDate();
 		
 		List<PitchFeature> pitchFeatures = PitchFeatureService.findPitchFeaturesByPitch(pitch);
-		
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
-//		LocalDate availabilityDate = LocalDate.parse(date, formatter);
-//		Date checkDate = Date.valueOf(availabilityDate);
-//		
-//		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, checkDate);
+		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, date);
 		
 		mv.addObject("pitchId", pitchId);
 		mv.addObject("pitch", pitch);
 		mv.addObject("pitchFeatures", pitchFeatures);
 		mv.addObject("pitchForm", new PitchForm());
-//		mv.addObject("date", date);
-//		mv.addObject("pitchAvailabilities", pitchAvailabilities);
+		mv.addObject("date", date);
+		mv.addObject("pitchAvailabilities", pitchAvailabilities);
 		
 		return mv;
+	}
+	
+	/**
+	 * Service for getting todays date and converting it to SQL format
+	 * @return Date
+	 */
+	private Date getTodaysDate()
+	{
+		Calendar calendar = Calendar.getInstance();
+		java.util.Date currentDate = calendar.getTime();
+		Date date = new Date(currentDate.getTime());
+		return date;
 	}
 	
 	@RequestMapping("/dateSearch")
