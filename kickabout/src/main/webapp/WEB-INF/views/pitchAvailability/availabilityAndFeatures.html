@@ -39,17 +39,33 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-12 col-centered clearfix">
-		<form method="post" th:action="@{/dateSearch}" th:object="${pitchForm}">
-			<div class="col-sm-12" align="center">
-				<div class="col-sm-2">
-					<input type="text" class="form-control" placeholder="Select a date for schedule..." th:field="*{date}"/>
+	
+	<form method="post" th:action="@{/dateSearch}" th:object="${pitchForm}">
+		<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
+				<div class="availability-table">
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="col-sm-3 text-center" th:text="|${pitch.pitchLocation.company.name} Pitch ${pitch.pitchNumber} - Booking Schedule - ${date}|"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="availability : ${pitchAvailabilities}">
+							<td class="col-sm-3 text-center" th:text="|${availability.bookedFrom} - ${availability.bookedTo}|"> </td>
+						</tr>
+					</tbody>
+				</table>
+				  	<span>
+				  		<input type="text" class="form-control" placeholder="Select a different date to book..." th:field="*{date}"/>
+				  	</span>
+				  	<span class="btn-group">
+				  		<input type="submit" class=" btn-block btn btn-info" value="Search"></input>
+				  	</span>
+				  	<span class="btn-group">
+				  		<a class="btn bookingBtn" th:href="@{booking/newBooking(pitchId=${pitch.id}, date=${'25-02-2016'})}"><i class="btn btn-success">Book for this date!</i></a>
+				  	</span>
 				</div>
-				<div class="col-sm-1">
-					<input type="submit" class=" btn-block btn btn-success" value="Search"></input>
-				</div>	
 			</div>
-		</form>
-	</div>
+	</form>
 </body>
 </html>
