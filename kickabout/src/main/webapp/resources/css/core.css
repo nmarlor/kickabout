@@ -82,7 +82,7 @@ body {
 
 .features-table {
 	display: table;
-	margin-top: 20px;
+	margin-top: 40px;
 	width: 85%;
 	border-spacing: 0;
 	border-collapse: collapse;
@@ -94,6 +94,6 @@ body {
 }
 
 .pitch-gallery {
-	margin-top: 20px;
+	margin-top: 40px;
 	width: 100%;
 }

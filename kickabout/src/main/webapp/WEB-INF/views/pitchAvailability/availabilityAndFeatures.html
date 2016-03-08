@@ -16,7 +16,6 @@
 			</h2>			
 		</div>
 	</div>
-	<form th:action="@{/availability}" method="get">
 	<div class="col-sm-12">
 		<div class="col-sm-6" align="center">
 			<div class ="features-table">
@@ -39,7 +38,18 @@
 				<img src="../../../resources/images/pitch.jpg" th:src="@{/resources/images/pitch.jpg}" class ="img-responsive"/>
 			</div>
 		</div>
-	</div>	
-	</form>
+	</div>
+	<div class="col-md-12 col-centered clearfix">
+		<form method="post" th:action="@{/dateSearch}" th:object="${pitchForm}">
+			<div class="col-sm-12" align="center">
+				<div class="col-sm-2">
+					<input type="text" class="form-control" placeholder="Select a date for schedule..." th:field="*{date}"/>
+				</div>
+				<div class="col-sm-1">
+					<input type="submit" class=" btn-block btn btn-success" value="Search"></input>
+				</div>	
+			</div>
+		</form>
+	</div>
 </body>
 </html>
