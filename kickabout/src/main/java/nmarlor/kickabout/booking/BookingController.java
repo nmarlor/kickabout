@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import nmarlor.kickabout.pitch.Pitch;
+import nmarlor.kickabout.pitch.PitchAvailability;
+import nmarlor.kickabout.pitch.PitchAvailabilityService;
 import nmarlor.kickabout.pitch.PitchesService;
 
 @Controller
@@ -20,27 +22,55 @@ public class BookingController {
 	@Autowired
 	private PitchesService pitchesService;
 	
+	@Autowired
+	private PitchAvailabilityService pitchAvailabilityService;
+	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.GET)
 	public ModelAndView viewNewBooking(Long pitchId, String date){
 		ModelAndView result = new ModelAndView("booking/newBooking");
 		
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		PitchAvailability pitchAvailability = new PitchAvailability();
+		pitchAvailability.setPitch(pitch);
 		
-		Booking booking = new Booking();
-		booking.setCost(pitch.getCost());
+		BookingForm bookingForm = new BookingForm();
+		bookingForm.setCost(pitch.getCost());
+		bookingForm.setPitchId(pitchId);
 		
-		result.addObject("booking", booking);
+		result.addObject("bookingForm", bookingForm);
 		result.addObject("pitch", pitch);
 		result.addObject("date", date);
+		result.addObject("pitchAvailability", pitchAvailability);
 		
 		return result;
 	}
 	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.POST)
-	public ModelAndView makeBooking(@ModelAttribute Booking booking, BindingResult result){
+	public ModelAndView makeBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, BindingResult result){
 		ModelAndView mv = new ModelAndView("booking/bookingSuccessful");
+		
+		Long pitchId = bookingForm.getPitchId();
+		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		
+		PitchAvailability pitchAvailability = new PitchAvailability();
+		pitchAvailability.setPitch(pitch);
+		pitchAvailability.setDate(bookingForm.getDate());
+		pitchAvailability.setBookedFrom(bookingForm.getBookedFrom());
+		pitchAvailability.setBookedTo(bookingForm.getBookedTo());
+		pitchAvailabilityService.createPitchAvailability(pitchAvailability);
+		
+		Booking booking = new Booking();
+		booking.setPitchAvailability(pitchAvailability);
+		booking.setBookedFrom(bookingForm.getBookedFrom());
+		booking.setBookedTo(bookingForm.getBookedTo());
+		booking.setDate(bookingForm.getDate());
+		booking.setEmail(bookingForm.getEmail());
+		booking.setName(bookingForm.getName());
 		bookingService.createBooking(booking);
+		
 		mv.addObject("booking", booking);
+		mv.addObject("pitchAvailability", pitchAvailability);
+		
 		return mv;
 	}
 }
