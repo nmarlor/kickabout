@@ -8,4 +8,6 @@ public interface PitchAvailabilityService
 	public List<PitchAvailability> findPitchAvailabilityByPitchAndDate(Pitch pitch, Date date);
 	
 	public PitchAvailability retrievePitchAvailability(Long availabilityId);
+	
+	public void createPitchAvailability(PitchAvailability pitchAvailability);
 }

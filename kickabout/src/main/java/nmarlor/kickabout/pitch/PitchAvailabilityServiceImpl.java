@@ -26,4 +26,8 @@ public class PitchAvailabilityServiceImpl implements PitchAvailabilityService{
 		return pitchAvailabilityDAO.find(availabilityId);
 	}
 
+	@Override
+	public void createPitchAvailability(PitchAvailability pitchAvailability) {
+		pitchAvailabilityDAO.persist(pitchAvailability);
+	}
 }
