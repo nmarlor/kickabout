@@ -38,10 +38,13 @@ public class PitchAvailabilityController {
 		List<PitchFeature> pitchFeatures = PitchFeatureService.findPitchFeaturesByPitch(pitch);
 		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, date);
 		
+		PitchForm pitchForm = new PitchForm();
+		pitchForm.setPitchId(pitchId);
+		
 		mv.addObject("pitchId", pitchId);
 		mv.addObject("pitch", pitch);
 		mv.addObject("pitchFeatures", pitchFeatures);
-		mv.addObject("pitchForm", new PitchForm());
+		mv.addObject("pitchForm", pitchForm);
 		mv.addObject("date", date);
 		mv.addObject("pitchAvailabilities", pitchAvailabilities);
 		
@@ -60,7 +63,7 @@ public class PitchAvailabilityController {
 		return date;
 	}
 	
-	@RequestMapping("/dateSearch")
+	@RequestMapping(value = "/availability", method = RequestMethod.POST)
 	public ModelAndView pitchAvailability(@Valid @ModelAttribute("pitchForm") PitchForm pitchForm, BindingResult bindingResult) {
 		ModelAndView mv = new ModelAndView("pitchAvailability/availabilityAndFeatures");
 		mv.addObject("pitchForm", pitchForm);
@@ -74,11 +77,13 @@ public class PitchAvailabilityController {
 		Long pitchId = pitchForm.getPitchId();
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
 		
+		List<PitchFeature> pitchFeatures = PitchFeatureService.findPitchFeaturesByPitch(pitch);
 		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, checkDate);
 
 		mv.addObject("pitchForm", pitchForm);
 		mv.addObject("pitch", pitch);
 		mv.addObject("date", date);
+		mv.addObject("pitchFeatures", pitchFeatures);
 		mv.addObject("pitchAvailabilities", pitchAvailabilities);
 		
 		return mv;

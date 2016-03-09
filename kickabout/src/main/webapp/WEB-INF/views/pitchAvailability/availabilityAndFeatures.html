@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	
-	<form method="post" th:action="@{/dateSearch}" th:object="${pitchForm}">
+	<form method="post" th:action="@{/availability}" th:object="${pitchForm}">
 		<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
 				<div class="availability-table">
 				<table class="table">
@@ -56,6 +56,7 @@
 					</tbody>
 				</table>
 				  	<span>
+				  		<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
 				  		<input type="text" class="form-control" placeholder="Select a different date to book..." th:field="*{date}"/>
 				  	</span>
 				  	<span class="btn-group">
