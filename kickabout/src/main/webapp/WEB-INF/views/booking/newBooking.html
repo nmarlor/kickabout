@@ -12,9 +12,9 @@
 		
 		<div class="container">
 			<div class="jumbotron text-center default">
-				<h3>
-				<span class="header-pitches" th:text="|${pitch.pitchLocation.company.name} Pitch ${pitch.pitchNumber} Booking Form|"></span>
-				</h3>
+				<h2>
+				<span class="header-pitches" th:text="|${pitch.pitchLocation.company.name} Pitch ${pitch.pitchNumber}|"></span>
+				</h2>
 			<form method="post" th:action="@{/booking/newBooking}" th:object="${bookingForm}">
 				<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
 				
@@ -35,7 +35,7 @@
 				<div class="col-sm-12">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input type="text" class="form-control" id="date-input" placeholder="Enter Date..." th:field="*{date}"/>
+						<input type="text" class="form-control" id="date-input" th:field="*{date}" readonly="readonly"/>
 					</div>
 				</div>
 				

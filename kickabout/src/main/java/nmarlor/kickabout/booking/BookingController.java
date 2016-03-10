@@ -1,5 +1,9 @@
 package nmarlor.kickabout.booking;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -33,13 +37,19 @@ public class BookingController {
 		PitchAvailability pitchAvailability = new PitchAvailability();
 		pitchAvailability.setPitch(pitch);
 		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
+		LocalDate availabilityDate = LocalDate.parse(date, formatter);
+		Date formattedDate = Date.valueOf(availabilityDate);
+		
 		BookingForm bookingForm = new BookingForm();
 		bookingForm.setCost(pitch.getCost());
 		bookingForm.setPitchId(pitchId);
+		bookingForm.setDate(formattedDate);
 		
 		result.addObject("bookingForm", bookingForm);
 		result.addObject("pitch", pitch);
 		result.addObject("date", date);
+		result.addObject("formattedDate", formattedDate);
 		result.addObject("pitchAvailability", pitchAvailability);
 		
 		return result;
