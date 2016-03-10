@@ -49,7 +49,6 @@ public class BookingController {
 		result.addObject("bookingForm", bookingForm);
 		result.addObject("pitch", pitch);
 		result.addObject("date", date);
-		result.addObject("formattedDate", formattedDate);
 		result.addObject("pitchAvailability", pitchAvailability);
 		
 		return result;

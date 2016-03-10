@@ -1,6 +1,8 @@
 package nmarlor.kickabout.pitch;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -33,13 +35,17 @@ public class PitchAvailabilityController {
 		ModelAndView mv = new ModelAndView("pitchAvailability/availabilityAndFeatures");
 		
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
-		Date date = getTodaysDate();
+		Date formattedDate = getTodaysDate();
 		
 		List<PitchFeature> pitchFeatures = PitchFeatureService.findPitchFeaturesByPitch(pitch);
-		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, date);
+		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, formattedDate);
 		
 		PitchForm pitchForm = new PitchForm();
 		pitchForm.setPitchId(pitchId);
+		
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		String date = df.format(formattedDate);
 		
 		mv.addObject("pitchId", pitchId);
 		mv.addObject("pitch", pitch);
