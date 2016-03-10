@@ -1,7 +1,6 @@
 package nmarlor.kickabout.booking;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Time;
 
 public class BookingForm {
@@ -10,9 +9,9 @@ public class BookingForm {
 	private BigDecimal cost;
 	private Time bookedFrom;
 	private Time bookedTo;
-	private Date date;
 	private String email;
 	private String name;
+	private String date;
 	
 	public Long getPitchId() {
 		return pitchId;
@@ -38,12 +37,6 @@ public class BookingForm {
 	public void setBookedTo(Time bookedTo) {
 		this.bookedTo = bookedTo;
 	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
 	public String getEmail() {
 		return email;
 	}
@@ -56,5 +49,10 @@ public class BookingForm {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 }

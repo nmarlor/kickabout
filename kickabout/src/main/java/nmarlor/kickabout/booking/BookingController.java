@@ -37,14 +37,10 @@ public class BookingController {
 		PitchAvailability pitchAvailability = new PitchAvailability();
 		pitchAvailability.setPitch(pitch);
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
-		LocalDate availabilityDate = LocalDate.parse(date, formatter);
-		Date formattedDate = Date.valueOf(availabilityDate);
-		
 		BookingForm bookingForm = new BookingForm();
 		bookingForm.setCost(pitch.getCost());
 		bookingForm.setPitchId(pitchId);
-		bookingForm.setDate(formattedDate);
+		bookingForm.setDate(date);
 		
 		result.addObject("bookingForm", bookingForm);
 		result.addObject("pitch", pitch);
@@ -60,10 +56,16 @@ public class BookingController {
 		
 		Long pitchId = bookingForm.getPitchId();
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		String date = bookingForm.getDate();
+		
+		// format date to save
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
+		LocalDate dateToFormat = LocalDate.parse(date, formatter);
+		Date formattedate = Date.valueOf(dateToFormat);
 		
 		PitchAvailability pitchAvailability = new PitchAvailability();
 		pitchAvailability.setPitch(pitch);
-		pitchAvailability.setDate(bookingForm.getDate());
+		pitchAvailability.setDate(formattedate);
 		pitchAvailability.setBookedFrom(bookingForm.getBookedFrom());
 		pitchAvailability.setBookedTo(bookingForm.getBookedTo());
 		pitchAvailabilityService.createPitchAvailability(pitchAvailability);
@@ -72,7 +74,7 @@ public class BookingController {
 		booking.setPitchAvailability(pitchAvailability);
 		booking.setBookedFrom(bookingForm.getBookedFrom());
 		booking.setBookedTo(bookingForm.getBookedTo());
-		booking.setDate(bookingForm.getDate());
+		booking.setDate(formattedate);
 		booking.setEmail(bookingForm.getEmail());
 		booking.setName(bookingForm.getName());
 		bookingService.createBooking(booking);
