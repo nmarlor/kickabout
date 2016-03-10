@@ -1,8 +1,6 @@
 package nmarlor.kickabout.booking;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import nmarlor.kickabout.date.DateService;
 import nmarlor.kickabout.pitch.Pitch;
 import nmarlor.kickabout.pitch.PitchAvailability;
 import nmarlor.kickabout.pitch.PitchAvailabilityService;
@@ -28,6 +27,9 @@ public class BookingController {
 	
 	@Autowired
 	private PitchAvailabilityService pitchAvailabilityService;
+	
+	@Autowired
+	private DateService dateService;
 	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.GET)
 	public ModelAndView viewNewBooking(Long pitchId, String date){
@@ -58,14 +60,11 @@ public class BookingController {
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
 		String date = bookingForm.getDate();
 		
-		// format date to save
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
-		LocalDate dateToFormat = LocalDate.parse(date, formatter);
-		Date formattedate = Date.valueOf(dateToFormat);
+		Date formattedDate = dateService.stringToDate(date);
 		
 		PitchAvailability pitchAvailability = new PitchAvailability();
 		pitchAvailability.setPitch(pitch);
-		pitchAvailability.setDate(formattedate);
+		pitchAvailability.setDate(formattedDate);
 		pitchAvailability.setBookedFrom(bookingForm.getBookedFrom());
 		pitchAvailability.setBookedTo(bookingForm.getBookedTo());
 		pitchAvailabilityService.createPitchAvailability(pitchAvailability);
@@ -74,7 +73,7 @@ public class BookingController {
 		booking.setPitchAvailability(pitchAvailability);
 		booking.setBookedFrom(bookingForm.getBookedFrom());
 		booking.setBookedTo(bookingForm.getBookedTo());
-		booking.setDate(formattedate);
+		booking.setDate(formattedDate);
 		booking.setEmail(bookingForm.getEmail());
 		booking.setName(bookingForm.getName());
 		bookingService.createBooking(booking);

@@ -3,9 +3,6 @@ package nmarlor.kickabout.pitch;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import nmarlor.kickabout.date.DateService;
 
 @Controller
 public class PitchAvailabilityController {
@@ -30,12 +29,15 @@ public class PitchAvailabilityController {
 	@Autowired
 	private PitchFeatureService PitchFeatureService;
 	
+	@Autowired
+	private DateService dateService;
+	
 	@RequestMapping(value = "/availability", method = RequestMethod.GET)
 	public ModelAndView pitchAvailability(Long pitchId){
 		ModelAndView mv = new ModelAndView("pitchAvailability/availabilityAndFeatures");
 		
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
-		Date formattedDate = getTodaysDate();
+		Date formattedDate = dateService.getTodaysDate();
 		
 		List<PitchFeature> pitchFeatures = PitchFeatureService.findPitchFeaturesByPitch(pitch);
 		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, formattedDate);
@@ -57,34 +59,19 @@ public class PitchAvailabilityController {
 		return mv;
 	}
 	
-	/**
-	 * Service for getting todays date and converting it to SQL format
-	 * @return Date
-	 */
-	private Date getTodaysDate()
-	{
-		Calendar calendar = Calendar.getInstance();
-		java.util.Date currentDate = calendar.getTime();
-		Date date = new Date(currentDate.getTime());
-		return date;
-	}
-	
 	@RequestMapping(value = "/availability", method = RequestMethod.POST)
 	public ModelAndView pitchAvailability(@Valid @ModelAttribute("pitchForm") PitchForm pitchForm, BindingResult bindingResult) {
 		ModelAndView mv = new ModelAndView("pitchAvailability/availabilityAndFeatures");
 		mv.addObject("pitchForm", pitchForm);
 		
 		String date = pitchForm.getDate();
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
-		LocalDate availabilityDate = LocalDate.parse(date, formatter);
-		Date checkDate = Date.valueOf(availabilityDate);
+		Date availabilityDate = dateService.stringToDate(date);
 		
 		Long pitchId = pitchForm.getPitchId();
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
 		
 		List<PitchFeature> pitchFeatures = PitchFeatureService.findPitchFeaturesByPitch(pitch);
-		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, checkDate);
+		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, availabilityDate);
 
 		mv.addObject("pitchForm", pitchForm);
 		mv.addObject("pitch", pitch);
