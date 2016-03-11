@@ -31,6 +31,9 @@ public class BookingController {
 	@Autowired
 	private DateService dateService;
 	
+	@Autowired
+	private BookingValidator bookingValidator;
+	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.GET)
 	public ModelAndView viewNewBooking(Long pitchId, String date){
 		ModelAndView result = new ModelAndView("booking/newBooking");
@@ -53,13 +56,22 @@ public class BookingController {
 	}
 	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.POST)
-	public ModelAndView makeBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, BindingResult result){
+	public ModelAndView makeBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, BindingResult bindingResult){
 		ModelAndView mv = new ModelAndView("booking/bookingSuccessful");
 		
 		Long pitchId = bookingForm.getPitchId();
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
-		String date = bookingForm.getDate();
 		
+		bookingValidator.validate(bookingForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			ModelAndView thisMv = new ModelAndView("booking/newBooking");
+			thisMv.addObject("pitch", pitch);
+			thisMv.addObject("errors", bindingResult);
+			return thisMv;
+		}
+		
+		String date = bookingForm.getDate();
 		Date formattedDate = dateService.stringToDate(date);
 		
 		PitchAvailability pitchAvailability = new PitchAvailability();
