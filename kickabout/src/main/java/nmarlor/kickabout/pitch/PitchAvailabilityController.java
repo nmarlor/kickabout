@@ -32,6 +32,9 @@ public class PitchAvailabilityController {
 	@Autowired
 	private DateService dateService;
 	
+	@Autowired
+	private PitchValidator pitchValidator;
+	
 	@RequestMapping(value = "/availability", method = RequestMethod.GET)
 	public ModelAndView pitchAvailability(Long pitchId){
 		ModelAndView mv = new ModelAndView("pitchAvailability/availabilityAndFeatures");
@@ -64,13 +67,31 @@ public class PitchAvailabilityController {
 		ModelAndView mv = new ModelAndView("pitchAvailability/availabilityAndFeatures");
 		mv.addObject("pitchForm", pitchForm);
 		
-		String date = pitchForm.getDate();
-		Date availabilityDate = dateService.stringToDate(date);
-		
 		Long pitchId = pitchForm.getPitchId();
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
-		
 		List<PitchFeature> pitchFeatures = PitchFeatureService.findPitchFeaturesByPitch(pitch);
+		
+		pitchValidator.validate(pitchForm, bindingResult);
+		if (bindingResult.hasErrors()) {
+			// if the search fails then log error and reset back to todays booking schedule
+			Date formattedDate = dateService.getTodaysDate();
+			// Date to be displayed on the front end
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+			String date = df.format(formattedDate);
+			
+			List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, formattedDate);
+			
+			mv.addObject("pitchId", pitchId);
+			mv.addObject("pitch", pitch);
+			mv.addObject("pitchFeatures", pitchFeatures);
+			mv.addObject("date", date);
+			mv.addObject("pitchAvailabilities", pitchAvailabilities);
+			mv.addObject("errors", bindingResult);
+			return mv;
+		}
+		
+		String date = pitchForm.getDate();
+		Date availabilityDate = dateService.stringToDate(date);
 		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, availabilityDate);
 
 		mv.addObject("pitchForm", pitchForm);

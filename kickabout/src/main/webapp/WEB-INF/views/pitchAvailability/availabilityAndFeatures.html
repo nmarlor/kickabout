@@ -59,7 +59,7 @@
 				</table>
 				  	<span>
 				  		<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
-				  		<input type="text" class="form-control" placeholder="Select a different date to book..." th:field="*{date}"/>
+				  		<input th:errorclass="input-form-error" type="text" class="form-control" placeholder="Select a different date to book..." th:field="*{date}"/>
 				  	</span>
 				  	<span class="btn-group">
 				  		<input type="submit" class=" btn-block btn btn-info" value="Search"></input>
