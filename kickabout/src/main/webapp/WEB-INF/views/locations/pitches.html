@@ -15,10 +15,9 @@
 	<div class="col-md-12 col-centered clearfix">
 		<div class="col-sm-12" align="center">
 			<h2 class="">
-			<span class="header-pitches" th:text="|${location.company.name} Pitches|"></span>
+			<span class="header-pitches" th:text="|${location.company.name}|"></span>
 			</h2>
-			<span class="header-pitches">Below is a list of pitches available for this location</span>
-			<span class="header-pitches">Select a date and click the check schedule button, to view the pitches current bookings</span>
+			<span class="header-pitches">Below you will see the pitch/ pitches available for this location</span>
 		</div>
 		<form th:action="@{/locations/pitches}" method="get">
 			<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
@@ -30,7 +29,6 @@
 							<th class="col-sm-2 text-center">Cost Per Session</th>
 							<th class="col-sm-2 text-center">Size Of Pitch</th>
 							<th class="col-sm-2 text-center">Hours</th>
-							<th class="col-sm-2 text-center">Date</th>
 							<th class="col-sm-2"></th>
 						</tr>
 					</thead>
@@ -41,11 +39,8 @@
 							<td class="col-sm-2 text-center" th:text="${pitch.pitchSize.prettyName}"></td>
 							<td class="col-sm-2 text-center" th:text="|${pitch.availableFrom} - ${pitch.availableTo}|"></td>
 							<td class="col-sm-2 text-center">
-								<input type="text" placeholder="Select a date..." class="form-control" name="date" th:value="${date}"></input>
-							</td>
-							<td class="col-sm-2 text-center">
 				  				<span class="btn-group">
-				  					<a class="btn pitchInfoBtn" th:href="@{availability(pitchId=${pitch.id}, date=${'25-02-2016'})}"><i class="btn btn-info">Check Schedule</i></a>
+				  					<a class="btn pitchInfoBtn" th:href="@{availability(pitchId=${pitch.id})}"><i class="btn btn-info">Features And Availability</i></a>
 				  				</span>
 							</td>
 						</tr>

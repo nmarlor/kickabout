@@ -11,4 +11,9 @@ public class BookingServiceImpl implements BookingService{
 
 	@Autowired
 	private BookingDAO bookingDAO;
+
+	@Override
+	public void createBooking(Booking booking) {
+		bookingDAO.persist(booking);
+	}
 }

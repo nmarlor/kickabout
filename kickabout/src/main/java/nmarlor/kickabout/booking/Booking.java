@@ -1,7 +1,8 @@
 package nmarlor.kickabout.booking;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,13 +41,16 @@ public class Booking {
 	private Time bookedTo;
 	
 	@Column
-	private Integer cost;
+	private BigDecimal cost;
 
 	@Column(name = "date")
 	private Date date;
 	
 	@Column
 	private String name;
+	
+	@Column
+	private String email;
 
 	public Long getId() {
 		return id;
@@ -92,11 +96,11 @@ public class Booking {
 		this.pitchAvailability = pitchAvailability;
 	}
 
-	public Integer getCost() {
+	public BigDecimal getCost() {
 		return cost;
 	}
 
-	public void setCost(Integer cost) {
+	public void setCost(BigDecimal cost) {
 		this.cost = cost;
 	}
 
@@ -106,6 +110,14 @@ public class Booking {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

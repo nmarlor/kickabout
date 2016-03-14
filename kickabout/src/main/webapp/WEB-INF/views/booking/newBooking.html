@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+		
+		<div class="container">
+		
+			<form method="post" th:action="@{/booking/newBooking}" th:object="${bookingForm}">
+			<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
+		
+			<!-- Below code to be implemented -->
+			<!-- <div class="col-sm-12" th:if="${#fields.hasErrors('*')}">
+	 			<div class="alert alert-danger alert-dismissible" role="alert" >
+	 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	 				<Strong th:text="#{response.error}"></Strong> 
+	 				<hr class="thin-hr"></hr>
+ 					<ul class="no-padding">
+ 					<li th:each="err : ${#fields.errors('*')}" th:text="'- ' + ${err}"></li>
+ 					</ul>
+				</div>
+			</div> -->
+		
+			<div class="jumbotron text-center default">
+				<h2>
+				<span class="header-pitches" th:text="|${pitch.pitchLocation.company.name} Pitch ${pitch.pitchNumber}|"></span>
+				</h2>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-user"></i></span>
+						<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" placeholder="Enter Name..." th:field="*{name}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-envelope-square"></i></span>
+						<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" placeholder="Enter Email..." th:field="*{email}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						<input type="text" class="form-control" id="date-input" th:field="*{date}" readonly="readonly"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+						<input th:errorclass="input-form-error" type="text" class="form-control" id="from-input" placeholder="Time From..." th:field="*{bookedFrom}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+						<input th:errorclass="input-form-error" type="text" class="form-control" id="to-input" placeholder="Time To..." th:field="*{bookedTo}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-gbp"></i></span>
+						<input type="text" class="form-control" id="cost-input" th:field="*{cost}" readonly="readonly"/>
+					</div>
+				</div>
+				
+				<div class="create-btn col-sm-2">
+					<input type="submit" value="Book this pitch!" class="btn btn-block btn-success create-button" onclick="window.location.href=BookingSuccessful.html" />
+				</div>
+		</div>
+		</form>
+		</div>
+</body>
+</html>

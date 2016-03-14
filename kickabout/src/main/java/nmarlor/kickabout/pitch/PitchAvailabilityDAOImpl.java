@@ -1,6 +1,6 @@
 package nmarlor.kickabout.pitch;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;

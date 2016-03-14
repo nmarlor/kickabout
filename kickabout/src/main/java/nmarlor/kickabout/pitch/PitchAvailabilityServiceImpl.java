@@ -1,6 +1,6 @@
 package nmarlor.kickabout.pitch;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -26,4 +26,8 @@ public class PitchAvailabilityServiceImpl implements PitchAvailabilityService{
 		return pitchAvailabilityDAO.find(availabilityId);
 	}
 
+	@Override
+	public void createPitchAvailability(PitchAvailability pitchAvailability) {
+		pitchAvailabilityDAO.persist(pitchAvailability);
+	}
 }
