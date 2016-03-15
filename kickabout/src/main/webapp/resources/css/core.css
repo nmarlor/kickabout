@@ -103,13 +103,9 @@ body {
 	border: 1px solid #E83838 !important;
 }
 
-.datepicker-availabilityList {
+.datepicker-style {
 	height: 0px;
 	width: 0px;
-	top: 15px !important;
-	z-index: -1;
-	left: 18px !important;
-	position: absolute;
 	border: 0px;
 }
 
