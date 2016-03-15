@@ -79,7 +79,14 @@ public class BookingController {
 		pitchAvailability.setDate(formattedDate);
 		pitchAvailability.setBookedFrom(bookingForm.getBookedFrom());
 		pitchAvailability.setBookedTo(bookingForm.getBookedTo());
-		pitchAvailabilityService.createPitchAvailability(pitchAvailability);
+		
+		try {
+			pitchAvailabilityService.createPitchAvailability(pitchAvailability);
+		} catch (Exception e) {
+			ModelAndView thisMv = new ModelAndView("booking/duplicateBooking");
+			thisMv.addObject("pitch", pitch);
+			return thisMv;
+		}
 		
 		Booking booking = new Booking();
 		booking.setPitchAvailability(pitchAvailability);

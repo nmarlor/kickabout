@@ -14,11 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import nmarlor.kickabout.booking.Booking;
 
 @Entity
-@Table(name="pitch_availability")
+@Table(name="pitch_availability",
+		uniqueConstraints={@UniqueConstraint(columnNames={"pitch_id", "date", "booked_from", "booked_to"}, name="pitch_availability_UK")})
 public class PitchAvailability {
 	
 	@Id
