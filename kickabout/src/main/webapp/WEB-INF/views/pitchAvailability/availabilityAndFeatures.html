@@ -71,17 +71,8 @@
 				</table>
 				
 				<span class="btn-group">
-					<a class="btn bookingBtn" th:href="@{booking/newBooking(pitchId=${pitch.id}, date=${date})}"><i class="btn btn-success">Book for this date!</i></a>
+					<a class="btn btn-success bookingBtn" th:href="@{booking/newBooking(pitchId=${pitch.id}, date=${date})}">Book for this date!</a>
 				</span>
-
-<!-- 			<span>
-				  	<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
-				  	<input th:errorclass="input-form-error" type="text" class="form-control" placeholder="Select a different date to book..." th:field="*{date}"/>
-				</span>
-				<span class="btn-group">
-				  	<input type="submit" class=" btn-block btn btn-info" value="Search"></input>
-				</span> 
--->
 				  	
 				</div>
 			</div>

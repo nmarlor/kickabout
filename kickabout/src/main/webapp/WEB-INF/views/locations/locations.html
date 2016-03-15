@@ -36,7 +36,7 @@
 							<td class="col-xs-2" th:text="${location.telephone}"></td>
 							<td class="col-xs-1">
 								<span class="btn-group">
-				  					<a class="btn pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}"><i class="btn btn-info">Pitch Info</i></a>
+				  					<a class="btn btn-info pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}">Pitch Info</a>
 				  				</span>
 							</td>
 						</tr>
@@ -49,16 +49,6 @@
 			</div>
 		</form>
 	</div>
-	
-<!-- 	<script>
-		$(".pitchInfoBtn").click(function(){
-			var pitchId = $(this).attr("id");
-			$.ajax({
-				url:base_url + "locations/pitch",
-			 	data: {id : pitchId},
-			 });
-		});
-	</script> -->
 	<script th:src="@{/resources/js/bootstrap.min.js}"></script>
 </body>
 </html>
