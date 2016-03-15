@@ -42,9 +42,21 @@
 	
 	<form method="post" th:action="@{/availability}" th:object="${pitchForm}">
 		<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
+			
+			<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
+				
 				<div class="availability-table">
 					<p style="color:red" th:text="|Please note this pitch is available ${pitch.availableFrom} - ${pitch.availableTo}|"></p>
 					<p>If the table below is empty there has currently been no bookings for this date</p>
+				
+				<div class="col-sm-12">
+					<div id="availabilityDateCal">
+						<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
+						<input type="text" id="availability-picker-date" class="datepicker datepicker-availabilityList form-control" data-date-format="dd-mm-yyyy" name="date" th:href="@{/availability}"></input>
+						<button class="btn btn-default search-date-btn" type="submit"></button>
+					</div>
+				</div>
+				
 				<table class="table">
 					<thead>
 						<tr>
@@ -57,18 +69,25 @@
 						</tr>
 					</tbody>
 				</table>
-				  	<span>
-				  		<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
-				  		<input th:errorclass="input-form-error" type="text" class="form-control" placeholder="Select a different date to book..." th:field="*{date}"/>
-				  	</span>
-				  	<span class="btn-group">
-				  		<input type="submit" class=" btn-block btn btn-info" value="Search"></input>
-				  	</span>
-				  	<span class="btn-group">
-				  		<a class="btn bookingBtn" th:href="@{booking/newBooking(pitchId=${pitch.id}, date=${date})}"><i class="btn btn-success">Book for this date!</i></a>
-				  	</span>
+				
+				<span class="btn-group">
+					<a class="btn bookingBtn" th:href="@{booking/newBooking(pitchId=${pitch.id}, date=${date})}"><i class="btn btn-success">Book for this date!</i></a>
+				</span>
+
+<!-- 			<span>
+				  	<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
+				  	<input th:errorclass="input-form-error" type="text" class="form-control" placeholder="Select a different date to book..." th:field="*{date}"/>
+				</span>
+				<span class="btn-group">
+				  	<input type="submit" class=" btn-block btn btn-info" value="Search"></input>
+				</span> 
+-->
+				  	
 				</div>
 			</div>
 	</form>
+	<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/js/pitchAvailability.js}"></script>
 </body>
 </html>
