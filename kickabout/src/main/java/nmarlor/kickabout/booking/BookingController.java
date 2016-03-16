@@ -1,6 +1,7 @@
 package nmarlor.kickabout.booking;
 
 import java.sql.Date;
+import java.sql.Time;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,11 +75,14 @@ public class BookingController {
 		String date = bookingForm.getDate();
 		Date formattedDate = dateService.stringToDate(date);
 		
+		Time bookedFrom = bookingForm.getBookedFrom();
+		Time bookedTo = bookingForm.getBookedTo();
+		
 		PitchAvailability pitchAvailability = new PitchAvailability();
 		pitchAvailability.setPitch(pitch);
 		pitchAvailability.setDate(formattedDate);
-		pitchAvailability.setBookedFrom(bookingForm.getBookedFrom());
-		pitchAvailability.setBookedTo(bookingForm.getBookedTo());
+		pitchAvailability.setBookedFrom(bookedFrom);
+		pitchAvailability.setBookedTo(bookedTo);
 		
 		try {
 			pitchAvailabilityService.createPitchAvailability(pitchAvailability);
@@ -90,11 +94,13 @@ public class BookingController {
 		
 		Booking booking = new Booking();
 		booking.setPitchAvailability(pitchAvailability);
-		booking.setBookedFrom(bookingForm.getBookedFrom());
-		booking.setBookedTo(bookingForm.getBookedTo());
+		booking.setBookedFrom(bookedFrom);
+		booking.setBookedTo(bookedTo);
 		booking.setDate(formattedDate);
 		booking.setEmail(bookingForm.getEmail());
 		booking.setName(bookingForm.getName());
+		
+		//TODO When payment is introduced, if user can't pay then catch exception and delete previously create pitchAvailability
 		bookingService.createBooking(booking);
 		
 		mv.addObject("booking", booking);
