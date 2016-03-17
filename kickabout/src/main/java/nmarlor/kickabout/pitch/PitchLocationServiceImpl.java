@@ -24,4 +24,9 @@ public class PitchLocationServiceImpl implements PitchLocationService {
 		return pitchLocationDAO.find(locationId);
 	}
 
+	@Override
+	public List<PitchLocation> findAllLocationsByTownCityOrPostcode(String name) {
+		return pitchLocationDAO.findAllLocationsByTownCityOrPostcode(name);
+	}
+
 }
