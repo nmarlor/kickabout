@@ -19,11 +19,15 @@
 	    	<div class="jumbotron text-center default">
 	    		<h2>Book a pitch today!</h2>
 	    		<br></br>
-	    		<div class="col-sm-4">
-	    			<input type="text" class="form-control" id="name-input" placeholder="Enter city or town to search..." th:field="*{name}"/>
-				</div>
-				<div class="col-sm-2" align="center">
-					<input type="submit" value="Find Pitches" class="btn btn-block btn-success create-button"/>
+	    		<div class="row">
+  					<div class="col-md-4"></div>
+					<div class="col-md-3">	    			
+					  	<input type="text" class="form-control" id="name-input" placeholder="Enter city or town to search..." th:field="*{name}"/>
+					</div>
+					<div class="col-md-2">
+						<input type="submit" value="Find Pitches" class="btn btn-block btn-success create-button"/>
+					</div>
+					<div class="col-md-3"></div>
 				</div>
 			</div>
     	</form>
