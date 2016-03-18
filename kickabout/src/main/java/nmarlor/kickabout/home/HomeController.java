@@ -23,6 +23,9 @@ public class HomeController {
 	@Autowired
 	private PitchLocationService pitchLocationService;
 	
+	@Autowired
+	private LocationSearchValidator locationSearchValidator;
+	
 //	@RequestMapping(value = "/", method = RequestMethod.GET)
 //	public String index(Principal principal) {
 //		return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
@@ -41,15 +44,21 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public ModelAndView index(@Valid @ModelAttribute("locationForm") LocationForm locationForm, BindingResult bindingResult){
 		ModelAndView mv = new ModelAndView("locations/locations");
-		String searchName = locationForm.getName();
 		
+		locationSearchValidator.validate(locationForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			ModelAndView thisMv = new ModelAndView("home/homepage");
+			thisMv.addObject("errors", bindingResult);
+			return thisMv;
+		}
+		
+		String searchName = locationForm.getName();
 		List<PitchLocation> locations = pitchLocationService.findAllLocationsByTownCityOrPostcode(searchName);
 		
 		if (locations.isEmpty()) {
-			//TODO Need to create a new view for a failed search
-//			ModelAndView failedSearch = new ModelAndView("home/failedLocationSearch");
-//			failedSearch.addObject("name", searchName);
-			ModelAndView failedSearch = new ModelAndView("home/homepage");
+			ModelAndView failedSearch = new ModelAndView("home/failedLocationSearch");
+			failedSearch.addObject("name", searchName);
 			return failedSearch;
 		}
 		

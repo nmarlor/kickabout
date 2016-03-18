@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" class="no-js">
+<head>
+    <title>Kickabout</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link href="assets/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head> 
+    <body>
+    <div th:replace="fragments/newHeader">Header</div>
+    <div class="container">
+    	<form method="post" th:action="@{/}" th:object="${locationForm}">
+	    	<div class="jumbotron text-center default">
+	    		<h2>Book a pitch today!</h2>
+	    		<span style="color:red" th:text="|Sorry there are no locations by the name ${name}, search for another location, or select view all pitches...|"></span>
+	    		<br></br>
+	    		<br></br>
+	    		<div class="row">
+  					<div class="col-md-4"></div>
+					<div class="col-md-3">	    			
+					  	<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" placeholder="Enter city or town to search..." th:field="*{name}"/>
+					</div>
+					<div class="col-md-2">
+						<input type="submit" value="Find Pitches" class="btn btn-block btn-success create-button"/>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+				<br></br>
+				<div class="row">
+  					<div class="col-md-4"></div>
+  					<div class="col-md-3"></div>
+					<div class="col-md-2">
+				  		<a class="btn btn-block btn-info pitchInfoBtn" th:href="@{/locations}">View All Pitches</a>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+			</div>
+    	</form>
+    </div>
+</body>
+</html>
