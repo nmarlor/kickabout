@@ -43,7 +43,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public ModelAndView index(@Valid @ModelAttribute("locationForm") LocationForm locationForm, BindingResult bindingResult){
-		ModelAndView mv = new ModelAndView("locations/locations");
+		ModelAndView mv = new ModelAndView("locations/locationsSearch");
 		
 		locationSearchValidator.validate(locationForm, bindingResult);
 		if (bindingResult.hasErrors()) 
