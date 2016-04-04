@@ -1,6 +1,8 @@
 package nmarlor.kickabout.booking;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,16 +59,15 @@ public class BookingController {
 	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.POST)
 	public ModelAndView makeBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, BindingResult bindingResult){
-		ModelAndView mv = new ModelAndView("booking/bookingSuccessful");
-		
 		Long pitchId = bookingForm.getPitchId();
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		
+		ModelAndView thisMv = new ModelAndView("booking/newBooking");
+		thisMv.addObject("pitch", pitch);
 		
 		bookingValidator.validate(bookingForm, bindingResult);
 		if (bindingResult.hasErrors()) 
 		{
-			ModelAndView thisMv = new ModelAndView("booking/newBooking");
-			thisMv.addObject("pitch", pitch);
 			thisMv.addObject("errors", bindingResult);
 			return thisMv;
 		}
@@ -74,25 +75,63 @@ public class BookingController {
 		String date = bookingForm.getDate();
 		Date formattedDate = dateService.stringToDate(date);
 		
+		Time bookedFrom = bookingForm.getBookedFrom();
+		Time bookedTo = bookingForm.getBookedTo();
+		
 		PitchAvailability pitchAvailability = new PitchAvailability();
 		pitchAvailability.setPitch(pitch);
 		pitchAvailability.setDate(formattedDate);
-		pitchAvailability.setBookedFrom(bookingForm.getBookedFrom());
-		pitchAvailability.setBookedTo(bookingForm.getBookedTo());
-		pitchAvailabilityService.createPitchAvailability(pitchAvailability);
+		pitchAvailability.setBookedFrom(bookedFrom);
+		pitchAvailability.setBookedTo(bookedTo);
+		
+		List<PitchAvailability> bookedDates = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, formattedDate);
+		for (PitchAvailability bookedDate : bookedDates) 
+		{
+			if (bookedFrom.before(bookedDate.getPitch().getAvailableFrom()) ) {
+				bindingResult.rejectValue("bookedFrom", "bookedBeforeAvailableFrom.message");
+				thisMv.addObject("errors", bindingResult);
+				return thisMv;
+			}
+			if (bookedFrom.after(bookedDate.getPitch().getAvailableTo())) {
+				bindingResult.rejectValue("bookedFrom", "bookedAfterAvailableTo.message");
+				thisMv.addObject("errors", bindingResult);
+				return thisMv;
+			}
+			if (bookedTo.before(bookedDate.getPitch().getAvailableFrom())) {
+				bindingResult.rejectValue("bookedTo", "bookedBeforeAvailableFrom.message");
+				thisMv.addObject("errors", bindingResult);
+				return thisMv;
+			}
+			if (bookedTo.after(bookedDate.getPitch().getAvailableTo())) {
+				bindingResult.rejectValue("bookedTo", "bookedAfterAvailableTo.message");
+				thisMv.addObject("errors", bindingResult);
+				return thisMv;
+			}
+		}
+		
+		try {
+			pitchAvailabilityService.createPitchAvailability(pitchAvailability);
+		} catch (Exception e) {
+			ModelAndView duplicateMv = new ModelAndView("booking/duplicateBooking");
+			duplicateMv.addObject("pitch", pitch);
+			return duplicateMv;
+		}
 		
 		Booking booking = new Booking();
 		booking.setPitchAvailability(pitchAvailability);
-		booking.setBookedFrom(bookingForm.getBookedFrom());
-		booking.setBookedTo(bookingForm.getBookedTo());
+		booking.setBookedFrom(bookedFrom);
+		booking.setBookedTo(bookedTo);
 		booking.setDate(formattedDate);
 		booking.setEmail(bookingForm.getEmail());
 		booking.setName(bookingForm.getName());
+		
+		//TODO When payment is introduced, if user can't pay then catch exception and delete previously create pitchAvailability
 		bookingService.createBooking(booking);
 		
-		mv.addObject("booking", booking);
-		mv.addObject("pitchAvailability", pitchAvailability);
+		ModelAndView successMv = new ModelAndView("booking/bookingSuccessful");
+		successMv.addObject("booking", booking);
+		successMv.addObject("pitchAvailability", pitchAvailability);
 		
-		return mv;
+		return successMv;
 	}
 }

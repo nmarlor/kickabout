@@ -28,6 +28,16 @@ public class LocationController {
 		return mv;
 	}
 	
+	@RequestMapping(value = "/locationsSearch", method = RequestMethod.GET)
+	public ModelAndView LocationsSearch() {
+		ModelAndView mv = new ModelAndView("locations/locationsSearch");
+		
+		List<PitchLocation> locations = pitchLocationService.findAll();
+		mv.addObject("locations", locations);
+		
+		return mv;
+	}
+	
 	@RequestMapping(value = "pitches", method=RequestMethod.GET)
 	public ModelAndView pitches(Long locationId) {
 		ModelAndView mv = new ModelAndView("/locations/pitches");

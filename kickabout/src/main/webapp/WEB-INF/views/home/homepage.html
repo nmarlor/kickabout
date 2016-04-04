@@ -14,11 +14,33 @@
 </head> 
     <body>
     <div th:replace="fragments/newHeader">Header</div>
-    
-    <div class="container-fluid" align="center">
-    	<h1>Welcome to KickAbout.com</h1>
-    	<span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ornare dolor vel faucibus bibendum. Nulla ultricies vel nisi non efficitur. 
-    	Morbi ut scelerisque orci. Ut mauris dui, tempor a mauris id, lacinia interdum est. Ut ut maximus metus. Cras scelerisque auctor lorem, vitae iaculis risus.</span>
+    <div class="container">
+    	<form method="post" th:action="@{/}" th:object="${locationForm}">
+	    	<div class="jumbotron text-center default">
+	    		<h2>Book a pitch today!</h2>
+	    		<br></br>
+	    		<div class="row">
+  					<div class="col-md-4"></div>
+					<div class="col-md-3">	    			
+					  	<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" placeholder="Enter city or town to search..." th:field="*{name}"/>
+					</div>
+					<div class="col-md-2">
+						<input type="submit" value="Search" class="btn btn-block btn-success create-button"/>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+				<br></br>
+				<div class="row">
+  					<div class="col-md-4"></div>
+  					<div class="col-md-3"></div>
+					<div class="col-md-2">
+				  		<a class="btn btn-block btn-info pitchInfoBtn" th:href="@{/locations}">View All Pitches</a>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+			</div>
+    	</form>
     </div>
+    
 </body>
 </html>

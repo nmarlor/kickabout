@@ -10,12 +10,14 @@
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="col-md-12 col-centered clearfix">
 	<div class="col-sm-6 pitch-nav">
-	<h2>Locations</h2>
-	<p>Below you can see all of the pitches available to book on KickAbout.com</p>
+	<form method="post" th:action="@{/}" th:object="${locationForm}">
+	<h2>Locations Search</h2>
+	<span th:text="|Below you can see the pitches available to book in ${searchName}|"></span>
+	</form>
 	</div>
 	</div>
 	<div class="col-sm-12">
-		<form th:action="@{/locations}" method="get">
+		<form th:action="@{/locationsSearch}" method="get">
 			<div class="col-sm-6 no-padding col-centered">
 				<div class="scrollit">
 				<table class="table table-striped">

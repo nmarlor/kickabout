@@ -15,23 +15,12 @@
 			<form method="post" th:action="@{/booking/newBooking}" th:object="${bookingForm}">
 			<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
 		
-			<!-- Below code to be implemented -->
-			<!-- <div class="col-sm-12" th:if="${#fields.hasErrors('*')}">
-	 			<div class="alert alert-danger alert-dismissible" role="alert" >
-	 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	 				<Strong th:text="#{response.error}"></Strong> 
-	 				<hr class="thin-hr"></hr>
- 					<ul class="no-padding">
- 					<li th:each="err : ${#fields.errors('*')}" th:text="'- ' + ${err}"></li>
- 					</ul>
-				</div>
-			</div> -->
-		
 			<div class="jumbotron text-center default">
 				<h2>
 				<span class="header-pitches" th:text="|${pitch.pitchLocation.company.name} Pitch ${pitch.pitchNumber}|"></span>
 				</h2>
-				<br></br>
+				<p style="color:red" th:text="|Sorry, there has already been a booking for this date and time!|"></p>
+				
 				<div class="col-sm-12">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-user"></i></span>
