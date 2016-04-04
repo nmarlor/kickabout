@@ -7,8 +7,17 @@
 </head>
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
-	<div class="container">
-	<h2>THIS IS A CLIENT ACCOUNT</h2>
-	</div>
+	<form th:action="@{/manageAccount}" method="get">
+		<div class="jumbotron default">
+			<h2 class="text-center">My Account</h2>
+			<div class="col-sm-3"></div>
+			<div class="panel col-sm-6">
+	  			<div class="panel-body">
+	  			<span>Your details:</span>
+	  			</div>
+			</div>
+			<div class="col-sm-3"></div>
+		</div>
+	</form>
 </body>
 </html>
