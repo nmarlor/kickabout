@@ -56,7 +56,6 @@ public class ManageAccountController {
 	public ModelAndView updateClientAccount(@ModelAttribute("accountForm") UpdateAccountInfoForm accountForm, BindingResult bindingResult)
 	{	
 		ModelAndView mv = new ModelAndView("manage/manageClientAccount");
-		mv.addObject("accountForm", accountForm);
 		
 		accountInfoValidator.validate(accountForm, bindingResult);
 		if (bindingResult.hasErrors()) 
@@ -72,6 +71,9 @@ public class ManageAccountController {
 		account.setName(accountForm.getName());
 		accountService.updateAccount(account);
 		
-		return mv;
+		ModelAndView successMv = new ModelAndView("manage/successfulAccountUpdate");
+		successMv.addObject("accountForm", accountForm);
+		
+		return successMv;
 	}
 }
