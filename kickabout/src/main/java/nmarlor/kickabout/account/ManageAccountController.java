@@ -2,9 +2,6 @@ package nmarlor.kickabout.account;
 
 import java.security.Principal;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,8 +19,8 @@ public class ManageAccountController {
 	@Autowired
 	private AccountService accountService;
 	
-	@PersistenceContext
-	private EntityManager entityManager;
+	@Autowired
+	private UpdateAccountInfoValidator accountInfoValidator;
 
 	@RequestMapping(value = "/manageAccount", method = RequestMethod.GET)
 	public ModelAndView manageAccount(Principal principal)
@@ -60,6 +57,13 @@ public class ManageAccountController {
 	{	
 		ModelAndView mv = new ModelAndView("manage/manageClientAccount");
 		mv.addObject("accountForm", accountForm);
+		
+		accountInfoValidator.validate(accountForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			mv.addObject("errors", bindingResult);
+			return mv;
+		}
 		
 		Long accountId = accountForm.getAccountId();
 		Account account = accountService.retrieveAccount(accountId);
