@@ -1,5 +1,6 @@
 package nmarlor.kickabout.booking;
 
+import java.security.Principal;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import nmarlor.kickabout.account.Account;
+import nmarlor.kickabout.account.AccountRepository;
+import nmarlor.kickabout.account.AccountService;
 import nmarlor.kickabout.date.DateService;
 import nmarlor.kickabout.pitch.Pitch;
 import nmarlor.kickabout.pitch.PitchAvailability;
@@ -36,6 +40,12 @@ public class BookingController {
 	@Autowired
 	private BookingValidator bookingValidator;
 	
+	@Autowired
+	private AccountService accountService;
+	
+	@Autowired
+	private AccountRepository accountRepository;
+	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.GET)
 	public ModelAndView viewNewBooking(Long pitchId, String date){
 		ModelAndView result = new ModelAndView("booking/newBooking");
@@ -58,7 +68,7 @@ public class BookingController {
 	}
 	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.POST)
-	public ModelAndView makeBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, BindingResult bindingResult){
+	public ModelAndView makeBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, Principal principal, BindingResult bindingResult){
 		Long pitchId = bookingForm.getPitchId();
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
 		
@@ -117,10 +127,15 @@ public class BookingController {
 			return duplicateMv;
 		}
 		
+		String name = principal.getName();
+		Account account = accountRepository.findByEmail(name);
+		
 		Booking booking = new Booking();
+		booking.setAccount(account);
 		booking.setPitchAvailability(pitchAvailability);
 		booking.setBookedFrom(bookedFrom);
 		booking.setBookedTo(bookedTo);
+		booking.setCost(bookingForm.getCost());
 		booking.setDate(formattedDate);
 		booking.setEmail(bookingForm.getEmail());
 		booking.setName(bookingForm.getName());
@@ -133,5 +148,16 @@ public class BookingController {
 		successMv.addObject("pitchAvailability", pitchAvailability);
 		
 		return successMv;
+	}
+	
+	@RequestMapping(value = "myBookings", method = RequestMethod.GET)
+	public ModelAndView viewMyBookings(Long accountId){
+		ModelAndView mv = new ModelAndView("booking/myBookings");
+		
+		Account account = accountService.retrieveAccount(accountId);
+		List<Booking> bookings = bookingService.findBookingsForAccount(account);
+		
+		mv.addObject("bookings", bookings);
+		return mv;
 	}
 }

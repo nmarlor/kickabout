@@ -42,11 +42,13 @@ public class ManageAccountController {
 			accountForm.setName(accountName);
 			
 			manageClientAccount.addObject("accountForm", accountForm);
+			manageClientAccount.addObject("accountId", accountId);
 			return manageClientAccount;
 		}
 		if (role.equals("ROLE_ADMIN")) {
 			ModelAndView manageAdminAccount = new ModelAndView("manage/manageAdminAccount");
 			manageAdminAccount.addObject("account", account);
+			manageAdminAccount.addObject("accountId", accountId);
 			return manageAdminAccount;
 		}
 		return new ModelAndView("home/homepage");
@@ -73,6 +75,7 @@ public class ManageAccountController {
 		
 		ModelAndView successMv = new ModelAndView("manage/successfulAccountUpdate");
 		successMv.addObject("accountForm", accountForm);
+		successMv.addObject("accountId", accountId);
 		
 		return successMv;
 	}

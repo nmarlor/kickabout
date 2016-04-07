@@ -112,3 +112,12 @@ body {
 .search-date-btn {
 	display: none;
 }
+
+.bookings-table {
+	display: table;
+	margin-top: 20px;
+	width: 80%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	background-color: transparent;
+}
