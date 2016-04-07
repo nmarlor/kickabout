@@ -1,6 +1,8 @@
 package nmarlor.kickabout.account;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import nmarlor.kickabout.company.Company;
+import nmarlor.kickabout.company.CompanyService;
+import nmarlor.kickabout.pitch.PitchLocation;
+import nmarlor.kickabout.pitch.PitchLocationService;
 
 @Controller
 public class ManageAccountController {
@@ -21,6 +28,12 @@ public class ManageAccountController {
 	
 	@Autowired
 	private UpdateAccountInfoValidator accountInfoValidator;
+	
+	@Autowired
+	private CompanyService companyService;
+	
+	@Autowired
+	private PitchLocationService pitchLocationService;
 
 	@RequestMapping(value = "/manageAccount", method = RequestMethod.GET)
 	public ModelAndView manageAccount(Principal principal)
@@ -78,5 +91,25 @@ public class ManageAccountController {
 		successMv.addObject("accountId", accountId);
 		
 		return successMv;
+	}
+	
+	@RequestMapping(value = "companiesPitches", method = RequestMethod.GET)
+	public ModelAndView viewPitchBookings(Long accountId){
+		ModelAndView mv = new ModelAndView("locations/adminsPitches");
+		
+		Account account = accountService.retrieveAccount(accountId);
+		List<Company> accountsCompanies = companyService.getAccountsCompanies(account);
+		List<PitchLocation> locationsForCompany = new ArrayList<>();
+		
+		for (Company company : accountsCompanies) {
+			List<PitchLocation> locationsForCompanyFound = pitchLocationService.findPitchLocationsByCompany(company);
+			for (PitchLocation pitchLocation : locationsForCompanyFound) {
+				locationsForCompany.add(pitchLocation);
+			}
+		}
+		
+		mv.addObject("locationsForCompany", locationsForCompany);
+		mv.addObject("accountsCompanies", accountsCompanies);
+		return mv;
 	}
 }

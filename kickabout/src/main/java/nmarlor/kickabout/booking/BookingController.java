@@ -48,9 +48,6 @@ public class BookingController {
 	@Autowired
 	private AccountRepository accountRepository;
 	
-	@Autowired
-	private CompanyService companyService;
-	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.GET)
 	public ModelAndView viewNewBooking(Long pitchId, String date){
 		ModelAndView result = new ModelAndView("booking/newBooking");
@@ -171,9 +168,8 @@ public class BookingController {
 		ModelAndView mv = new ModelAndView("booking/manageBookings");
 		
 		Account account = accountService.retrieveAccount(accountId);
-		List<Company> accountsCompanies = companyService.getAccountsCompanies(account);
 		
-		mv.addObject("accountsCompanies", accountsCompanies);
+		mv.addObject("account", account);
 		return mv;
 	}
 }
