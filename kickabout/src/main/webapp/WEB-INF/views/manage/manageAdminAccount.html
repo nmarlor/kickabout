@@ -7,8 +7,30 @@
 </head>
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
-	<div class="container">
-	<h2>THIS IS AN ADMIN ACCOUNT</h2>
-	</div>
+	<div class="jumbotron default">
+			<h2 class="text-center">Admin Account</h2>
+			<div class="col-sm-4"></div>
+			<div class="panel col-sm-4">
+	  			<div class="panel-body">
+	  			<div class="text-center">
+	  				<a>Manage bookings</a>
+	  			</div>
+	  			<div class="text-center">
+	  				<a>Manage pitches</a>
+	  			</div>
+	  				<h4>Your details:</h4>
+	  			<br></br>
+	  				<span>Email Address</span>
+	  				<input type="text" class="form-control" id="email-input"/>
+	  			<br></br>
+	  				<span>Name</span>
+	  				<input type="text" class="form-control" id="name-input"/>
+	  			</div>
+	  			<div class="create-btn col-sm-4" style="float:right; margin-bottom: 20px;">
+					<input type="submit" value="Save Changes" class="btn btn-block btn-success create-button" onclick="" />
+				</div>
+			</div>
+			<div class="col-sm-4"></div>
+		</div>
 </body>
 </html>
