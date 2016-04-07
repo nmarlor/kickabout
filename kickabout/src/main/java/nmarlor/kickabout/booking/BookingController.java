@@ -16,8 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.account.AccountRepository;
 import nmarlor.kickabout.account.AccountService;
-import nmarlor.kickabout.company.Company;
-import nmarlor.kickabout.company.CompanyService;
 import nmarlor.kickabout.date.DateService;
 import nmarlor.kickabout.pitch.Pitch;
 import nmarlor.kickabout.pitch.PitchAvailability;
