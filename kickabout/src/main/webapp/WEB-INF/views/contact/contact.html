@@ -13,34 +13,34 @@
 		<div class="jumbotron default">
 			<h2 class="text-center">Contact us</h2>
 			<br></br>
-			<div class="col-sm-12">
+			<div class="col-sm-offset-3 col-sm-6">
 				<div class="input-group form-group">
 					<span class="input-group-addon"><i class="fa fa-user"></i></span>
 					<input type="text" class="form-control" id="name-input" placeholder="Name..." th:field="*{name}"/>
 				</div>
 			</div>
 			
-			<div class="col-sm-12">
+			<div class="col-sm-offset-3 col-sm-6">
 				<div class="input-group form-group">
 					<span class="input-group-addon"><i class="fa fa-envelope-square"></i></span>
 					<input type="text" class="form-control" id="email-input" placeholder="Email Address..." th:field="*{email}"/>
 				</div>
 			</div>
 			
-			<div class="col-sm-12">
+			<div class="col-sm-offset-3 col-sm-6">
 				<div class="input-group form-group">
 					<span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
 					<input type="text" class="form-control" id="subject-input" placeholder="Email Subject..." th:field="*{subject}"/>
 				</div>
 			</div>
 			
-			<div class="col-sm-12">
+			<div class="col-sm-offset-3 col-sm-6">
 				<div class="form-group">
   					<textarea class="form-control" rows="5" id="message-input" placeholder="Enter your message here..." th:field="*{message}"></textarea>
 				</div>
 			</div>
 			
-			<div class="create-btn col-sm-2" style="float:right;">
+			<div class="create-btn col-sm-offset-7 col-sm-2">
 				<input type="submit" value="Send" class="btn btn-block btn-success create-button" onclick="window.location.href=ContactSuccessful.html"/>
 			</div>
 				
