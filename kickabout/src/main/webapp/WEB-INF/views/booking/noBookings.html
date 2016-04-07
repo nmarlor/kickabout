@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="jumbotron default">
+		<div class="col-sm-12" align="center">
+			<h2 class="text-center">My Bookings</h2>
+				<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
+					<div class="bookings-table">
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="col-sm-2 text-center">Date</th>
+								<th class="col-sm-4 text-center">Time</th>
+								<th class="col-sm-2 text-center">Cost</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="col-sm-2 text-center"></td>
+								<td class="col-sm-4 text-center" style="color:red;">You have not made any bookings yet</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+		</div>
+	</div>
+</body>
+</html>

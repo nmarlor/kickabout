@@ -157,6 +157,12 @@ public class BookingController {
 		Account account = accountService.retrieveAccount(accountId);
 		List<Booking> bookings = bookingService.findBookingsForAccount(account);
 		
+		if (bookings.isEmpty()) {
+			ModelAndView emptyBookingMv = new ModelAndView("booking/noBookings");
+			emptyBookingMv.addObject("bookings", bookings);
+			return emptyBookingMv;
+		}
+		
 		mv.addObject("bookings", bookings);
 		return mv;
 	}
