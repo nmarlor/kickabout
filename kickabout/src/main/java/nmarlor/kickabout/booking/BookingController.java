@@ -160,4 +160,15 @@ public class BookingController {
 		mv.addObject("bookings", bookings);
 		return mv;
 	}
+	
+	@RequestMapping(value = "manageBookings", method = RequestMethod.GET)
+	public ModelAndView viewPitchBookings(Long accountId){
+		ModelAndView mv = new ModelAndView("booking/manageBookings");
+		
+		Account account = accountService.retrieveAccount(accountId);
+//		List<Booking> bookings = bookingService.findBookingsForAccount(account);
+		
+//		mv.addObject("bookings", bookings);
+		return mv;
+	}
 }
