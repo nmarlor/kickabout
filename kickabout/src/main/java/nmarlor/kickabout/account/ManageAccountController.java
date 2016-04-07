@@ -30,6 +30,9 @@ public class ManageAccountController {
 	private UpdateAccountInfoValidator accountInfoValidator;
 	
 	@Autowired
+	private UpdateAdminAccountInfoValidator adminAccountInfoValidator;
+	
+	@Autowired
 	private CompanyService companyService;
 	
 	@Autowired
@@ -61,6 +64,13 @@ public class ManageAccountController {
 		if (role.equals("ROLE_ADMIN")) {
 			ModelAndView manageAdminAccount = new ModelAndView("manage/manageAdminAccount");
 			manageAdminAccount.addObject("account", account);
+			
+			UpdateAdminAccountForm accountForm = new UpdateAdminAccountForm();
+			accountForm.setAccountId(accountId);
+			accountForm.setEmail(email);
+			accountForm.setName(accountName);
+			
+			manageAdminAccount.addObject("accountForm", accountForm);
 			manageAdminAccount.addObject("accountId", accountId);
 			return manageAdminAccount;
 		}
@@ -73,6 +83,32 @@ public class ManageAccountController {
 		ModelAndView mv = new ModelAndView("manage/manageClientAccount");
 		
 		accountInfoValidator.validate(accountForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			mv.addObject("errors", bindingResult);
+			return mv;
+		}
+		
+		Long accountId = accountForm.getAccountId();
+		Account account = accountService.retrieveAccount(accountId);
+		
+		account.setEmail(accountForm.getEmail());
+		account.setName(accountForm.getName());
+		accountService.updateAccount(account);
+		
+		ModelAndView successMv = new ModelAndView("manage/successfulAccountUpdate");
+		successMv.addObject("accountForm", accountForm);
+		successMv.addObject("accountId", accountId);
+		
+		return successMv;
+	}
+	
+	@RequestMapping(value = "/manageAdminAccount", method = RequestMethod.POST)
+	public ModelAndView updateAdminAccount(@ModelAttribute("accountForm") UpdateAdminAccountForm accountForm, BindingResult bindingResult)
+	{	
+		ModelAndView mv = new ModelAndView("manage/manageClientAccount");
+		
+		adminAccountInfoValidator.validate(accountForm, bindingResult);
 		if (bindingResult.hasErrors()) 
 		{
 			mv.addObject("errors", bindingResult);
