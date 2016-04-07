@@ -51,4 +51,18 @@ public class LocationController {
 		mv.addObject("pitches", pitches);
 		return mv;
 	}
+	
+	@RequestMapping(value = "pitchesForAdminLocation", method=RequestMethod.GET)
+	public ModelAndView adminPitches(Long locationId) {
+		ModelAndView mv = new ModelAndView("/locations/pitchesForAdminLocation");
+		
+		PitchLocation location = pitchLocationService.retrieve(locationId);
+		
+		List<Pitch> pitches = new ArrayList<>();
+		pitches = pitchesService.findPitchesByLocation(location);
+		
+		mv.addObject("location", location);
+		mv.addObject("pitches", pitches);
+		return mv;
+	}
 }

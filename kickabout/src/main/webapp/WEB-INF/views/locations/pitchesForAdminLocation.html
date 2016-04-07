@@ -10,25 +10,31 @@
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
 		<div class="col-sm-12" align="center">
-			 <h2 class="text-center">Pitch Locations</h2>
-			<form th:action="@{/companiesPitches}" method="get">
-				<div class="pitches-table-holder col-sm-offset-2 col-sm-8" align="center">
+			 <h2 class="text-center">Pitches</h2>
+			<form th:action="@{/pitchesForAdminLocation}" method="get">
+				<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
 					<div class="bookings-table">
 					<table class="table">
 						<thead>
 							<tr>
 								<th class="col-sm-2 text-center">Company</th>
-								<th class="col-sm-5 text-center">Location</th>
+								<th class="col-sm-2 text-center">Pitch Number</th>
+								<th class="col-sm-1"></th>
 								<th class="col-sm-1"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="location : ${locationsForCompany}">
-								<td class="col-sm-2 text-center" th:text="${location.company.name}"></td>
-								<td class="col-sm-5 text-center" th:text="|${location.addressLine1}, ${location.addressLine2}, ${location.city}, ${location.county}, ${location.postCode}|"></td>
+							<tr th:each="pitch : ${pitches}">
+								<td class="col-sm-2 text-center" th:text="${pitch.pitchLocation.company.name}"></td>
+								<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"></td>
 								<td class="col-sm-1">
 								<span class="btn-group">
-				  					<a class="btn btn-info pitchInfoBtn" th:href="@{pitchesForAdminLocation(locationId=${location.id})}">View Pitch/ Pitches</a>
+				  					<a class="btn btn-info managePitchBtn">Manage Pitch</a>
+				  				</span>
+				  				</td>
+				  				<td class="col-sm-1">
+				  				<span class="btn-group">
+				  					<a class="btn btn-success viewBookingsBtn">View Bookings</a>
 				  				</span>
 				  				</td>
 							</tr>
