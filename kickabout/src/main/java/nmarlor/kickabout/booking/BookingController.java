@@ -16,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.account.AccountRepository;
 import nmarlor.kickabout.account.AccountService;
+import nmarlor.kickabout.company.Company;
+import nmarlor.kickabout.company.CompanyService;
 import nmarlor.kickabout.date.DateService;
 import nmarlor.kickabout.pitch.Pitch;
 import nmarlor.kickabout.pitch.PitchAvailability;
@@ -45,6 +47,9 @@ public class BookingController {
 	
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private CompanyService companyService;
 	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.GET)
 	public ModelAndView viewNewBooking(Long pitchId, String date){
@@ -166,9 +171,9 @@ public class BookingController {
 		ModelAndView mv = new ModelAndView("booking/manageBookings");
 		
 		Account account = accountService.retrieveAccount(accountId);
-//		List<Booking> bookings = bookingService.findBookingsForAccount(account);
+		List<Company> accountsCompanies = companyService.getAccountsCompanies(account);
 		
-//		mv.addObject("bookings", bookings);
+		mv.addObject("accountsCompanies", accountsCompanies);
 		return mv;
 	}
 }
