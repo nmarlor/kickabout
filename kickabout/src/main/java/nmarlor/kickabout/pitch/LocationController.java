@@ -62,6 +62,7 @@ public class LocationController {
 		pitches = pitchesService.findPitchesByLocation(location);
 		
 		mv.addObject("location", location);
+		mv.addObject("locationId", locationId);
 		mv.addObject("pitches", pitches);
 		return mv;
 	}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+		<div class="container">
+			<div class="jumbotron default">
+				<h2 class="text-center">New pitch</h2>
+				<br></br>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Pitch Number</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input type="text" class="form-control" id="pitch-number-input"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Pitch Size</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input type="text" class="form-control" id="pitch-size-input"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Available from</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input type="text" class="form-control" id="pitch-number-input"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Available to</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input type="text" class="form-control" id="pitch-number-input"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Cost per hour</span>
+				</div>
+				<div class="col-sm-2">
+					<div class="input-group form-group">
+						<span class="input-group-addon"><i class="fa fa-gbp"></i></span>
+	  					<input type="text" class="form-control" id="pitch-number-input"/>
+						<br></br>
+					</div>
+				</div>
+				<div class="create-btn col-sm-offset-4 col-sm-2"></div>
+				<div class="col-sm-2">
+					<input type="submit" value="Save pitch" class="btn btn-block btn-success create-button" onclick="window.location.href=ContactSuccessful.html"/>
+				</div>
+			</div>
+		</div>
+</body>
+</html>

@@ -13,12 +13,11 @@
 	<div class="jumbotron default">
 			<h2 class="text-center">Admin Account</h2>
 			<div class="col-sm-4"></div>
-			<div class="panel col-sm-4">
+			<div class="col-sm-4">
 	  			<div class="panel-body">
 	  			<div class="text-center">
 	  				<a href="managePitches" th:href="@{companiesPitches(accountId=${accountId})}">Manage pitches and bookings</a>
 	  			</div>
-	  				<h4>Your details:</h4>
 	  				<br></br>
 	  				<span>Email Address</span>
 	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>

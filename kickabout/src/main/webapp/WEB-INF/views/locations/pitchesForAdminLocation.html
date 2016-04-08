@@ -14,6 +14,9 @@
 			<form th:action="@{/pitchesForAdminLocation}" method="get">
 				<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
 					<div class="bookings-table">
+						<div class="text-center">
+		  					<a href="addPitch" th:href="@{addPitch(locationId=${locationId})}">Add new pitch</a>
+		  				</div>
 					<table class="table">
 						<thead>
 							<tr>
