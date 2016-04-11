@@ -9,6 +9,8 @@
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
 		<div class="container">
+			<form method="post" th:action="@{/addPitch}" th:object="${pitchForm}">
+			<input type="hidden" th:value="locationId" th:field="*{locationId}"/>
 			<div class="jumbotron default">
 				<h2 class="text-center">New pitch</h2>
 				<br></br>
@@ -16,7 +18,7 @@
 					<span>Pitch Number</span>
 				</div>
 				<div class="col-sm-2">
-	  				<input type="text" class="form-control" id="pitch-number-input"/>
+	  				<input type="text" class="form-control" id="pitch-number-input" th:field="*{pitchNumber}"/>
 					<br></br>
 				</div>
 				<div class="col-sm-offset-4 col-sm-2 text-center">
@@ -30,14 +32,14 @@
 					<span>Available from</span>
 				</div>
 				<div class="col-sm-2">
-	  				<input type="text" class="form-control" id="pitch-number-input"/>
+	  				<input type="text" class="form-control" id="available-from-input" th:field="*{availableFrom}"/>
 					<br></br>
 				</div>
 				<div class="col-sm-offset-4 col-sm-2 text-center">
 					<span>Available to</span>
 				</div>
 				<div class="col-sm-2">
-	  				<input type="text" class="form-control" id="pitch-number-input"/>
+	  				<input type="text" class="form-control" id="available-to-input" th:field="*{availableTo}"/>
 					<br></br>
 				</div>
 				<div class="col-sm-offset-4 col-sm-2 text-center">
@@ -46,15 +48,26 @@
 				<div class="col-sm-2">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-gbp"></i></span>
-	  					<input type="text" class="form-control" id="pitch-number-input"/>
+	  					<input type="text" class="form-control" id="cost-input" th:field="*{cost}"/>
 						<br></br>
 					</div>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<input type="hidden" name="count" value="1" />
+					<span>Pitch features</span>
+				</div>
+				<div class="col-sm-2" id="fields">
+	  				<input type="text" autocomplete="off" class="form-control" id="field1" th:field="*{features}" data-items="8"/><button id="b1" class="btn add-more" type="button">+</button>
+				<br></br>
+				<br></br>
 				</div>
 				<div class="create-btn col-sm-offset-4 col-sm-2"></div>
 				<div class="col-sm-2">
 					<input type="submit" value="Save pitch" class="btn btn-block btn-success create-button" onclick="window.location.href=ContactSuccessful.html"/>
 				</div>
 			</div>
+			</form>
 		</div>
+		<script th:src="@{/resources/js/main.js}"></script>
 </body>
 </html>

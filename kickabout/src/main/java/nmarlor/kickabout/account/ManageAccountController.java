@@ -106,7 +106,7 @@ public class ManageAccountController {
 	@RequestMapping(value = "/manageAdminAccount", method = RequestMethod.POST)
 	public ModelAndView updateAdminAccount(@ModelAttribute("accountForm") UpdateAdminAccountForm accountForm, BindingResult bindingResult)
 	{	
-		ModelAndView mv = new ModelAndView("manage/manageClientAccount");
+		ModelAndView mv = new ModelAndView("manage/manageAdminAccount");
 		
 		adminAccountInfoValidator.validate(accountForm, bindingResult);
 		if (bindingResult.hasErrors()) 
