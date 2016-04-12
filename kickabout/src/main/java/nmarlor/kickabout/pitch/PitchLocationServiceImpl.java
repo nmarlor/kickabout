@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.company.Company;
 
 @Service
@@ -35,6 +36,12 @@ public class PitchLocationServiceImpl implements PitchLocationService {
 	public List<PitchLocation> findPitchLocationsByCompany(Company company) {
 		List<PitchLocation> locationsForCompany = pitchLocationDAO.findAllLocationsByCompany(company);
 		return locationsForCompany;
+	}
+
+	@Override
+	public List<PitchLocation> findPitchLocationsForAccount(Account account) {
+		List<PitchLocation> locationsForAccount = pitchLocationDAO.findAllLocationsByAccount(account);
+		return locationsForAccount;
 	}
 
 }

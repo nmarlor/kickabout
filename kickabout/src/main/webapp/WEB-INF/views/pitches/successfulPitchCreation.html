@@ -31,7 +31,7 @@
 						</thead>
 						<tbody>
 							<tr th:each="pitch : ${pitches}">
-								<td class="col-sm-2 text-center" th:text="${pitch.pitchLocation.company.name}"></td>
+								<td class="col-sm-2 text-center" th:text="${pitch.pitchLocation.company}"></td>
 								<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"></td>
 								<td class="col-sm-1">
 								<span class="btn-group">

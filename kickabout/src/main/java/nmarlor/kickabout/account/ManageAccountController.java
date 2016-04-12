@@ -148,4 +148,15 @@ public class ManageAccountController {
 		mv.addObject("accountsCompanies", accountsCompanies);
 		return mv;
 	}
+	
+	@RequestMapping(value = "accountsPitchLocations", method = RequestMethod.GET)
+	public ModelAndView accountsPitchLocations(Long accountId){
+		ModelAndView mv = new ModelAndView("locations/adminsPitches");
+		
+		Account account = accountService.retrieveAccount(accountId);
+		List<PitchLocation> locationsForAccount = pitchLocationService.findPitchLocationsForAccount(account);
+		
+		mv.addObject("locationsForAccount", locationsForAccount);
+		return mv;
+	}
 }
