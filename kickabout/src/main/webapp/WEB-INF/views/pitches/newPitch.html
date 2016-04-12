@@ -23,9 +23,15 @@
 				</div>
 				<div class="col-sm-offset-4 col-sm-2 text-center">
 					<span>Pitch Size</span>
+					
 				</div>
 				<div class="col-sm-2">
-	  				<input type="text" class="form-control" id="pitch-size-input"/>
+	  				<select class="form-control" th:field="*{pitchSize}">
+						<option value="" >Select size</option>
+						<option value="Small">Small</option>
+						<option value="Medium">Medium</option>
+						<option value="Large">Large</option>
+					</select>
 					<br></br>
 				</div>
 				<div class="col-sm-offset-4 col-sm-2 text-center">
@@ -52,15 +58,6 @@
 						<br></br>
 					</div>
 				</div>
-				<div class="col-sm-offset-4 col-sm-2 text-center">
-					<input type="hidden" name="count" value="1" />
-					<span>Pitch features</span>
-				</div>
-				<div class="col-sm-2" id="fields">
-	  				<input type="text" autocomplete="off" class="form-control" id="field1" th:field="*{features}" data-items="8"/><button id="b1" class="btn add-more" type="button">+</button>
-				<br></br>
-				<br></br>
-				</div>
 				<div class="create-btn col-sm-offset-4 col-sm-2"></div>
 				<div class="col-sm-2">
 					<input type="submit" value="Save pitch" class="btn btn-block btn-success create-button" onclick="window.location.href=ContactSuccessful.html"/>
@@ -68,6 +65,5 @@
 			</div>
 			</form>
 		</div>
-		<script th:src="@{/resources/js/main.js}"></script>
 </body>
 </html>

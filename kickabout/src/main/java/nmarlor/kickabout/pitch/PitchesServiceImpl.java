@@ -26,9 +26,8 @@ public class PitchesServiceImpl implements PitchesService{
 	}
 
 	@Override
-	public void createPitch() {
-		// TODO Auto-generated method stub
-		
+	public void createPitch(Pitch pitch) {
+		pitchDAO.persist(pitch);
 	}
 
 	@Override

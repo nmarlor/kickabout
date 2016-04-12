@@ -36,7 +36,7 @@
 						<tr th:each="pitch : ${pitches}">
 							<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"> </td>
 							<td class="col-sm-2 text-center" th:text="${'&pound;' + pitch.cost}"></td>
-							<td class="col-sm-2 text-center" th:text="${pitch.pitchSize.prettyName}"></td>
+							<td class="col-sm-2 text-center" th:text="${pitch.pitchSize}"></td>
 							<td class="col-sm-2 text-center" th:text="|${pitch.availableFrom} - ${pitch.availableTo}|"></td>
 							<td class="col-sm-2 text-center">
 				  				<span class="btn-group">

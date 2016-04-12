@@ -8,7 +8,7 @@ public interface PitchesService
 	
 	public Pitch retrievePitch(Long pitchId);
 
-	public void createPitch();
+	public void createPitch(Pitch pitch);
 	
 	public void deletePitch(Pitch pitch);
 	

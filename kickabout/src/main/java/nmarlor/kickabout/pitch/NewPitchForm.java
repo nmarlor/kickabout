@@ -11,6 +11,7 @@ public class NewPitchForm {
 	private Time availableFrom;
 	private Time availableTo;
 	private BigDecimal cost;
+	private String pitchSize;
 	
 	public long getLocationId() {
 		return locationId;
@@ -47,6 +48,12 @@ public class NewPitchForm {
 	}
 	public void setCost(BigDecimal cost) {
 		this.cost = cost;
+	}
+	public String getPitchSize() {
+		return pitchSize;
+	}
+	public void setPitchSize(String pitchSize) {
+		this.pitchSize = pitchSize;
 	}
 	
 }
