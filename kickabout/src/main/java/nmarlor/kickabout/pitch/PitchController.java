@@ -19,6 +19,9 @@ public class PitchController {
 	
 	@Autowired
 	private PitchesService pitchService;
+	
+	@Autowired
+	private NewPitchValidator pitchValidator;
 
 	@RequestMapping(value = "addPitch", method = RequestMethod.GET)
 	public ModelAndView addPitch(Long locationId){
@@ -33,15 +36,31 @@ public class PitchController {
 	
 	@RequestMapping(value = "addPitch", method = RequestMethod.POST)
 	public ModelAndView submitPitch(@ModelAttribute("pitchForm") NewPitchForm pitchForm, BindingResult bindingResult){
+		ModelAndView thisMv = new ModelAndView("pitches/newPitch");
 		Long locationId = pitchForm.getLocationId();
 		PitchLocation pitchLocation = pitchLocationService.retrieve(locationId);
+		Integer pitchNumber = pitchForm.getPitchNumber();
+		
+		pitchValidator.validate(pitchForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			thisMv.addObject("errors", bindingResult);
+			return thisMv;
+		}
+		
+		Pitch retrievedPitch = pitchService.findPitchByLocationAndNumber(pitchLocation, pitchNumber);
+		if (retrievedPitch != null) {
+			bindingResult.rejectValue("pitchNumber", "pitchNumberDuplicate.message");
+			thisMv.addObject("errors", bindingResult);
+			return thisMv;
+		}
 		
 		Pitch pitch = new Pitch();
 		pitch.setPitchLocation(pitchLocation);
 		pitch.setAvailableFrom(pitchForm.getAvailableFrom());
 		pitch.setAvailableTo(pitchForm.getAvailableFrom());
 		pitch.setCost(pitchForm.getCost());
-		pitch.setPitchNumber(pitchForm.getPitchNumber());
+		pitch.setPitchNumber(pitchNumber);
 		pitch.setPitchSize(pitchForm.getPitchSize());
 		
 		pitchService.createPitch(pitch);

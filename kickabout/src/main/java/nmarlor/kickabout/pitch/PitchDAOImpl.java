@@ -18,4 +18,12 @@ public class PitchDAOImpl extends HibernateJPABase<Pitch, Long> implements Pitch
 		search.addFilterEqual("pitchLocation", pitchLocation);
 		return super.search(search);
 	}
+
+	@Override
+	public Pitch findPitchByLocationAndPitchNumber(PitchLocation pitchLocation, Integer pitchNumber) {
+		Search search = new Search(Pitch.class);
+		search.addFilterEqual("pitchLocation", pitchLocation);
+		search.addFilterEqual("pitchNumber", pitchNumber);
+		return super.searchUnique(search);
+	}
 }

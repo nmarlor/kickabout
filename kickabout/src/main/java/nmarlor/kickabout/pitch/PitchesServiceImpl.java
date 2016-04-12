@@ -42,4 +42,10 @@ public class PitchesServiceImpl implements PitchesService{
 		return null;
 	}
 
+	@Override
+	public Pitch findPitchByLocationAndNumber(PitchLocation location, Integer pitchNumber) {
+		Pitch pitch = pitchDAO.findPitchByLocationAndPitchNumber(location, pitchNumber);
+		return pitch;
+	}
+
 }

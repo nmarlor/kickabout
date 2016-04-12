@@ -13,4 +13,6 @@ public interface PitchesService
 	public void deletePitch(Pitch pitch);
 	
 	public Pitch updatePitch(Pitch pitch);
+	
+	public Pitch findPitchByLocationAndNumber(PitchLocation location, Integer pitchNumber);
 }

@@ -18,7 +18,7 @@
 					<span>Pitch Number</span>
 				</div>
 				<div class="col-sm-2">
-	  				<input type="text" class="form-control" id="pitch-number-input" th:field="*{pitchNumber}"/>
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="pitch-number-input" th:field="*{pitchNumber}"/>
 					<br></br>
 				</div>
 				<div class="col-sm-offset-4 col-sm-2 text-center">
@@ -26,7 +26,7 @@
 					
 				</div>
 				<div class="col-sm-2">
-	  				<select class="form-control" th:field="*{pitchSize}">
+	  				<select th:errorclass="input-form-error" class="form-control" th:field="*{pitchSize}">
 						<option value="" >Select size</option>
 						<option value="Small">Small</option>
 						<option value="Medium">Medium</option>
@@ -38,14 +38,14 @@
 					<span>Available from</span>
 				</div>
 				<div class="col-sm-2">
-	  				<input type="text" class="form-control" id="available-from-input" th:field="*{availableFrom}"/>
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="available-from-input" th:field="*{availableFrom}"/>
 					<br></br>
 				</div>
 				<div class="col-sm-offset-4 col-sm-2 text-center">
 					<span>Available to</span>
 				</div>
 				<div class="col-sm-2">
-	  				<input type="text" class="form-control" id="available-to-input" th:field="*{availableTo}"/>
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="available-to-input" th:field="*{availableTo}"/>
 					<br></br>
 				</div>
 				<div class="col-sm-offset-4 col-sm-2 text-center">
@@ -54,7 +54,7 @@
 				<div class="col-sm-2">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-gbp"></i></span>
-	  					<input type="text" class="form-control" id="cost-input" th:field="*{cost}"/>
+	  					<input th:errorclass="input-form-error" type="text" class="form-control" id="cost-input" th:field="*{cost}"/>
 						<br></br>
 					</div>
 				</div>
