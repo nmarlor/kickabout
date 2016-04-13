@@ -44,4 +44,9 @@ public class PitchLocationServiceImpl implements PitchLocationService {
 		return locationsForAccount;
 	}
 
+	@Override
+	public void createPitchLocation(PitchLocation pitchLocation) {
+		pitchLocationDAO.persist(pitchLocation);
+	}
+
 }

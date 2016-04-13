@@ -157,6 +157,7 @@ public class ManageAccountController {
 		List<PitchLocation> locationsForAccount = pitchLocationService.findPitchLocationsForAccount(account);
 		
 		mv.addObject("locationsForAccount", locationsForAccount);
+		mv.addObject("accountId", accountId);
 		return mv;
 	}
 }

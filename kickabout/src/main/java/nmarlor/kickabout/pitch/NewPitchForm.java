@@ -6,7 +6,6 @@ import java.sql.Time;
 public class NewPitchForm {
 
 	private long locationId;
-	private String[] features;
 	private Integer pitchNumber;
 	private Time availableFrom;
 	private Time availableTo;
@@ -15,9 +14,6 @@ public class NewPitchForm {
 	
 	public long getLocationId() {
 		return locationId;
-	}
-	public String[] getFeatures() {
-		return features;
 	}
 	public Integer getPitchNumber() {
 		return pitchNumber;
@@ -33,9 +29,6 @@ public class NewPitchForm {
 	}
 	public void setLocationId(long locationId) {
 		this.locationId = locationId;
-	}
-	public void setFeatures(String[] features) {
-		this.features = features;
 	}
 	public void setPitchNumber(Integer pitchNumber) {
 		this.pitchNumber = pitchNumber;

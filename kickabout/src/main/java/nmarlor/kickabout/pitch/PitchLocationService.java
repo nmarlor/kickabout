@@ -16,4 +16,6 @@ public interface PitchLocationService
 	public List<PitchLocation> findPitchLocationsByCompany(Company company);
 	
 	public List<PitchLocation> findPitchLocationsForAccount(Account account);
+	
+	public void createPitchLocation(PitchLocation pitchLocation);
 }
