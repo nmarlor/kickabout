@@ -22,6 +22,9 @@ public class PitchController {
 	
 	@Autowired
 	private NewPitchValidator pitchValidator;
+	
+	@Autowired
+	private PitchFeatureService pitchFeatureService;
 
 	@RequestMapping(value = "addPitch", method = RequestMethod.GET)
 	public ModelAndView addPitch(Long locationId){
@@ -81,8 +84,10 @@ public class PitchController {
 		ModelAndView mv = new ModelAndView("pitches/managePitch");
 		
 		Pitch pitch = pitchService.retrievePitch(pitchId);
+		List<PitchFeature> pitchFeatures = pitchFeatureService.findPitchFeaturesByPitch(pitch);
 		
 		mv.addObject("pitch", pitch);
+		mv.addObject("pitchFeatures", pitchFeatures);
 		return mv;
 	}
 }
