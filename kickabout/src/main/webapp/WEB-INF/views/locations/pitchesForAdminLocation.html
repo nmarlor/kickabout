@@ -32,7 +32,7 @@
 								<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"></td>
 								<td class="col-sm-1">
 								<span class="btn-group">
-				  					<a class="btn btn-info managePitchBtn">Manage Pitch</a>
+				  					<a class="btn btn-info managePitchBtn" th:href="@{managePitch(pitchId=${pitch.id})}">Manage Pitch</a>
 				  				</span>
 				  				</td>
 				  				<td class="col-sm-1">

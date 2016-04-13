@@ -75,4 +75,14 @@ public class PitchController {
 		
 		return successMv;
 	}
+	
+	@RequestMapping(value = "managePitch", method = RequestMethod.GET)
+	public ModelAndView managePitch(Long pitchId){
+		ModelAndView mv = new ModelAndView("pitches/managePitch");
+		
+		Pitch pitch = pitchService.retrievePitch(pitchId);
+		
+		mv.addObject("pitch", pitch);
+		return mv;
+	}
 }
