@@ -12,13 +12,11 @@
 	
 		<div class="jumbotron default">
 			<h2 class="text-center">My Account</h2>
-			<div class="col-sm-4"></div>
-			<div class="col-sm-4">
+			<div class="col-sm-offset-5 col-sm-2">
 	  			<div class="panel-body">
 	  			<div class="text-center">
 	  				<a href="myBookings" th:href="@{myBookings(accountId=${accountId})}">View my bookings</a>
 	  			</div>
-	  				<h4>Your details:</h4>
 	  			<br></br>
 	  				<span>Email Address</span>
 	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>
@@ -26,11 +24,10 @@
 	  				<span>Name</span>
 	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" th:field="*{name}"/>
 	  			</div>
-	  			<div class="create-btn col-sm-4" style="float:right; margin-bottom: 20px;">
+	  			<div class="create-btn col-sm-8" style="float:right; margin-bottom: 20px;">
 					<input type="submit" value="Save Changes" class="btn btn-block btn-success create-button" onclick="" />
 				</div>
 			</div>
-			<div class="col-sm-4"></div>
 		</div>
 	</form>
 </body>
