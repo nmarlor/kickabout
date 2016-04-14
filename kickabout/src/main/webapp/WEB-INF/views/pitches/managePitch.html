@@ -9,22 +9,27 @@
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
-		<div class="col-sm-12" align="center">
-			<h2>
+		<div class="col-sm-12">
+			<h2 align="center">
 				<span class="header-pitches" th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber}|"></span>
 			</h2>
 			<form th:action="@{/managePitch}" method="get">
-				<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
+				<div class="pitches-table-holder col-sm-offset-4 col-sm-4" align="center">
 					<div class="bookings-table">
 						<table class="table">
-							<thead>
-								<tr>
-									<th class="col-sm-2 text-center">Features</th>
-								</tr>
-							</thead>
 							<tbody>
 								<tr th:each="pitchFeature : ${pitchFeatures}">
-									<td class="col-sm-6 text-center" th:text="${pitchFeature.feature}"> </td>
+									<td class="col-xs-2  text-left" th:text="${pitchFeature.feature}"> </td>
+									<td class="col-xs-1 text-right">
+										<span class="btn-group btn-group-xs">
+											<a class="btn btn-info editFeatureBtn"><i class="fa fa-pencil"></i></a>
+							  			</span>
+									</td>
+									<td class="col-xs-1 text-right">
+										<span class="btn-group btn-group-xs">
+											<a class="btn btn-danger deleteFeatureBtn"><i class="fa fa-trash-o danger"></i></a>
+							  			</span>
+									</td>
 								</tr>
 							</tbody>
 						</table>
