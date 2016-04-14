@@ -42,6 +42,9 @@ public class PitchAvailability {
 	
 	@Column(name = "booked_to")
 	private Time bookedTo;
+	
+	@Column(name = "name")
+	private String name;
 
 	public Long getId() {
 		return id;
@@ -85,6 +88,14 @@ public class PitchAvailability {
 
 	public void setBookedTo(Time bookedTo) {
 		this.bookedTo = bookedTo;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

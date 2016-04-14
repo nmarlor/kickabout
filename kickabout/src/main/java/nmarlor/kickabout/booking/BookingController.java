@@ -88,11 +88,14 @@ public class BookingController {
 		Time bookedFrom = bookingForm.getBookedFrom();
 		Time bookedTo = bookingForm.getBookedTo();
 		
+		String bookingName = bookingForm.getName();
+		
 		PitchAvailability pitchAvailability = new PitchAvailability();
 		pitchAvailability.setPitch(pitch);
 		pitchAvailability.setDate(formattedDate);
 		pitchAvailability.setBookedFrom(bookedFrom);
 		pitchAvailability.setBookedTo(bookedTo);
+		pitchAvailability.setName(bookingName);
 		
 		List<PitchAvailability> bookedDates = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, formattedDate);
 		for (PitchAvailability bookedDate : bookedDates) 
@@ -138,7 +141,7 @@ public class BookingController {
 		booking.setCost(bookingForm.getCost());
 		booking.setDate(formattedDate);
 		booking.setEmail(bookingForm.getEmail());
-		booking.setName(bookingForm.getName());
+		booking.setName(bookingName);
 		
 		//TODO When payment is introduced, if user can't pay then catch exception and delete previously create pitchAvailability
 		bookingService.createBooking(booking);
