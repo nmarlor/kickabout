@@ -81,4 +81,29 @@ public class PitchAvailabilityController {
 		
 		return mv;
 	}
+	
+	@RequestMapping(value = "/adminPitchAvailability", method = RequestMethod.GET)
+	public ModelAndView adminPitchAvailability(Long pitchId){
+		ModelAndView mv = new ModelAndView("pitchAvailability/adminPitchAvailability");
+		
+		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		Date formattedDate = dateService.getTodaysDate();
+		
+		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, formattedDate);
+		
+		PitchForm pitchForm = new PitchForm();
+		pitchForm.setPitchId(pitchId);
+		
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		String date = df.format(formattedDate);
+		
+		mv.addObject("pitchId", pitchId);
+		mv.addObject("pitch", pitch);
+		mv.addObject("pitchForm", pitchForm);
+		mv.addObject("date", date);
+		mv.addObject("pitchAvailabilities", pitchAvailabilities);
+		
+		return mv;
+	}
 }

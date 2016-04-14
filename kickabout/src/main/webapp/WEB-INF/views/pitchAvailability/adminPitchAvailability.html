@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="jumbotron default">
+		<h2 class="text-center">Bookings for pitch</h2>
+		<br></br>
+		<div class="pitches-table-holder col-sm-offset-4 col-sm-4" align="center">
+			<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
+			<div class="col-sm-12">
+				<div id="availabilityDateCal">
+					<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
+					<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd-mm-yyyy" name="date" th:href="@{/availability}"></input>
+					<button class="btn btn-default search-date-btn" type="submit"></button>
+				</div>
+			</div>
+					
+			<table class="table">
+				<thead>
+					<tr>
+						<th class="col-sm-3 text-center" th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber} - Booking Schedule - ${date}|"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="availability : ${pitchAvailabilities}">
+						<td class="col-sm-3 text-center" th:text="|${availability.bookedFrom} - ${availability.bookedTo}|"> </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/js/pitchAvailability.js}"></script>
+</body>
+</html>
