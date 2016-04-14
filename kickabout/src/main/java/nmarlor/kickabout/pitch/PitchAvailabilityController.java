@@ -106,4 +106,25 @@ public class PitchAvailabilityController {
 		
 		return mv;
 	}
+	
+	@RequestMapping(value = "/adminPitchAvailability", method = RequestMethod.POST)
+	public ModelAndView adminPitchAvailability(@Valid @ModelAttribute("pitchForm") PitchForm pitchForm, BindingResult bindingResult, String date) {
+		ModelAndView mv = new ModelAndView("pitchAvailability/adminPitchAvailability");
+		mv.addObject("pitchForm", pitchForm);
+		
+		Long pitchId = pitchForm.getPitchId();
+		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		
+		if (!date.isEmpty()) {
+			Date availabilityDate = dateService.stringToDate(date);
+			List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, availabilityDate);
+			mv.addObject("pitchAvailabilities", pitchAvailabilities);
+		}
+
+		mv.addObject("pitchForm", pitchForm);
+		mv.addObject("pitch", pitch);
+		mv.addObject("date", date);
+		
+		return mv;
+	}
 }

@@ -12,40 +12,42 @@
 	<div class="jumbotron default">
 		<h2 class="text-center">Bookings for pitch</h2>
 		<br></br>
-		<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
-			<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
-			<div class="col-sm-12">
-				<div id="availabilityDateCal">
-					<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
+		<form method="post" th:action="@{/adminPitchAvailability}" th:object="${pitchForm}">
+			<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
+				<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
+				<div class="col-sm-12">
+					<div id="availabilityDateCal">
+						<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
+						<br></br>
+						<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd-mm-yyyy" name="date" th:href="@{/availability}"></input>
+						<button class="btn btn-default search-date-btn" type="submit"></button>
+					</div>
+					<span th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber} - Booking Schedule - ${date}|"></span>
 					<br></br>
-					<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd-mm-yyyy" name="date" th:href="@{/availability}"></input>
-					<button class="btn btn-default search-date-btn" type="submit"></button>
+					<br></br>
 				</div>
-				<span th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber} - Booking Schedule - ${date}|"></span>
-				<br></br>
-				<br></br>
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="col-sm-2 text-center">Booked by</th>
+							<th class="col-sm-2 text-center">Time</th>
+							<th class="col-sm-2"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="availability : ${pitchAvailabilities}">
+							<td class="col-sm-2 text-center" th:text="${availability.name}"> </td>
+							<td class="col-sm-2 text-center" th:text="|${availability.bookedFrom} - ${availability.bookedTo}|"> </td>
+							<td class="col-sm-2 text-center">
+								<span class="btn-group">
+						  			<a class="btn btn-danger">Cancel Booking</a>
+						  		</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-			<table class="table">
-				<thead>
-					<tr>
-						<th class="col-sm-2 text-center">Booked by</th>
-						<th class="col-sm-2 text-center">Time</th>
-						<th class="col-sm-2"></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="availability : ${pitchAvailabilities}">
-						<td class="col-sm-2 text-center" th:text="${availability.name}"> </td>
-						<td class="col-sm-2 text-center" th:text="|${availability.bookedFrom} - ${availability.bookedTo}|"> </td>
-						<td class="col-sm-2 text-center">
-							<span class="btn-group">
-					  			<a class="btn btn-danger">Cancel Booking</a>
-					  		</span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+		</form>
 	</div>
 	<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
     <script th:src="@{/resources/js/bootstrap.min.js}"></script>
