@@ -27,6 +27,9 @@ public class PitchController {
 	private NewPitchValidator pitchValidator;
 	
 	@Autowired
+	private NewPitchFeatureValidator newPitchFeatureValidator;
+	
+	@Autowired
 	private UpdateFeatureValidator updateFeatureValidator;
 	
 	@Autowired
@@ -156,6 +159,40 @@ public class PitchController {
 		PitchFeature pitchFeature = pitchFeatureService.retrieve(featureForm.getFeatureId());
 		
 		pitchFeatureService.delete(pitchFeature);
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitches/managePitch");
+	}
+	
+	@RequestMapping(value = "addFeature", method = RequestMethod.GET)
+	public ModelAndView addFeatureRequest(Long id){
+		ModelAndView mv = new ModelAndView("pitches/addFeature");
+		
+		NewPitchFeatureForm featureForm = new NewPitchFeatureForm();
+		featureForm.setPitchId(id);
+		
+		mv.addObject("featureForm", featureForm);
+		return mv;
+	}
+	
+	@RequestMapping(value = "addFeature", method = RequestMethod.POST)
+	public ModelAndView addFeature(@ModelAttribute("featureForm") NewPitchFeatureForm featureForm, BindingResult result, HttpServletRequest request){
+		ModelAndView thisMv = new ModelAndView("pitches/addFeature");
+
+		PitchFeature pitchFeature = new PitchFeature();
+		Pitch pitch = pitchService.retrievePitch(featureForm.getPitchId());
+		
+		newPitchFeatureValidator.validate(featureForm, result);
+		if (result.hasErrors()) 
+		{
+			thisMv.addObject("errors", result);
+			return thisMv;
+		}
+		
+		pitchFeature.setFeature(featureForm.getFeature());
+		pitchFeature.setPitch(pitch);
+		pitchFeatureService.create(pitchFeature);
+		
 		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
 		jsonView.setModelKey("redirect");
 		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitches/managePitch");

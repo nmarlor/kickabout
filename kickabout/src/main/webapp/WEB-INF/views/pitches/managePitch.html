@@ -11,7 +11,7 @@
 	<div class="jumbotron default">
 		<div class="col-sm-12">
 			<h2 align="center">
-				<span class="header-pitches" th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber}|"></span>
+				<span class="header-pitches" th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber} Features|"></span>
 			</h2>
 			<form th:action="@{/managePitch}" method="get">
 				<div class="pitches-table-holder col-sm-offset-4 col-sm-4" align="center">
@@ -34,6 +34,7 @@
 							</tbody>
 						</table>
 					</div>
+					<a class="btn btn-success addFeatureBtn" th:id="${pitch.id}" data-toggle="modal" data-target="#addFeatureModal">Add New Feature</a>
 				</div>
 			</form>
 		</div>
@@ -43,6 +44,10 @@
 		</div>
 	</div>
 	<div id="deleteFeatureModal" class="deleteFeatureModal modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteFeatureModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<div id="addFeatureModal" class="addFeatureModal modal fade" tabindex="-1" role="dialog" aria-labelledby="addFeatureModal">
 		<div class="replaceable">
 		</div>
 	</div>
@@ -63,6 +68,17 @@
 			$.ajax({
 			 	url: base_url + "deleteFeature",
 			 	data: {id : featureId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+		
+		$(".addFeatureBtn").click(function(){
+			var pitchId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "addFeature",
+			 	data: {id : pitchId},
 			 	success: function(result){
 			 		$(".replaceable").html(result);
 			 	}

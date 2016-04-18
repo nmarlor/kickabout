@@ -35,4 +35,9 @@ public class PitchFeatureServiceImpl implements PitchFeatureService{
 		pitchFeatureDAO.remove(pitchFeature);
 	}
 
+	@Override
+	public void create(PitchFeature pitchFeature) {
+		pitchFeatureDAO.persist(pitchFeature);
+	}
+
 }
