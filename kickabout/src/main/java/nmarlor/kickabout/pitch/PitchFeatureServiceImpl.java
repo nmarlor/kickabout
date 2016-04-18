@@ -20,4 +20,14 @@ public class PitchFeatureServiceImpl implements PitchFeatureService{
 		return pitchFeatures;
 	}
 
+	@Override
+	public PitchFeature update(PitchFeature pitchFeature) {
+		return pitchFeatureDAO.save(pitchFeature);
+	}
+
+	@Override
+	public PitchFeature retrieve(Long featureId) {
+		return pitchFeatureDAO.find(featureId);
+	}
+
 }

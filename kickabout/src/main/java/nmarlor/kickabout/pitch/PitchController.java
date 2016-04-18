@@ -3,6 +3,8 @@ package nmarlor.kickabout.pitch;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 @Controller
 public class PitchController {
@@ -89,5 +92,33 @@ public class PitchController {
 		mv.addObject("pitch", pitch);
 		mv.addObject("pitchFeatures", pitchFeatures);
 		return mv;
+	}
+	
+	@RequestMapping(value = "editFeature", method = RequestMethod.GET)
+	public ModelAndView editFeatureRequest(Long id){
+		ModelAndView mv = new ModelAndView("pitches/editFeature");
+		
+		PitchFeature pitchFeature = pitchFeatureService.retrieve(id);
+		Long pitchId = pitchFeature.getPitch().getId();
+		String feature = pitchFeature.getFeature();
+		
+		UpdatePitchFeatureForm featureForm = new UpdatePitchFeatureForm();
+		featureForm.setFeature(feature);
+		featureForm.setFeatureId(id);
+		featureForm.setPitchId(pitchId);
+		
+		mv.addObject("featureForm", featureForm);
+		return mv;
+	}
+	
+	@RequestMapping(value = "editFeature", method = RequestMethod.POST)
+	public ModelAndView editFeature(@ModelAttribute("featureForm") UpdatePitchFeatureForm featureForm, BindingResult result, HttpServletRequest request){
+		PitchFeature pitchFeature = pitchFeatureService.retrieve(featureForm.getFeatureId());
+		pitchFeature.setFeature(featureForm.getFeature());
+		
+		pitchFeatureService.update(pitchFeature);
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitches/managePitch");
 	}
 }
