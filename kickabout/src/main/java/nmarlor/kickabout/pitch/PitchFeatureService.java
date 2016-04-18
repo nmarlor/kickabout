@@ -9,4 +9,6 @@ public interface PitchFeatureService
 	public PitchFeature update(PitchFeature pitchFeature);
 	
 	public PitchFeature retrieve(Long featureId);
+	
+	public void delete(PitchFeature pitchFeature);
 }

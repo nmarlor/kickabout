@@ -30,4 +30,9 @@ public class PitchFeatureServiceImpl implements PitchFeatureService{
 		return pitchFeatureDAO.find(featureId);
 	}
 
+	@Override
+	public void delete(PitchFeature pitchFeature) {
+		pitchFeatureDAO.remove(pitchFeature);
+	}
+
 }

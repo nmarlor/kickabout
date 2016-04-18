@@ -133,4 +133,31 @@ public class PitchController {
 		jsonView.setModelKey("redirect");
 		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitches/managePitch");
 	}
+	
+	@RequestMapping(value = "deleteFeature", method = RequestMethod.GET)
+	public ModelAndView deleteFeatureRequest(Long id){
+		ModelAndView mv = new ModelAndView("pitches/deleteFeature");
+		
+		PitchFeature pitchFeature = pitchFeatureService.retrieve(id);
+		Long pitchId = pitchFeature.getPitch().getId();
+		String feature = pitchFeature.getFeature();
+		
+		UpdatePitchFeatureForm featureForm = new UpdatePitchFeatureForm();
+		featureForm.setFeature(feature);
+		featureForm.setFeatureId(id);
+		featureForm.setPitchId(pitchId);
+		
+		mv.addObject("featureForm", featureForm);
+		return mv;
+	}
+	
+	@RequestMapping(value = "deleteFeature", method = RequestMethod.POST)
+	public ModelAndView deleteFeature(@ModelAttribute("featureForm") UpdatePitchFeatureForm featureForm, BindingResult result, HttpServletRequest request){
+		PitchFeature pitchFeature = pitchFeatureService.retrieve(featureForm.getFeatureId());
+		
+		pitchFeatureService.delete(pitchFeature);
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitches/managePitch");
+	}
 }
