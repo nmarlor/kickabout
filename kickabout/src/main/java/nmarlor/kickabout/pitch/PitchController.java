@@ -181,6 +181,7 @@ public class PitchController {
 
 		PitchFeature pitchFeature = new PitchFeature();
 		Pitch pitch = pitchService.retrievePitch(featureForm.getPitchId());
+		String feature = featureForm.getFeature();
 		
 		newPitchFeatureValidator.validate(featureForm, result);
 		if (result.hasErrors()) 
@@ -189,7 +190,14 @@ public class PitchController {
 			return thisMv;
 		}
 		
-		pitchFeature.setFeature(featureForm.getFeature());
+		PitchFeature retrievedPitchFeature = pitchFeatureService.findPitchFeatureByPitchAndFeature(pitch, feature);
+		if (retrievedPitchFeature != null) {
+			result.rejectValue("feature", "featureDuplicate.message");
+			thisMv.addObject("errors", result);
+			return thisMv;
+		}
+		
+		pitchFeature.setFeature(feature);
 		pitchFeature.setPitch(pitch);
 		pitchFeatureService.create(pitchFeature);
 		

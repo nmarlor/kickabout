@@ -40,4 +40,10 @@ public class PitchFeatureServiceImpl implements PitchFeatureService{
 		pitchFeatureDAO.persist(pitchFeature);
 	}
 
+	@Override
+	public PitchFeature findPitchFeatureByPitchAndFeature(Pitch pitch, String feature) {
+		PitchFeature pitchFeature = pitchFeatureDAO.findPitchFeatureByPitchAndFeature(pitch, feature);
+		return pitchFeature;
+	}
+
 }

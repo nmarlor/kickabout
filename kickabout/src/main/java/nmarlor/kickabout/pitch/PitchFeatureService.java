@@ -13,4 +13,6 @@ public interface PitchFeatureService
 	public void delete(PitchFeature pitchFeature);
 	
 	public void create(PitchFeature pitchFeature);
+	
+	public PitchFeature findPitchFeatureByPitchAndFeature(Pitch pitch, String feature);
 }

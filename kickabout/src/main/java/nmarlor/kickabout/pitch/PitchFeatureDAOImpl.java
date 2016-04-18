@@ -17,4 +17,12 @@ public class PitchFeatureDAOImpl extends HibernateJPABase<PitchFeature, Long> im
 		search.addFilterEqual("pitch", pitch);
 		return super.search(search);
 	}
+
+	@Override
+	public PitchFeature findPitchFeatureByPitchAndFeature(Pitch pitch, String feature) {
+		Search search = new Search(PitchFeature.class);
+		search.addFilterEqual("pitch", pitch);
+		search.addFilterEqual("feature", feature);
+		return super.searchUnique(search);
+	}
 }
