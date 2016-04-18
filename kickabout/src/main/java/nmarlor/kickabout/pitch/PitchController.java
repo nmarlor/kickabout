@@ -27,6 +27,9 @@ public class PitchController {
 	private NewPitchValidator pitchValidator;
 	
 	@Autowired
+	private UpdateFeatureValidator updateFeatureValidator;
+	
+	@Autowired
 	private PitchFeatureService pitchFeatureService;
 
 	@RequestMapping(value = "addPitch", method = RequestMethod.GET)
@@ -113,7 +116,16 @@ public class PitchController {
 	
 	@RequestMapping(value = "editFeature", method = RequestMethod.POST)
 	public ModelAndView editFeature(@ModelAttribute("featureForm") UpdatePitchFeatureForm featureForm, BindingResult result, HttpServletRequest request){
+		ModelAndView thisMv = new ModelAndView("pitches/editFeature");
 		PitchFeature pitchFeature = pitchFeatureService.retrieve(featureForm.getFeatureId());
+		
+		updateFeatureValidator.validate(featureForm, result);
+		if (result.hasErrors()) 
+		{
+			thisMv.addObject("errors", result);
+			return thisMv;
+		}
+		
 		pitchFeature.setFeature(featureForm.getFeature());
 		
 		pitchFeatureService.update(pitchFeature);
