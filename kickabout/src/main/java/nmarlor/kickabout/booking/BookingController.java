@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.account.AccountRepository;
@@ -168,6 +171,28 @@ public class BookingController {
 		
 		mv.addObject("bookings", bookings);
 		return mv;
+	}
+	
+	@RequestMapping(value = "cancelMyBooking", method = RequestMethod.GET)
+	public ModelAndView cancelMyBookingRequest(Long id){
+		ModelAndView mv = new ModelAndView("booking/cancelMyBooking");
+		
+		DeleteBookingForm bookingForm = new DeleteBookingForm();
+		bookingForm.setBookingId(id);
+		
+		mv.addObject("bookingForm", bookingForm);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "cancelMyBooking", method = RequestMethod.POST)
+	public ModelAndView cancelMyBooking(@ModelAttribute("bookingForm") DeleteBookingForm bookingForm, BindingResult result, HttpServletRequest request){
+		Booking booking = bookingService.retrieve(bookingForm.getBookingId());
+		
+		bookingService.deleteBooking(booking);
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "booking/myBookings");
 	}
 	
 	@RequestMapping(value = "manageBookings", method = RequestMethod.GET)

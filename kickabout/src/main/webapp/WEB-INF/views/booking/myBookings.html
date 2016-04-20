@@ -30,7 +30,7 @@
 								<td class="col-sm-2 text-center" th:text="${booking.cost}"></td>
 								<td class="col-sm-1 text-center">
 									<span class="btn-group">
-					  					<a class="btn btn-danger">Cancel Booking</a>
+					  					<a class="btn btn-danger cancelBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#cancelBookingModal">Cancel Booking</a>
 					  				</span>
 								</td>
 							</tr>
@@ -41,5 +41,21 @@
 			</form>
 		</div>
 	</div>
+	<div id="cancelBookingModal" class="cancelBookingModal modal fade" tabindex="-1" role="dialog" aria-labelledby="cancelBookingModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<script>
+		$(".cancelBookingBtn").click(function(){
+			var bookingId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "cancelMyBooking",
+			 	data: {id : bookingId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
 </body>
 </html>

@@ -26,4 +26,14 @@ public class BookingServiceImpl implements BookingService{
 		List<Booking> bookingsForAccount = bookingDAO.findBookingsForAccount(account);
 		return bookingsForAccount;
 	}
+
+	@Override
+	public Booking retrieve(Long bookingId) {
+		return bookingDAO.find(bookingId);
+	}
+
+	@Override
+	public void deleteBooking(Booking booking) {
+		bookingDAO.remove(booking);
+	}
 }
