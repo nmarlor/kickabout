@@ -15,7 +15,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Proxy;
+
 @Entity
+@Proxy(lazy = false)
 @Table(name="pitches",
 		uniqueConstraints={@UniqueConstraint(columnNames={"pitch_location_id", "pitch_number"}, name="pitch_UK")})
 public class Pitch implements Serializable{

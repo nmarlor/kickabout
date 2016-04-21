@@ -15,13 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import nmarlor.kickabout.booking.Booking;
+import nmarlor.kickabout.booking.BookingService;
 import nmarlor.kickabout.date.DateService;
 
 @Controller
 public class PitchAvailabilityController {
-	
-	@Autowired
-	private PitchAvailabilityService pitchAvailabilityService;
 	
 	@Autowired
 	private PitchesService pitchesService;
@@ -32,6 +31,9 @@ public class PitchAvailabilityController {
 	@Autowired
 	private DateService dateService;
 	
+	@Autowired
+	private BookingService bookingService;
+	
 	@RequestMapping(value = "/availability", method = RequestMethod.GET)
 	public ModelAndView pitchAvailability(Long pitchId){
 		ModelAndView mv = new ModelAndView("pitchAvailability/availabilityAndFeatures");
@@ -40,7 +42,7 @@ public class PitchAvailabilityController {
 		Date formattedDate = dateService.getTodaysDate();
 		
 		List<PitchFeature> pitchFeatures = PitchFeatureService.findPitchFeaturesByPitch(pitch);
-		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, formattedDate);
+		List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
 		
 		PitchForm pitchForm = new PitchForm();
 		pitchForm.setPitchId(pitchId);
@@ -70,7 +72,7 @@ public class PitchAvailabilityController {
 		
 		if (!date.isEmpty()) {
 			Date availabilityDate = dateService.stringToDate(date);
-			List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, availabilityDate);
+			List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, availabilityDate);
 			mv.addObject("pitchAvailabilities", pitchAvailabilities);
 		}
 
@@ -89,7 +91,7 @@ public class PitchAvailabilityController {
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
 		Date formattedDate = dateService.getTodaysDate();
 		
-		List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, formattedDate);
+		List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
 		
 		PitchForm pitchForm = new PitchForm();
 		pitchForm.setPitchId(pitchId);
@@ -117,7 +119,7 @@ public class PitchAvailabilityController {
 		
 		if (!date.isEmpty()) {
 			Date availabilityDate = dateService.stringToDate(date);
-			List<PitchAvailability> pitchAvailabilities = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, availabilityDate);
+			List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, availabilityDate);
 			mv.addObject("pitchAvailabilities", pitchAvailabilities);
 		}
 

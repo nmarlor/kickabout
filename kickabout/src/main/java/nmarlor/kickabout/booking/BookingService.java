@@ -1,8 +1,10 @@
 package nmarlor.kickabout.booking;
 
+import java.sql.Date;
 import java.util.List;
 
 import nmarlor.kickabout.account.Account;
+import nmarlor.kickabout.pitch.Pitch;
 
 public interface BookingService 
 {
@@ -12,5 +14,7 @@ public interface BookingService
 	
 	public Booking retrieve(Long bookingId);
 	
-	public void deleteBooking(Booking booking);
+	public void delete(Booking booking);
+	
+	public List<Booking> findBookingsByPitchAndDate(Pitch pitch, Date date);
 }

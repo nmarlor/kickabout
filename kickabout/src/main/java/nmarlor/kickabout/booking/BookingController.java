@@ -21,8 +21,6 @@ import nmarlor.kickabout.account.AccountRepository;
 import nmarlor.kickabout.account.AccountService;
 import nmarlor.kickabout.date.DateService;
 import nmarlor.kickabout.pitch.Pitch;
-import nmarlor.kickabout.pitch.PitchAvailability;
-import nmarlor.kickabout.pitch.PitchAvailabilityService;
 import nmarlor.kickabout.pitch.PitchesService;
 
 @Controller
@@ -33,9 +31,6 @@ public class BookingController {
 	
 	@Autowired
 	private PitchesService pitchesService;
-	
-	@Autowired
-	private PitchAvailabilityService pitchAvailabilityService;
 	
 	@Autowired
 	private DateService dateService;
@@ -54,8 +49,6 @@ public class BookingController {
 		ModelAndView result = new ModelAndView("booking/newBooking");
 		
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
-		PitchAvailability pitchAvailability = new PitchAvailability();
-		pitchAvailability.setPitch(pitch);
 		
 		BookingForm bookingForm = new BookingForm();
 		bookingForm.setCost(pitch.getCost());
@@ -65,7 +58,6 @@ public class BookingController {
 		result.addObject("bookingForm", bookingForm);
 		result.addObject("pitch", pitch);
 		result.addObject("date", date);
-		result.addObject("pitchAvailability", pitchAvailability);
 		
 		return result;
 	}
@@ -93,15 +85,21 @@ public class BookingController {
 		
 		String bookingName = bookingForm.getName();
 		
-		PitchAvailability pitchAvailability = new PitchAvailability();
-		pitchAvailability.setPitch(pitch);
-		pitchAvailability.setDate(formattedDate);
-		pitchAvailability.setBookedFrom(bookedFrom);
-		pitchAvailability.setBookedTo(bookedTo);
-		pitchAvailability.setName(bookingName);
+		String name = principal.getName();
+		Account account = accountRepository.findByEmail(name);
 		
-		List<PitchAvailability> bookedDates = pitchAvailabilityService.findPitchAvailabilityByPitchAndDate(pitch, formattedDate);
-		for (PitchAvailability bookedDate : bookedDates) 
+		Booking booking = new Booking();
+		booking.setAccount(account);
+		booking.setPitch(pitch);
+		booking.setBookedFrom(bookedFrom);
+		booking.setBookedTo(bookedTo);
+		booking.setCost(bookingForm.getCost());
+		booking.setDate(formattedDate);
+		booking.setEmail(bookingForm.getEmail());
+		booking.setName(bookingName);
+		
+		List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+		for (Booking bookedDate : bookedDates) 
 		{
 			if (bookedFrom.before(bookedDate.getPitch().getAvailableFrom()) ) {
 				bindingResult.rejectValue("bookedFrom", "bookedBeforeAvailableFrom.message");
@@ -126,32 +124,16 @@ public class BookingController {
 		}
 		
 		try {
-			pitchAvailabilityService.createPitchAvailability(pitchAvailability);
+			//TODO When payment is introduced, if user can't pay then catch exception and delete previously create pitchAvailability
+			bookingService.createBooking(booking);
 		} catch (Exception e) {
 			ModelAndView duplicateMv = new ModelAndView("booking/duplicateBooking");
 			duplicateMv.addObject("pitch", pitch);
 			return duplicateMv;
 		}
-		
-		String name = principal.getName();
-		Account account = accountRepository.findByEmail(name);
-		
-		Booking booking = new Booking();
-		booking.setAccount(account);
-		booking.setPitchAvailability(pitchAvailability);
-		booking.setBookedFrom(bookedFrom);
-		booking.setBookedTo(bookedTo);
-		booking.setCost(bookingForm.getCost());
-		booking.setDate(formattedDate);
-		booking.setEmail(bookingForm.getEmail());
-		booking.setName(bookingName);
-		
-		//TODO When payment is introduced, if user can't pay then catch exception and delete previously create pitchAvailability
-		bookingService.createBooking(booking);
-		
+				
 		ModelAndView successMv = new ModelAndView("booking/bookingSuccessful");
 		successMv.addObject("booking", booking);
-		successMv.addObject("pitchAvailability", pitchAvailability);
 		
 		return successMv;
 	}
@@ -177,8 +159,10 @@ public class BookingController {
 	public ModelAndView cancelMyBookingRequest(Long id){
 		ModelAndView mv = new ModelAndView("booking/cancelMyBooking");
 		
+		Booking booking = bookingService.retrieve(id);
+		
 		DeleteBookingForm bookingForm = new DeleteBookingForm();
-		bookingForm.setBookingId(id);
+		bookingForm.setBookingId(booking.getId());
 		
 		mv.addObject("bookingForm", bookingForm);
 		
@@ -189,10 +173,10 @@ public class BookingController {
 	public ModelAndView cancelMyBooking(@ModelAttribute("bookingForm") DeleteBookingForm bookingForm, BindingResult result, HttpServletRequest request){
 		Booking booking = bookingService.retrieve(bookingForm.getBookingId());
 		
-		bookingService.deleteBooking(booking);
+		bookingService.delete(booking);
 		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
 		jsonView.setModelKey("redirect");
-		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "booking/myBookings");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "booking/cancelMyBooking");
 	}
 	
 	@RequestMapping(value = "manageBookings", method = RequestMethod.GET)
