@@ -176,7 +176,7 @@ public class BookingController {
 		bookingService.delete(booking);
 		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
 		jsonView.setModelKey("redirect");
-		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "booking/cancelMyBooking");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "booking/myBookings");
 	}
 	
 	@RequestMapping(value = "manageBookings", method = RequestMethod.GET)

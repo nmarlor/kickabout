@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import nmarlor.kickabout.booking.Booking;
 import nmarlor.kickabout.booking.BookingService;
+import nmarlor.kickabout.booking.DeleteBookingForm;
 import nmarlor.kickabout.date.DateService;
 
 @Controller
@@ -128,5 +131,29 @@ public class PitchAvailabilityController {
 		mv.addObject("date", date);
 		
 		return mv;
+	}
+	
+	@RequestMapping(value = "adminCancelBooking", method = RequestMethod.GET)
+	public ModelAndView adminCancelBookingRequest(Long id){
+		ModelAndView mv = new ModelAndView("pitchAvailability/adminCancelBooking");
+		
+		Booking booking = bookingService.retrieve(id);
+		
+		DeleteBookingForm bookingForm = new DeleteBookingForm();
+		bookingForm.setBookingId(booking.getId());
+		
+		mv.addObject("bookingForm", bookingForm);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "adminCancelBooking", method = RequestMethod.POST)
+	public ModelAndView adminCancelBooking(@ModelAttribute("bookingForm") DeleteBookingForm bookingForm, BindingResult result, HttpServletRequest request){
+		Booking booking = bookingService.retrieve(bookingForm.getBookingId());
+		
+		bookingService.delete(booking);
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitchAvailability/adminPitchAvailability");
 	}
 }
