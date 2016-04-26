@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="jumbotron default">
+		<div class="col-sm-12" align="center">
+			<h2 class="text-center" th:text="|${location.company} Bookings|"></h2>
+			<form th:action="@{/viewBookingsForAllPitches}" method="get">
+				<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
+					<div class="bookings-table">
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="col-sm-2 text-center">Name</th>
+								<th class="col-sm-2 text-center">Pitch Number</th>
+								<th class="col-sm-2 text-center">Date</th>
+								<th class="col-sm-2 text-center">Time</th>
+								<th class="col-sm-2 text-center">Cost</th>
+								<th class="col-sm-1"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="booking : ${bookings}">
+								<td class="col-sm-2 text-center" th:text="${booking.name}"> </td>
+								<td class="col-sm-2 text-center" th:text="${booking.pitch.pitchNumber}"> </td>
+								<td class="col-sm-2 text-center" th:text="${booking.date}"> </td>
+								<td class="col-sm-2 text-center" th:text="|${booking.bookedFrom} - ${booking.bookedTo}|"></td>
+								<td class="col-sm-2 text-center" th:text="${booking.cost}"></td>
+								<td class="col-sm-1 text-center">
+									<span class="btn-group">
+					  					<a class="btn btn-danger">Cancel Booking</a>
+					  				</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

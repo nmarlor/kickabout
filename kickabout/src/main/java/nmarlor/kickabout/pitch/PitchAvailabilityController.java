@@ -3,6 +3,7 @@ package nmarlor.kickabout.pitch;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +37,9 @@ public class PitchAvailabilityController {
 	
 	@Autowired
 	private BookingService bookingService;
+	
+	@Autowired
+	private PitchLocationService locationService;
 	
 	@RequestMapping(value = "/availability", method = RequestMethod.GET)
 	public ModelAndView pitchAvailability(Long pitchId){
@@ -155,5 +159,32 @@ public class PitchAvailabilityController {
 		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
 		jsonView.setModelKey("redirect");
 		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitchAvailability/adminPitchAvailability");
+	}
+	
+	@RequestMapping(value = "/viewBookingsForAllPitches", method = RequestMethod.GET)
+	public ModelAndView viewBookingsForAllPitches(Long locationId){
+		ModelAndView mv = new ModelAndView("booking/viewBookingsForAllPitches");
+		
+		PitchLocation location = locationService.retrieve(locationId);
+		List<Pitch> pitches = pitchesService.findPitchesByLocation(location);
+		
+		Date formattedDate = dateService.getTodaysDate();
+		
+		List<Booking> bookings = new ArrayList<>();
+		for (Pitch pitch : pitches) 
+		{
+			List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+			bookings.addAll(pitchAvailabilities);
+		}
+		
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		String date = df.format(formattedDate);
+		
+		mv.addObject("location", location);
+		mv.addObject("date", date);
+		mv.addObject("bookings", bookings);
+		
+		return mv;
 	}
 }
