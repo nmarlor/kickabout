@@ -45,7 +45,7 @@
 								<td class="col-sm-2 text-center" th:text="${booking.cost}"></td>
 								<td class="col-sm-2 text-center">
 									<span class="btn-group">
-					  					<a class="btn btn-danger">Cancel Booking</a>
+					  					<a class="btn btn-danger cancelBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#cancelBookingModal">Cancel Booking</a>
 					  				</span>
 								</td>
 							</tr>
@@ -56,6 +56,22 @@
 			</form>
 		</div>
 	</div>
+	<div id="cancelBookingModal" class="cancelBookingModal modal fade" tabindex="-1" role="dialog" aria-labelledby="cancelBookingModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<script>
+		$(".cancelBookingBtn").click(function(){
+			var bookingId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "adminCancelBooking",
+			 	data: {id : bookingId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
 	<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
 	<script th:src="@{/resources/js/pitchAvailability.js}"></script>
 </body>
