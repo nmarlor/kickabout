@@ -165,6 +165,9 @@ public class PitchAvailabilityController {
 	public ModelAndView viewBookingsForAllPitches(Long locationId){
 		ModelAndView mv = new ModelAndView("booking/viewBookingsForAllPitches");
 		
+		LocationForm locationForm = new LocationForm();
+		locationForm.setLocationId(locationId);
+		
 		PitchLocation location = locationService.retrieve(locationId);
 		List<Pitch> pitches = pitchesService.findPitchesByLocation(location);
 		
@@ -182,9 +185,46 @@ public class PitchAvailabilityController {
 		String date = df.format(formattedDate);
 		
 		mv.addObject("location", location);
+		mv.addObject("locationId", locationId);
 		mv.addObject("date", date);
 		mv.addObject("bookings", bookings);
+		mv.addObject("locationForm", locationForm);
 		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/viewBookingsForAllPitches", method = RequestMethod.POST)
+	public ModelAndView viewBookingsForAllPitches(@Valid @ModelAttribute("locationForm") LocationForm locationForm, BindingResult bindingResult, String date) {
+		ModelAndView mv = new ModelAndView("booking/viewBookingsForAllPitches");
+		mv.addObject("locationForm", locationForm);
+		
+		Long locationId = locationForm.getLocationId();
+		
+		PitchLocation location = locationService.retrieve(locationId);
+		List<Pitch> pitches = pitchesService.findPitchesByLocation(location);
+		
+		Date availabilityDate = dateService.stringToDate(date);
+		
+		List<Booking> bookings = new ArrayList<>();
+		if (availabilityDate != null) {
+			
+			for (Pitch pitch : pitches) 
+			{
+				List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, availabilityDate);
+				bookings.addAll(pitchAvailabilities);
+			}
+		}
+
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		date = df.format(availabilityDate);
+		
+		mv.addObject("locationForm", locationForm);
+		mv.addObject("location", location);
+		mv.addObject("locationId", locationId);
+		mv.addObject("date", date);
+		mv.addObject("bookings", bookings);
+				
 		return mv;
 	}
 }

@@ -12,13 +12,14 @@
 		<div class="col-sm-12" align="center">
 			<h2 class="text-center" th:text="|${location.company} Bookings|"></h2>
 			<br></br>
-			<form th:action="@{/viewBookingsForAllPitches}" method="get">
+			<form method="post" th:action="@{/viewBookingsForAllPitches}" th:object="${locationForm}">
 				<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
+				<input type="hidden" th:value="locationId" th:field="*{locationId}"/>
 					<div class="col-sm-12">
 						<div id="availabilityDateCal">
 							<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
 							<br></br>
-							<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd-mm-yyyy" name="date" th:href="@{/availability}"></input>
+							<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd-mm-yyyy" name="date" th:href="@{/viewBookingsForAllPitches}"></input>
 							<button class="btn btn-default search-date-btn" type="submit"></button>
 						</div>
 						<span th:text="|Booking Schedule - ${date}|"></span>
@@ -56,5 +57,6 @@
 		</div>
 	</div>
 	<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
+	<script th:src="@{/resources/js/pitchAvailability.js}"></script>
 </body>
 </html>
