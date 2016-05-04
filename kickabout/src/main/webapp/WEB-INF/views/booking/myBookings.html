@@ -12,11 +12,13 @@
 		<div class="col-sm-12" align="center">
 			<h2 class="text-center">My Bookings</h2>
 			<form th:action="@{/myBookings}" method="get">
-				<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
+				<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
 					<div class="bookings-table">
 					<table class="table">
 						<thead>
 							<tr>
+								<th class="col-sm-2 text-center">Location</th>
+								<th class="col-sm-1"></th>
 								<th class="col-sm-2 text-center">Date</th>
 								<th class="col-sm-2 text-center">Time</th>
 								<th class="col-sm-2 text-center">Cost</th>
@@ -25,6 +27,12 @@
 						</thead>
 						<tbody>
 							<tr th:each="booking : ${bookings}">
+								<td class="col-sm-2 text-center" th:text="|${booking.pitch.pitchLocation.company} Pitch ${booking.pitch.pitchNumber}|"></td>
+								<td class="col-xs-1 text-center">
+									<span class="btn-group btn-group-xs">
+										<a class="btn btn-info editFeatureBtn"><i class="glyphicon glyphicon-info-sign"></i></a>
+							  		</span>
+								</td>
 								<td class="col-sm-2 text-center" th:text="${booking.date}"> </td>
 								<td class="col-sm-2 text-center" th:text="|${booking.bookedFrom} - ${booking.bookedTo}|"></td>
 								<td class="col-sm-2 text-center" th:text="${booking.cost}"></td>
