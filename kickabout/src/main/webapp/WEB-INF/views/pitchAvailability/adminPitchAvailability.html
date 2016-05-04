@@ -10,7 +10,7 @@
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
-		<h2 class="text-center">Bookings For Pitch</h2>
+		<h2 class="text-center" th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber} Bookings|"></h2>
 		<br></br>
 		<form method="post" th:action="@{/adminPitchAvailability}" th:object="${pitchForm}">
 			<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
@@ -22,7 +22,7 @@
 						<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd-mm-yyyy" name="date" th:href="@{/availability}"></input>
 						<button class="btn btn-default search-date-btn" type="submit"></button>
 					</div>
-					<span th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber} - Booking Schedule - ${date}|"></span>
+					<span th:text="|Booking Schedule - ${date}|"></span>
 					<br></br>
 					<br></br>
 				</div>
