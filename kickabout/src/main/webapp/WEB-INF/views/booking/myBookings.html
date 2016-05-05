@@ -30,7 +30,7 @@
 								<td class="col-sm-2 text-center" th:text="|${booking.pitch.pitchLocation.company} Pitch ${booking.pitch.pitchNumber}|"></td>
 								<td class="col-xs-1 text-center">
 									<span class="btn-group btn-group-xs">
-										<a class="btn btn-info editFeatureBtn"><i class="glyphicon glyphicon-info-sign"></i></a>
+										<a class="btn btn-info pitchInfoBtn" th:id="${booking.id}" data-toggle="modal" data-target="#pitchInfoModal"><i class="glyphicon glyphicon-info-sign"></i></a>
 							  		</span>
 								</td>
 								<td class="col-sm-2 text-center" th:text="${booking.date}"> </td>
@@ -53,11 +53,27 @@
 		<div class="replaceable">
 		</div>
 	</div>
+	<div id="pitchInfoModal" class="pitchInfoModal modal fade" tabindex="-1" role="dialog" aria-labelledby="pitchInfoModal">
+		<div class="replaceable">
+		</div>
+	</div>
 	<script>
 		$(".cancelBookingBtn").click(function(){
 			var bookingId = $(this).attr("id");
 			$.ajax({
 			 	url: base_url + "cancelMyBooking",
+			 	data: {id : bookingId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+	<script>
+		$(".pitchInfoBtn").click(function(){
+			var bookingId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "myBookingPitchInfo",
 			 	data: {id : bookingId},
 			 	success: function(result){
 			 		$(".replaceable").html(result);

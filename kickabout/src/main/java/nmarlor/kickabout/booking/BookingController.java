@@ -188,4 +188,14 @@ public class BookingController {
 		mv.addObject("account", account);
 		return mv;
 	}
+	
+	@RequestMapping(value = "myBookingPitchInfo", method = RequestMethod.GET)
+	public ModelAndView myBookingPitchInfo(Long id){
+		ModelAndView mv = new ModelAndView("booking/myBookingPitchInfo");
+		
+		Booking booking = bookingService.retrieve(id);
+		
+		mv.addObject("booking", booking);
+		return mv;
+	}
 }
