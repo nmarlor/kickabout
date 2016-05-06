@@ -25,6 +25,11 @@
 					<span th:text="|Booking Schedule - ${date}|"></span>
 					<br></br>
 					<br></br>
+					<a class="btn addBookingBtn" th:id="${pitch.id}" data-toggle="modal" data-target="#addBookingModal">Add booking</a>
+					<span>/</span>
+					<a  class="btn">Import bookings</a>
+					<br></br>
+					<br></br>
 				</div>
 				<table class="table">
 					<thead>
@@ -53,12 +58,28 @@
 		<div class="replaceable">
 		</div>
 	</div>
+	<div id="addBookingModal" class="addBookingModal modal fade" tabindex="-1" role="dialog" aria-labelledby="addBookingModal">
+		<div class="replaceable">
+		</div>
+	</div>
 	<script>
 		$(".cancelBookingBtn").click(function(){
 			var bookingId = $(this).attr("id");
 			$.ajax({
 			 	url: base_url + "adminCancelBooking",
 			 	data: {id : bookingId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+	<script>
+		$(".addBookingBtn").click(function(){
+			var pitchId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "adminAddBooking",
+			 	data: {id : pitchId},
 			 	success: function(result){
 			 		$(".replaceable").html(result);
 			 	}

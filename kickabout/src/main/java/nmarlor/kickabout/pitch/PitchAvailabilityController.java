@@ -1,6 +1,8 @@
 package nmarlor.kickabout.pitch;
 
+import java.security.Principal;
 import java.sql.Date;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import nmarlor.kickabout.account.Account;
+import nmarlor.kickabout.account.AccountRepository;
 import nmarlor.kickabout.booking.Booking;
+import nmarlor.kickabout.booking.BookingForm;
 import nmarlor.kickabout.booking.BookingService;
 import nmarlor.kickabout.booking.DeleteBookingForm;
 import nmarlor.kickabout.date.DateService;
@@ -40,6 +45,9 @@ public class PitchAvailabilityController {
 	
 	@Autowired
 	private PitchLocationService locationService;
+	
+	@Autowired
+	private AccountRepository accountRepository;
 	
 	@RequestMapping(value = "/availability", method = RequestMethod.GET)
 	public ModelAndView pitchAvailability(Long pitchId){
@@ -226,5 +234,81 @@ public class PitchAvailabilityController {
 		mv.addObject("bookings", bookings);
 				
 		return mv;
+	}
+	
+	@RequestMapping(value = "adminAddBooking", method = RequestMethod.GET)
+	public ModelAndView adminAddBookingRequest(Long id){
+		ModelAndView mv = new ModelAndView("booking/adminAddBooking");
+		
+		BookingForm bookingForm = new BookingForm();
+		bookingForm.setPitchId(id);
+		
+		mv.addObject("bookingForm", bookingForm);
+		return mv;
+	}
+	
+	@RequestMapping(value = "adminAddBooking", method = RequestMethod.POST)
+	public ModelAndView adminAddBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, Principal principal, BindingResult bindingResult, HttpServletRequest request){
+		Long pitchId = bookingForm.getPitchId();
+		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		
+		ModelAndView mv = new ModelAndView("booking/adminAddBooking");
+		mv.addObject("pitch", pitch);
+		
+		String date = bookingForm.getDate();
+		Date formattedDate = dateService.stringToDate(date);
+		Time bookedFrom = bookingForm.getBookedFrom();
+		Time bookedTo = bookingForm.getBookedTo();
+		String bookingName = bookingForm.getName();
+		
+		String name = principal.getName();
+		Account account = accountRepository.findByEmail(name);
+		
+		Booking booking = new Booking();
+		booking.setAccount(account);
+		booking.setPitch(pitch);
+		booking.setBookedFrom(bookedFrom);
+		booking.setBookedTo(bookedTo);
+		booking.setCost(bookingForm.getCost());
+		booking.setDate(formattedDate);
+		booking.setEmail(bookingForm.getEmail());
+		booking.setName(bookingName);
+		
+		List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+		for (Booking bookedDate : bookedDates) 
+		{
+			if (bookedFrom.before(bookedDate.getPitch().getAvailableFrom()) ) {
+				bindingResult.rejectValue("bookedFrom", "bookedBeforeAvailableFrom.message");
+				mv.addObject("errors", bindingResult);
+				return mv;
+			}
+			if (bookedFrom.after(bookedDate.getPitch().getAvailableTo())) {
+				bindingResult.rejectValue("bookedFrom", "bookedAfterAvailableTo.message");
+				mv.addObject("errors", bindingResult);
+				return mv;
+			}
+			if (bookedTo.before(bookedDate.getPitch().getAvailableFrom())) {
+				bindingResult.rejectValue("bookedTo", "bookedBeforeAvailableFrom.message");
+				mv.addObject("errors", bindingResult);
+				return mv;
+			}
+			if (bookedTo.after(bookedDate.getPitch().getAvailableTo())) {
+				bindingResult.rejectValue("bookedTo", "bookedAfterAvailableTo.message");
+				mv.addObject("errors", bindingResult);
+				return mv;
+			}
+		}
+		
+		try {
+			//TODO When payment is introduced, if user can't pay then catch exception and delete previously create pitchAvailability
+			bookingService.createBooking(booking);
+		} catch (Exception e) {
+			mv.addObject("pitch", pitch);
+			return mv;
+		}
+		
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitchAvailability/adminPitchAvailability");
 	}
 }
