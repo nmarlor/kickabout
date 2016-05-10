@@ -1,6 +1,7 @@
 package nmarlor.kickabout.date;
 
 import java.sql.Date;
+import java.sql.Time;
 
 public interface DateService 
 {
@@ -16,4 +17,11 @@ public interface DateService
 	 * @return Date
 	 */
 	public Date stringToDate(String date);
+	
+	/**
+	 * Service for converting a string format to SQL Time format
+	 * @param time
+	 * @return Time
+	 */
+	public Time stringToTime(String time);
 }

@@ -80,8 +80,27 @@ public class BookingController {
 		String date = bookingForm.getDate();
 		Date formattedDate = dateService.stringToDate(date);
 		
-		Time bookedFrom = bookingForm.getBookedFrom();
-		Time bookedTo = bookingForm.getBookedTo();
+		String bookedFrom = bookingForm.getBookedFrom();
+		String bookedTo = bookingForm.getBookedTo();
+		
+		Time formattedBookedFrom = dateService.stringToTime(bookedFrom);
+		Time formattedBookedTo = dateService.stringToTime(bookedTo);
+		
+		if (formattedBookedTo != null && formattedBookedFrom != null) {
+			if (formattedBookedTo.before(formattedBookedFrom)) {
+				bindingResult.rejectValue("bookedTo", "bookedTo.error");
+				thisMv.addObject("errors", bindingResult);
+				return thisMv;
+			}
+		}
+		
+		if (formattedBookedFrom != null && formattedBookedTo != null) {
+			if (formattedBookedFrom.after(formattedBookedTo)) {
+				bindingResult.rejectValue("bookedFrom", "bookedFrom.error");
+				thisMv.addObject("errors", bindingResult);
+				return thisMv;
+			}
+		}
 		
 		String bookingName = bookingForm.getName();
 		
@@ -91,8 +110,8 @@ public class BookingController {
 		Booking booking = new Booking();
 		booking.setAccount(account);
 		booking.setPitch(pitch);
-		booking.setBookedFrom(bookedFrom);
-		booking.setBookedTo(bookedTo);
+		booking.setBookedFrom(formattedBookedFrom);
+		booking.setBookedTo(formattedBookedTo);
 		booking.setCost(bookingForm.getCost());
 		booking.setDate(formattedDate);
 		booking.setEmail(bookingForm.getEmail());
@@ -101,22 +120,22 @@ public class BookingController {
 		List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
 		for (Booking bookedDate : bookedDates) 
 		{
-			if (bookedFrom.before(bookedDate.getPitch().getAvailableFrom()) ) {
+			if (formattedBookedFrom.before(bookedDate.getPitch().getAvailableFrom()) ) {
 				bindingResult.rejectValue("bookedFrom", "bookedBeforeAvailableFrom.message");
 				thisMv.addObject("errors", bindingResult);
 				return thisMv;
 			}
-			if (bookedFrom.after(bookedDate.getPitch().getAvailableTo())) {
+			if (formattedBookedFrom.after(bookedDate.getPitch().getAvailableTo())) {
 				bindingResult.rejectValue("bookedFrom", "bookedAfterAvailableTo.message");
 				thisMv.addObject("errors", bindingResult);
 				return thisMv;
 			}
-			if (bookedTo.before(bookedDate.getPitch().getAvailableFrom())) {
+			if (formattedBookedTo.before(bookedDate.getPitch().getAvailableFrom())) {
 				bindingResult.rejectValue("bookedTo", "bookedBeforeAvailableFrom.message");
 				thisMv.addObject("errors", bindingResult);
 				return thisMv;
 			}
-			if (bookedTo.after(bookedDate.getPitch().getAvailableTo())) {
+			if (formattedBookedTo.after(bookedDate.getPitch().getAvailableTo())) {
 				bindingResult.rejectValue("bookedTo", "bookedAfterAvailableTo.message");
 				thisMv.addObject("errors", bindingResult);
 				return thisMv;

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-@Component("bookingValidator")
-public class BookingValidator implements Validator {
+@Component("adminBookingValidator")
+public class AdminBookingValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -21,11 +21,11 @@ public class BookingValidator implements Validator {
 		String bookedFrom = booking.getBookedFrom();
 		String bookedTo = booking.getBookedTo();
 		
-		if (StringUtil.isEmpty(booking.getEmail())) 
-			errors.rejectValue("email", "email.message");
-		
 		if (StringUtil.isEmpty(booking.getName())) 
 			errors.rejectValue("name", "name.message");
+		
+		if (booking.getCost() == null)
+			errors.rejectValue("cost", "bookingCost.message");
 		
 		if (StringUtil.isEmpty(bookedFrom)) 
 			errors.rejectValue("bookedFrom", "bookedFrom.empty");

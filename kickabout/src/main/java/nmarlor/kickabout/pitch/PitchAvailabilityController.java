@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.account.AccountRepository;
+import nmarlor.kickabout.booking.AdminBookingValidator;
 import nmarlor.kickabout.booking.Booking;
 import nmarlor.kickabout.booking.BookingForm;
 import nmarlor.kickabout.booking.BookingService;
@@ -48,6 +49,9 @@ public class PitchAvailabilityController {
 	
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private AdminBookingValidator bookingValidator;
 	
 	@RequestMapping(value = "/availability", method = RequestMethod.GET)
 	public ModelAndView pitchAvailability(Long pitchId){
@@ -255,20 +259,46 @@ public class PitchAvailabilityController {
 		ModelAndView mv = new ModelAndView("booking/adminAddBooking");
 		mv.addObject("pitch", pitch);
 		
+		bookingValidator.validate(bookingForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			mv.addObject("errors", bindingResult);
+			return mv;
+		}
+		
 		String date = bookingForm.getDate();
 		Date formattedDate = dateService.stringToDate(date);
-		Time bookedFrom = bookingForm.getBookedFrom();
-		Time bookedTo = bookingForm.getBookedTo();
+		String bookedFrom = bookingForm.getBookedFrom();
+		String bookedTo = bookingForm.getBookedTo();
 		String bookingName = bookingForm.getName();
 		
 		String name = principal.getName();
 		Account account = accountRepository.findByEmail(name);
 		
+		Time formattedBookedFrom = dateService.stringToTime(bookedFrom);
+		Time formattedBookedTo = dateService.stringToTime(bookedTo);
+		
+		if (formattedBookedTo != null && formattedBookedFrom != null) {
+			if (formattedBookedTo.before(formattedBookedFrom)) {
+				bindingResult.rejectValue("bookedTo", "bookedTo.error");
+				mv.addObject("errors", bindingResult);
+				return mv;
+			}
+		}
+		
+		if (formattedBookedFrom != null && formattedBookedTo != null) {
+			if (formattedBookedFrom.after(formattedBookedTo)) {
+				bindingResult.rejectValue("bookedFrom", "bookedFrom.error");
+				mv.addObject("errors", bindingResult);
+				return mv;
+			}
+		}
+		
 		Booking booking = new Booking();
 		booking.setAccount(account);
 		booking.setPitch(pitch);
-		booking.setBookedFrom(bookedFrom);
-		booking.setBookedTo(bookedTo);
+		booking.setBookedFrom(formattedBookedFrom);
+		booking.setBookedTo(formattedBookedTo);
 		booking.setCost(bookingForm.getCost());
 		booking.setDate(formattedDate);
 		booking.setEmail(bookingForm.getEmail());
@@ -277,22 +307,22 @@ public class PitchAvailabilityController {
 		List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
 		for (Booking bookedDate : bookedDates) 
 		{
-			if (bookedFrom.before(bookedDate.getPitch().getAvailableFrom()) ) {
+			if (formattedBookedFrom.before(bookedDate.getPitch().getAvailableFrom()) ) {
 				bindingResult.rejectValue("bookedFrom", "bookedBeforeAvailableFrom.message");
 				mv.addObject("errors", bindingResult);
 				return mv;
 			}
-			if (bookedFrom.after(bookedDate.getPitch().getAvailableTo())) {
+			if (formattedBookedFrom.after(bookedDate.getPitch().getAvailableTo())) {
 				bindingResult.rejectValue("bookedFrom", "bookedAfterAvailableTo.message");
 				mv.addObject("errors", bindingResult);
 				return mv;
 			}
-			if (bookedTo.before(bookedDate.getPitch().getAvailableFrom())) {
+			if (formattedBookedTo.before(bookedDate.getPitch().getAvailableFrom())) {
 				bindingResult.rejectValue("bookedTo", "bookedBeforeAvailableFrom.message");
 				mv.addObject("errors", bindingResult);
 				return mv;
 			}
-			if (bookedTo.after(bookedDate.getPitch().getAvailableTo())) {
+			if (formattedBookedTo.after(bookedDate.getPitch().getAvailableTo())) {
 				bindingResult.rejectValue("bookedTo", "bookedAfterAvailableTo.message");
 				mv.addObject("errors", bindingResult);
 				return mv;
