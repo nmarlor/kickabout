@@ -241,11 +241,12 @@ public class PitchAvailabilityController {
 	}
 	
 	@RequestMapping(value = "adminAddBooking", method = RequestMethod.GET)
-	public ModelAndView adminAddBookingRequest(Long id){
+	public ModelAndView adminAddBookingRequest(Long id, String selectedDate){
 		ModelAndView mv = new ModelAndView("booking/adminAddBooking");
 		
 		BookingForm bookingForm = new BookingForm();
 		bookingForm.setPitchId(id);
+		bookingForm.setDate(selectedDate);
 		
 		mv.addObject("bookingForm", bookingForm);
 		return mv;

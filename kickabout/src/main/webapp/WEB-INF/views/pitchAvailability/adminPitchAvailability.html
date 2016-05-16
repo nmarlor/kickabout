@@ -23,6 +23,7 @@
 						<button class="btn btn-default search-date-btn" type="submit"></button>
 					</div>
 					<span th:text="|Booking Schedule - ${date}|"></span>
+					<input type="hidden" id="selectedDate" name="selectedDate" th:value="${date}"/>
 					<br></br>
 					<br></br>
 					<a class="btn addBookingBtn" th:id="${pitch.id}" data-toggle="modal" data-target="#addBookingModal">Add booking</a>
@@ -77,9 +78,13 @@
 	<script>
 		$(".addBookingBtn").click(function(){
 			var pitchId = $(this).attr("id");
+			var selectedDate = $("#selectedDate").val();
 			$.ajax({
 			 	url: base_url + "adminAddBooking",
-			 	data: {id : pitchId},
+			 	data: {
+			 		id : pitchId,
+			 		selectedDate : selectedDate
+			 	},
 			 	success: function(result){
 			 		$(".replaceable").html(result);
 			 	}
