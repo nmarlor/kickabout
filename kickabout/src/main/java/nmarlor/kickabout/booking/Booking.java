@@ -55,6 +55,9 @@ public class Booking {
 	
 	@Column
 	private String email;
+	
+	@Column(name = "booking_reference", unique=true)
+	private String bookingReference;
 
 	public Long getId() {
 		return id;
@@ -122,6 +125,14 @@ public class Booking {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getBookingReference() {
+		return bookingReference;
+	}
+
+	public void setBookingReference(String bookingReference) {
+		this.bookingReference = bookingReference;
 	}
 
 }

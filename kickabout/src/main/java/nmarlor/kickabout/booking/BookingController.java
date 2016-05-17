@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -116,6 +117,11 @@ public class BookingController {
 		booking.setDate(formattedDate);
 		booking.setEmail(bookingForm.getEmail());
 		booking.setName(bookingName);
+		
+		String randomUUID = UUID.randomUUID().toString();
+		String bookingReference = randomUUID.substring(0, 13);
+		
+		booking.setBookingReference(bookingReference);
 		
 		List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
 		for (Booking bookedDate : bookedDates) 
