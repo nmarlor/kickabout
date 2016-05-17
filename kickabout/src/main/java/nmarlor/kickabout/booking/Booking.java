@@ -12,14 +12,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.Proxy;
 
 import nmarlor.kickabout.account.Account;
-import nmarlor.kickabout.pitch.PitchAvailability;
+import nmarlor.kickabout.pitch.Pitch;
 
 @Entity
-@Table(name = "bookings")
+@Proxy(lazy = false)
+@Table(name = "bookings",
+	uniqueConstraints={@UniqueConstraint(columnNames={"pitch_id", "date", "booked_from", "booked_to"}, name="booking_pitch_UK")})
 public class Booking {
 
 	@Id
@@ -30,9 +34,9 @@ public class Booking {
 	@JoinColumn(name="account_id", foreignKey=@ForeignKey(name="booking_account_id_fk"))
 	private Account account;
 	
-	@OneToOne
-	@JoinColumn(name="pitch_availability_id", foreignKey=@ForeignKey(name="bookings_pitch_availability_id_fk"))
-	private PitchAvailability pitchAvailability;
+	@ManyToOne
+	@JoinColumn(name="pitch_id", foreignKey=@ForeignKey(name="booking_pitch_id_fk"))
+	private Pitch pitch;
 	
 	@Column(name = "booked_from")
 	private Time bookedFrom;
@@ -88,12 +92,12 @@ public class Booking {
 		this.date = date;
 	}
 
-	public PitchAvailability getPitchAvailability() {
-		return pitchAvailability;
+	public Pitch getPitch() {
+		return pitch;
 	}
 
-	public void setPitchAvailability(PitchAvailability pitchAvailability) {
-		this.pitchAvailability = pitchAvailability;
+	public void setPitch(Pitch pitch) {
+		this.pitch = pitch;
 	}
 
 	public BigDecimal getCost() {

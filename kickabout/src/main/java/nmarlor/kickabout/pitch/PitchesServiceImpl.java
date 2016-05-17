@@ -26,9 +26,8 @@ public class PitchesServiceImpl implements PitchesService{
 	}
 
 	@Override
-	public void createPitch() {
-		// TODO Auto-generated method stub
-		
+	public void createPitch(Pitch pitch) {
+		pitchDAO.persist(pitch);
 	}
 
 	@Override
@@ -41,6 +40,12 @@ public class PitchesServiceImpl implements PitchesService{
 	public Pitch updatePitch(Pitch pitch) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Pitch findPitchByLocationAndNumber(PitchLocation location, Integer pitchNumber) {
+		Pitch pitch = pitchDAO.findPitchByLocationAndPitchNumber(location, pitchNumber);
+		return pitch;
 	}
 
 }

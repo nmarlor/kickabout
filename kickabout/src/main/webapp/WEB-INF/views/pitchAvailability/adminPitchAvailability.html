@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="jumbotron default">
+		<h2 class="text-center" th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber} Bookings|"></h2>
+		<br></br>
+		<form method="post" th:action="@{/adminPitchAvailability}" th:object="${pitchForm}">
+			<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
+				<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
+				<div class="col-sm-12">
+					<div id="availabilityDateCal">
+						<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
+						<br></br>
+						<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd-mm-yyyy" name="date" th:href="@{/availability}"></input>
+						<button class="btn btn-default search-date-btn" type="submit"></button>
+					</div>
+					<span th:text="|Booking Schedule - ${date}|"></span>
+					<input type="hidden" id="selectedDate" name="selectedDate" th:value="${date}"/>
+					<br></br>
+					<br></br>
+					<a class="btn addBookingBtn" th:id="${pitch.id}" data-toggle="modal" data-target="#addBookingModal">Add booking</a>
+					<span>/</span>
+					<a  class="btn">Import bookings</a>
+					<br></br>
+					<br></br>
+				</div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="col-sm-2 text-center">Name</th>
+							<th class="col-sm-2 text-center">Time</th>
+							<th class="col-sm-2"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="availability : ${pitchAvailabilities}">
+							<td class="col-sm-2 text-center" th:text="${availability.name}"> </td>
+							<td class="col-sm-2 text-center" th:text="|${availability.bookedFrom} - ${availability.bookedTo}|"> </td>
+							<td class="col-sm-2 text-center">
+								<span class="btn-group">
+						  			<a class="btn btn-danger cancelBookingBtn" th:id="${availability.id}" data-toggle="modal" data-target="#cancelBookingModal">Cancel Booking</a>
+						  		</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</form>
+	</div>
+	<div id="cancelBookingModal" class="cancelBookingModal modal fade" tabindex="-1" role="dialog" aria-labelledby="cancelBookingModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<div id="addBookingModal" class="addBookingModal modal fade" tabindex="-1" role="dialog" aria-labelledby="addBookingModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<script>
+		$(".cancelBookingBtn").click(function(){
+			var bookingId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "adminCancelBooking",
+			 	data: {id : bookingId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+	<script>
+		$(".addBookingBtn").click(function(){
+			var pitchId = $(this).attr("id");
+			var selectedDate = $("#selectedDate").val();
+			$.ajax({
+			 	url: base_url + "adminAddBooking",
+			 	data: {
+			 		id : pitchId,
+			 		selectedDate : selectedDate
+			 	},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+	<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/resources/js/pitchAvailability.js}"></script>
+</body>
+</html>

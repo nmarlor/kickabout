@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+		<div class="container">
+			<form method="post" th:action="@{/addPitchLocation}" th:object="${pitchLocationForm}">
+			<input type="hidden" th:value="accountId" th:field="*{accountId}"/>
+			<div class="jumbotron default">
+				<h2 class="text-center">New pitch location</h2>
+				<br></br>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Company</span>
+				</div>
+				<div class="col-sm-2" align="center">
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="company-input" th:field="*{company}"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Address Line 1</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="address-1-input" th:field="*{addressLine1}"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Address Line 2</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="address-2-input" th:field="*{addressLine2}"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>City</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="city-input" th:field="*{city}"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>County</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="county-input" th:field="*{county}"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Email</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Postcode</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="postcode-input" th:field="*{postcode}"/>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-2 text-center">
+					<span>Telephone</span>
+				</div>
+				<div class="col-sm-2">
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="telephone-input" th:field="*{telephone}"/>
+					<br></br>
+				</div>
+				<div class="create-btn col-sm-offset-4 col-sm-2"></div>
+				<div class="col-sm-2">
+					<input type="submit" value="Save location" class="btn btn-block btn-success create-button"/>
+				</div>
+			</div>
+			</form>
+		</div>
+</body>
+</html>

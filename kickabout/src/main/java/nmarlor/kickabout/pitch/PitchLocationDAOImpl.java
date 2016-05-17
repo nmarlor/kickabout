@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import com.googlecode.genericdao.search.Search;
 
+import nmarlor.kickabout.account.Account;
+import nmarlor.kickabout.company.Company;
 import nmarlor.kickabout.lib.HibernateJPABase;
 
 @Repository
@@ -18,6 +20,20 @@ public class PitchLocationDAOImpl extends HibernateJPABase<PitchLocation, Long> 
 		//TODO need to find a way of searching all parameters
 //		search.addFilterEqual("county", name);
 //		search.addFilterCustom("city", name, "county", name);
+		return super.search(search);
+	}
+
+	@Override
+	public List<PitchLocation> findAllLocationsByCompany(Company company) {
+		Search search = new Search(PitchLocation.class);
+		search.addFilterEqual("company", company);
+		return super.search(search);
+	}
+
+	@Override
+	public List<PitchLocation> findAllLocationsByAccount(Account account) {
+		Search search = new Search(PitchLocation.class);
+		search.addFilterEqual("account", account);
 		return super.search(search);
 	}
 

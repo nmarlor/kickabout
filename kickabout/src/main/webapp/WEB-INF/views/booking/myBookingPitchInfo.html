@@ -1,0 +1,37 @@
+<form th:action="@{/myBookingPitchInfo}" method="get">
+
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close" disabled="disabled"><span data-dismiss="modal" aria-hidden="true">&times;</span></button>
+		        <h4 class="inline-block modal-title" id="myModalLabel" th:text="|${booking.pitch.pitchLocation.company} Pitch ${booking.pitch.pitchNumber}|"></h4>
+			</div>
+			<div class="modal-body" id="">
+				<div class="form-group row">
+					<div class="col-sm-12">
+						<label>Address</label>
+						<br></br>
+						<span th:text="|${booking.pitch.pitchLocation.addressLine1}, ${booking.pitch.pitchLocation.addressLine2}, ${booking.pitch.pitchLocation.city}, ${booking.pitch.pitchLocation.county}, ${booking.pitch.pitchLocation.postCode}|"></span>
+						<br></br>
+						<br></br>
+						<label>Email Address</label>
+						<br></br>
+						<span th:text="|${booking.pitch.pitchLocation.email}|"></span>
+						<br></br>
+						<br></br>
+						<label>Phone Number</label>
+						<br></br>
+						<span th:text="|${booking.pitch.pitchLocation.telephone}|"></span>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+		    	<h4 class="inline-block no-margin confirmationMessage"></h4>
+		    	<div class="pull-right">
+		    		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		        </div>
+	        </div>
+		</div>
+	</div>
+	
+</form>

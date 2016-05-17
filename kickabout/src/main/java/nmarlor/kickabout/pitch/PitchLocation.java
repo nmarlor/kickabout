@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import nmarlor.kickabout.company.Company;
+import nmarlor.kickabout.account.Account;
 
 @Entity
 @Table(name="pitch_locations")
@@ -25,8 +25,11 @@ public class PitchLocation implements Serializable{
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name="company_id", foreignKey=@ForeignKey(name="pitch_location_company_id_fk"))
-	private Company company;
+	@JoinColumn(name="account_id", foreignKey=@ForeignKey(name="pitch_location_account_id_fk"))
+	private Account account;
+	
+	@Column
+	private String company;
 	
 	@Column
 	private String email;
@@ -53,11 +56,19 @@ public class PitchLocation implements Serializable{
 		return id;
 	}
 
-	public Company getCompany() {
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	public String getCompany() {
 		return company;
 	}
 
-	public void setCompany(Company company) {
+	public void setCompany(String company) {
 		this.company = company;
 	}
 

@@ -1,7 +1,5 @@
 package nmarlor.kickabout.booking;
 
-import java.sql.Time;
-
 import org.hsqldb.lib.StringUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -20,8 +18,8 @@ public class BookingValidator implements Validator {
 	{
 		BookingForm booking = (BookingForm) target;
 		
-		Time bookedFrom = booking.getBookedFrom();
-		Time bookedTo = booking.getBookedTo();
+		String bookedFrom = booking.getBookedFrom();
+		String bookedTo = booking.getBookedTo();
 		
 		if (StringUtil.isEmpty(booking.getEmail())) 
 			errors.rejectValue("email", "email.message");
@@ -29,20 +27,10 @@ public class BookingValidator implements Validator {
 		if (StringUtil.isEmpty(booking.getName())) 
 			errors.rejectValue("name", "name.message");
 		
-		if (bookedFrom == null)
+		if (StringUtil.isEmpty(bookedFrom)) 
 			errors.rejectValue("bookedFrom", "bookedFrom.empty");
 		
-		if (bookedTo == null)
+		if (StringUtil.isEmpty(bookedTo)) 
 			errors.rejectValue("bookedTo", "bookedTo.empty");
-		
-		if (bookedTo != null && bookedFrom != null) {
-			if (bookedTo.before(bookedFrom))
-				errors.rejectValue("bookedTo", "bookedTo.before");
-		}
-		
-		if (bookedFrom != null && bookedTo != null) {
-			if (bookedFrom.after(bookedTo))
-				errors.rejectValue("bookedFrom", "bookedFrom.error");
-		}
 	}
 }

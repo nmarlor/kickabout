@@ -1,6 +1,10 @@
 package nmarlor.kickabout.date;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -27,6 +31,19 @@ public class DateServiceImpl implements DateService{
 		LocalDate dateToFormat = LocalDate.parse(date, formatter);
 		Date formattedDate = Date.valueOf(dateToFormat);
 		return formattedDate;
+	}
+
+	@Override
+	public Time stringToTime(String time) {
+		DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+		Time formattedTime = null;
+		try {
+			java.util.Date toFormat = formatter.parse(time);
+			formattedTime = new Time(toFormat.getTime());
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		return formattedTime;
 	}
 
 }

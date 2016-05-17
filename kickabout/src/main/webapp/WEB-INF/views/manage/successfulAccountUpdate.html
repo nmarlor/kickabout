@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<form method="post" th:action="@{/manageClientAccount}" th:object="${accountForm}">
+	<input type="hidden" th:value="accountId" th:field="*{accountId}"/>
+	
+		<div class="jumbotron default">
+			<h2 class="text-center">My Account</h2>
+			<div class="col-sm-4"></div>
+			<div class="panel col-sm-4">
+	  			<div class="panel-body">
+	  			<div class="text-center">
+	  				<a href="myBookings" th:href="@{myBookings(accountId=${accountId})}">View my bookings</a>
+	  			</div>
+	  				<h4>Your details:</h4>
+	  			<br></br>
+	  				<span>Email Address</span>
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>
+	  			<br></br>
+	  				<span>Name</span>
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" th:field="*{name}"/>
+	  			</div>
+	  			<div class="text-center" style="margin-bottom: 15px;">
+	  			<span style="color:red">Account info successfully updated, please logout for changes to take effect!</span>
+	  			</div>
+	  			<div class="create-btn col-sm-4" style="float:right; margin-bottom: 20px;">
+					<input type="submit" value="Save Changes" class="btn btn-block btn-success create-button" onclick="" />
+				</div>
+			</div>
+			<div class="col-sm-4"></div>
+		</div>
+	</form>
+</body>
+</html>

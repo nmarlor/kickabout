@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="jumbotron default">
+		<div class="col-sm-12" align="center">
+			<h2 class="text-center">My Bookings</h2>
+			<form th:action="@{/myBookings}" method="get">
+				<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
+					<div class="bookings-table">
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="col-sm-2 text-center">Location</th>
+								<th class="col-sm-1"></th>
+								<th class="col-sm-2 text-center">Date</th>
+								<th class="col-sm-2 text-center">Time</th>
+								<th class="col-sm-2 text-center">Cost</th>
+								<th class="col-sm-1"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="booking : ${bookings}">
+								<td class="col-sm-2 text-center" th:text="|${booking.pitch.pitchLocation.company} Pitch ${booking.pitch.pitchNumber}|"></td>
+								<td class="col-xs-1 text-center">
+									<span class="btn-group btn-group-xs">
+										<a class="btn btn-info pitchInfoBtn" th:id="${booking.id}" data-toggle="modal" data-target="#pitchInfoModal"><i class="glyphicon glyphicon-info-sign"></i></a>
+							  		</span>
+								</td>
+								<td class="col-sm-2 text-center" th:text="${booking.date}"> </td>
+								<td class="col-sm-2 text-center" th:text="|${booking.bookedFrom} - ${booking.bookedTo}|"></td>
+								<td class="col-sm-2 text-center" th:text="${booking.cost}"></td>
+								<td class="col-sm-1 text-center">
+									<span class="btn-group">
+					  					<a class="btn btn-danger cancelBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#cancelBookingModal">Cancel Booking</a>
+					  				</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="cancelBookingModal" class="cancelBookingModal modal fade" tabindex="-1" role="dialog" aria-labelledby="cancelBookingModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<div id="pitchInfoModal" class="pitchInfoModal modal fade" tabindex="-1" role="dialog" aria-labelledby="pitchInfoModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<script>
+		$(".cancelBookingBtn").click(function(){
+			var bookingId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "cancelMyBooking",
+			 	data: {id : bookingId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+	<script>
+		$(".pitchInfoBtn").click(function(){
+			var bookingId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "myBookingPitchInfo",
+			 	data: {id : bookingId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+</body>
+</html>

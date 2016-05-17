@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="jumbotron default">
+		<div class="col-sm-12">
+			<h2 align="center">
+				<span class="header-pitches" th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber} Features|"></span>
+			</h2>
+			<form th:action="@{/managePitch}" method="get">
+				<div class="pitches-table-holder col-sm-offset-4 col-sm-4" align="center">
+					<div class="bookings-table">
+						<table class="table">
+							<tbody>
+								<tr th:each="pitchFeature : ${pitchFeatures}">
+									<td class="col-xs-2  text-left" th:text="${pitchFeature.feature}"> </td>
+									<td class="col-xs-1 text-right">
+										<span class="btn-group btn-group-xs">
+											<a class="btn btn-info editFeatureBtn" th:id="${pitchFeature.id}" data-toggle="modal" data-target="#editFeatureModal"><i class="fa fa-pencil"></i></a>
+							  			</span>
+									</td>
+									<td class="col-xs-1 text-right">
+										<span class="btn-group btn-group-xs">
+											<a class="btn btn-danger deleteFeatureBtn" th:id="${pitchFeature.id}" data-toggle="modal" data-target="#deleteFeatureModal"><i class="fa fa-trash-o danger"></i></a>
+							  			</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<a class="btn btn-success addFeatureBtn" th:id="${pitch.id}" data-toggle="modal" data-target="#addFeatureModal">Add New Feature</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="editFeatureModal" class="editFeatureModal modal fade" tabindex="-1" role="dialog" aria-labelledby="editFeatureModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<div id="deleteFeatureModal" class="deleteFeatureModal modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteFeatureModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<div id="addFeatureModal" class="addFeatureModal modal fade" tabindex="-1" role="dialog" aria-labelledby="addFeatureModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<script>
+		$(".editFeatureBtn").click(function(){
+			var featureId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "editFeature",
+			 	data: {id : featureId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+		
+		$(".deleteFeatureBtn").click(function(){
+			var featureId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "deleteFeature",
+			 	data: {id : featureId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+		
+		$(".addFeatureBtn").click(function(){
+			var pitchId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "addFeature",
+			 	data: {id : pitchId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+</body>
+</html>

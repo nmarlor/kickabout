@@ -1,0 +1,77 @@
+<form th:action="@{/adminAddBooking}" th:object="${bookingForm}" method="post">
+	
+	<input type="hidden" th:field="*{pitchId}"/>
+	
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close" disabled="disabled"><span data-dismiss="modal" aria-hidden="true">&times;</span></button>
+		        <h4 class="inline-block modal-title" id="myModalLabel">Adding booking</h4>
+			</div>
+			<div class="modal-body" id="">
+				<div class="form-group row">
+					<div class="col-sm-12">
+						<label>Name</label>
+						<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" th:field="*{name}"/>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-12">
+						<label>Date</label>
+						<input th:errorclass="input-form-error" type="text" class="form-control" id="date-input" th:field="*{date}" readonly="readonly"/>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-12">
+						<label>Booked from</label>
+						<input th:errorclass="input-form-error" type="text" class="form-control" id="from-input" th:field="*{bookedFrom}"/>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-12">
+						<label>Booked to</label>
+						<input th:errorclass="input-form-error" type="text" class="form-control" id="to-input" th:field="*{bookedTo}"/>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-12">
+						<label>Cost</label>
+						<input th:errorclass="input-form-error" type="text" class="form-control" id="cost-input" th:field="*{cost}"/>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+		    	<h4 class="inline-block no-margin confirmationMessage"></h4>
+		    	<div class="pull-right">
+		    		<button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+		            <button type="button" class="addBookingConfirm btn btn-success">Add booking</button>
+		        </div>
+	        </div>
+		</div>
+	</div>
+</form>
+<script>
+	$(".addBookingConfirm").click(function(){
+		var url = $(this).parents("form").attr("action");
+		var data = $(this).parents("form");
+		
+		$(this).html("Confirm").removeClass("btn-success ").addClass("btn-danger addBookingChanges");
+		$(".confirmationMessage").html("Are you sure you wish to add this booking?");
+		
+		$(".addBookingChanges").click(function(){
+			$.ajax({
+				url: url,
+				type: "post",
+				data: data.serialize(),
+				success : function(response){
+					if (response.redirect) {
+			    		window.location.reload();
+			    	}else{		
+			    		$(".replaceable").html(response);
+			    	}
+			    },error: function(){
+			    }
+			});
+		});
+	});
+</script>

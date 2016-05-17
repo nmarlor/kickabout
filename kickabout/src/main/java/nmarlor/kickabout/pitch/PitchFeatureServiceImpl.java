@@ -20,4 +20,30 @@ public class PitchFeatureServiceImpl implements PitchFeatureService{
 		return pitchFeatures;
 	}
 
+	@Override
+	public PitchFeature update(PitchFeature pitchFeature) {
+		return pitchFeatureDAO.save(pitchFeature);
+	}
+
+	@Override
+	public PitchFeature retrieve(Long featureId) {
+		return pitchFeatureDAO.find(featureId);
+	}
+
+	@Override
+	public void delete(PitchFeature pitchFeature) {
+		pitchFeatureDAO.remove(pitchFeature);
+	}
+
+	@Override
+	public void create(PitchFeature pitchFeature) {
+		pitchFeatureDAO.persist(pitchFeature);
+	}
+
+	@Override
+	public PitchFeature findPitchFeatureByPitchAndFeature(Pitch pitch, String feature) {
+		PitchFeature pitchFeature = pitchFeatureDAO.findPitchFeatureByPitchAndFeature(pitch, feature);
+		return pitchFeature;
+	}
+
 }

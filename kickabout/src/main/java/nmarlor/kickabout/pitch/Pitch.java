@@ -6,8 +6,6 @@ import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,9 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.Proxy;
 
 @Entity
-@Table(name="pitches")
+@Proxy(lazy = false)
+@Table(name="pitches",
+		uniqueConstraints={@UniqueConstraint(columnNames={"pitch_location_id", "pitch_number"}, name="pitch_UK")})
 public class Pitch implements Serializable{
 
 	private static final long serialVersionUID = -6011741843198883825L;
@@ -34,8 +37,7 @@ public class Pitch implements Serializable{
 	private Integer pitchNumber;
 	
 	@Column(name = "pitch_size")
-	@Enumerated(EnumType.STRING)
-	private PitchSize pitchSize;
+	private String pitchSize;
 	
 	@Column
 	private BigDecimal cost;
@@ -66,11 +68,11 @@ public class Pitch implements Serializable{
 		this.pitchNumber = pitchNumber;
 	}
 
-	public PitchSize getPitchSize() {
+	public String getPitchSize() {
 		return pitchSize;
 	}
 
-	public void setPitchSize(PitchSize pitchSize) {
+	public void setPitchSize(String pitchSize) {
 		this.pitchSize = pitchSize;
 	}
 

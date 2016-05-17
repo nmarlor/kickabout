@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="jumbotron default">
+		<div class="col-sm-12" align="center">
+			 <h2 class="text-center">Pitches</h2>
+			<form th:action="@{/pitchesForAdminLocation}" method="get">
+				<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
+					<div class="bookings-table">
+						<div class="text-center">
+		  					<span style="color:red">Pitch successfully added, select manage pitch to add features</span>
+		  				</div>
+						<div class="text-center">
+		  					<a href="addPitch" th:href="@{addPitch(locationId=${locationId})}">Add new pitch</a>
+		  				</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="col-sm-2 text-center">Company</th>
+								<th class="col-sm-2 text-center">Pitch Number</th>
+								<th class="col-sm-1"></th>
+								<th class="col-sm-1"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="pitch : ${pitches}">
+								<td class="col-sm-2 text-center" th:text="${pitch.pitchLocation.company}"></td>
+								<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"></td>
+								<td class="col-sm-1">
+								<span class="btn-group">
+				  					<a class="btn btn-info managePitchBtn">Manage Pitch</a>
+				  				</span>
+				  				</td>
+				  				<td class="col-sm-1">
+				  				<span class="btn-group">
+				  					<a class="btn btn-success viewBookingsBtn">View Bookings</a>
+				  				</span>
+				  				</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
