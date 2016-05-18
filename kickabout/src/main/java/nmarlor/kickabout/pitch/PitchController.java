@@ -70,7 +70,7 @@ public class PitchController {
 		Pitch pitch = new Pitch();
 		pitch.setPitchLocation(pitchLocation);
 		pitch.setAvailableFrom(pitchForm.getAvailableFrom());
-		pitch.setAvailableTo(pitchForm.getAvailableFrom());
+		pitch.setAvailableTo(pitchForm.getAvailableTo());
 		pitch.setCost(pitchForm.getCost());
 		pitch.setPitchNumber(pitchNumber);
 		pitch.setPitchSize(pitchForm.getPitchSize());

@@ -15,10 +15,13 @@
 				<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
 					<div class="bookings-table">
 						<div class="text-center">
-		  					<span style="color:red">Pitch successfully added, select manage pitch to add features</span>
-		  				</div>
-						<div class="text-center">
+							<a href="viewAllBookings" th:href="@{viewBookingsForAllPitches(locationId=${locationId})}">View bookings for all pitches</a>
+							<br></br>
+							<br></br>
 		  					<a href="addPitch" th:href="@{addPitch(locationId=${locationId})}">Add new pitch</a>
+		  					<br></br>
+							<br></br>
+							<span style="color:red">Pitch successfully added, select manage pitch to add features</span>
 		  				</div>
 					<table class="table">
 						<thead>
@@ -35,12 +38,12 @@
 								<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"></td>
 								<td class="col-sm-1">
 								<span class="btn-group">
-				  					<a class="btn btn-info managePitchBtn">Manage Pitch</a>
+				  					<a class="btn btn-info managePitchBtn" th:href="@{managePitch(pitchId=${pitch.id})}">Manage Pitch</a>
 				  				</span>
 				  				</td>
 				  				<td class="col-sm-1">
 				  				<span class="btn-group">
-				  					<a class="btn btn-success viewBookingsBtn">View Bookings</a>
+				  					<a class="btn btn-success viewBookingsBtn" th:href="@{adminPitchAvailability(pitchId=${pitch.id})}">View Bookings</a>
 				  				</span>
 				  				</td>
 							</tr>
