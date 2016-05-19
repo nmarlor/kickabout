@@ -22,6 +22,7 @@ import nmarlor.kickabout.account.AccountRepository;
 import nmarlor.kickabout.account.AccountService;
 import nmarlor.kickabout.date.DateService;
 import nmarlor.kickabout.pitch.Pitch;
+import nmarlor.kickabout.pitch.PitchForm;
 import nmarlor.kickabout.pitch.PitchesService;
 
 @Controller
@@ -221,6 +222,22 @@ public class BookingController {
 		Booking booking = bookingService.retrieve(id);
 		
 		mv.addObject("booking", booking);
+		return mv;
+	}
+	
+	@RequestMapping(value = "/importBookings", method = RequestMethod.GET)
+	public ModelAndView adminPitchAvailability(Long pitchId){
+		ModelAndView mv = new ModelAndView("booking/importBookings");
+		
+		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		
+		PitchForm pitchForm = new PitchForm();
+		pitchForm.setPitchId(pitchId);
+		
+		mv.addObject("pitchId", pitchId);
+		mv.addObject("pitch", pitch);
+		mv.addObject("pitchForm", pitchForm);
+		
 		return mv;
 	}
 }

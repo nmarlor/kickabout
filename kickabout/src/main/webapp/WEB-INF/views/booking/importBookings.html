@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="jumbotron default">
+		<h2 class="text-center">Import bookings</h2>
+		<br></br>
+	    <div class="row">
+  			<div class="col-md-4">
+  			</div>
+			<div class="col-md-3">	    			
+				<input type="file" style="background-color: white;" class="form-control" id="file-name" readonly="readonly" />
+			</div>
+			<div class="col-md-1">
+  				<input type="submit" class="btn btn-block btn-success" value="Import" />
+  			</div>
+			<div class="col-md-3"></div>
+			</div>
+	</div>
+	<input type="file" id="file-hidden" style="display: none;" />
+	<script src="../../../resources/js/vendor/bootstrap.min.js" th:src="@{/resources/js/vendor/bootstrap.min.js}"></script>
+	<script src="../../../resources/js/main.js" th:src="@{/resources/js/main.js}">></script>
+</body>
+</html>
