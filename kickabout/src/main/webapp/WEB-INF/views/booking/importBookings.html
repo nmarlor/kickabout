@@ -13,6 +13,8 @@
 		<h2 class="text-center">Import bookings</h2>
 		<br></br>
 	    <div class="row">
+	    	<form class="upload-form" action="#" th:action="@{importBookings} + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token}" th:object="${pitchForm}" method="post" enctype="multipart/form-data">
+  			<input hidden="hidden" id="uploadType" name="uploadType"></input>
   			<div class="col-md-4">
   			</div>
 			<div class="col-md-3">	    			
@@ -22,7 +24,8 @@
   				<input type="submit" class="btn btn-block btn-success" value="Import" />
   			</div>
 			<div class="col-md-3"></div>
-			</div>
+			</form>
+		</div>
 	</div>
 	<input type="file" id="file-hidden" style="display: none;" />
 	<script src="../../../resources/js/vendor/bootstrap.min.js" th:src="@{/resources/js/vendor/bootstrap.min.js}"></script>

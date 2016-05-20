@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -225,8 +227,8 @@ public class BookingController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/importBookings", method = RequestMethod.GET)
-	public ModelAndView adminPitchAvailability(Long pitchId){
+	@RequestMapping(value = "importBookings", method = RequestMethod.GET)
+	public ModelAndView importBookingsRequest(Long pitchId){
 		ModelAndView mv = new ModelAndView("booking/importBookings");
 		
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
@@ -237,6 +239,20 @@ public class BookingController {
 		mv.addObject("pitchId", pitchId);
 		mv.addObject("pitch", pitch);
 		mv.addObject("pitchForm", pitchForm);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "importBookings", method = RequestMethod.POST)
+	public ModelAndView importBookings(@ModelAttribute("pitchForm") PitchForm pitchForm, BindingResult result, @RequestParam("file") MultipartFile uploadedFile){
+		ModelAndView mv = new ModelAndView("booking/importBookings");
+		
+		if (uploadedFile.isEmpty()) {
+			System.out.println("uploaded file is empty");
+		}
+		
+		Pitch pitch = pitchesService.retrievePitch(pitchForm.getPitchId());
+		
 		
 		return mv;
 	}
