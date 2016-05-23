@@ -1,5 +1,7 @@
 package nmarlor.kickabout.booking;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.security.Principal;
 import java.sql.Date;
 import java.sql.Time;
@@ -8,6 +10,10 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -250,9 +256,23 @@ public class BookingController {
 		if (uploadedFile.isEmpty()) {
 			System.out.println("uploaded file is empty");
 		}
+		// Check the uploaded file is type CSV. If not we add a message to the front end.
+		if (!FilenameUtils.getExtension(uploadedFile.getOriginalFilename()).equalsIgnoreCase("csv"))
+		{
+			System.out.println("uploaded file is not a csv");
+		}
+		
+		// CSV formatter using RFC4180 (which specifies a comma separated format) and specify the CSV has headers and set the delimiter as a comma.
+		CSVFormat format = CSVFormat.RFC4180.withHeader().withDelimiter(',');
+		try (CSVParser parser = new CSVParser(new BufferedReader(new InputStreamReader(uploadedFile.getInputStream())), format)) 
+		{
+			List<CSVRecord> records = parser.getRecords();
+			System.out.println(records.size());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
 		Pitch pitch = pitchesService.retrievePitch(pitchForm.getPitchId());
-		
 		
 		return mv;
 	}

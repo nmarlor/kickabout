@@ -14,11 +14,12 @@
 		<br></br>
 	    <div class="row">
 	    	<form class="upload-form" action="#" th:action="@{importBookings} + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token}" th:object="${pitchForm}" method="post" enctype="multipart/form-data">
+	    	<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
   			<input hidden="hidden" id="uploadType" name="uploadType"></input>
   			<div class="col-md-4">
   			</div>
 			<div class="col-md-3">	    			
-				<input type="file" style="background-color: white;" class="form-control" id="file-name" readonly="readonly" />
+				<input type="file" name="file" style="background-color: white;" class="form-control" id="file-name" readonly="readonly" />
 			</div>
 			<div class="col-md-1">
   				<input type="submit" class="btn btn-block btn-success" value="Import" />
@@ -27,7 +28,6 @@
 			</form>
 		</div>
 	</div>
-	<input type="file" id="file-hidden" style="display: none;" />
 	<script src="../../../resources/js/vendor/bootstrap.min.js" th:src="@{/resources/js/vendor/bootstrap.min.js}"></script>
 	<script src="../../../resources/js/main.js" th:src="@{/resources/js/main.js}">></script>
 </body>
