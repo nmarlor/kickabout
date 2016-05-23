@@ -68,7 +68,7 @@ public class PitchAvailabilityController {
 		pitchForm.setPitchId(pitchId);
 		
 		// Date to be displayed on the front end
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String date = df.format(formattedDate);
 		
 		mv.addObject("pitchId", pitchId);
@@ -117,7 +117,7 @@ public class PitchAvailabilityController {
 		pitchForm.setPitchId(pitchId);
 		
 		// Date to be displayed on the front end
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String date = df.format(formattedDate);
 		
 		mv.addObject("pitchId", pitchId);
@@ -194,7 +194,7 @@ public class PitchAvailabilityController {
 		}
 		
 		// Date to be displayed on the front end
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String date = df.format(formattedDate);
 		
 		mv.addObject("location", location);
@@ -229,7 +229,7 @@ public class PitchAvailabilityController {
 		}
 
 		// Date to be displayed on the front end
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		date = df.format(availabilityDate);
 		
 		mv.addObject("locationForm", locationForm);

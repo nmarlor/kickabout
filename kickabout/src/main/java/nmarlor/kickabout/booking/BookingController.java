@@ -2,10 +2,14 @@ package nmarlor.kickabout.booking;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -250,16 +254,18 @@ public class BookingController {
 	}
 	
 	@RequestMapping(value = "importBookings", method = RequestMethod.POST)
-	public ModelAndView importBookings(@ModelAttribute("pitchForm") PitchForm pitchForm, BindingResult result, @RequestParam("file") MultipartFile uploadedFile){
+	public ModelAndView importBookings(@ModelAttribute("pitchForm") PitchForm pitchForm, Principal principal, BindingResult result, @RequestParam("file") MultipartFile uploadedFile){
 		ModelAndView mv = new ModelAndView("booking/importBookings");
 		
 		if (uploadedFile.isEmpty()) {
 			System.out.println("uploaded file is empty");
+			return mv;
 		}
 		// Check the uploaded file is type CSV. If not we add a message to the front end.
 		if (!FilenameUtils.getExtension(uploadedFile.getOriginalFilename()).equalsIgnoreCase("csv"))
 		{
 			System.out.println("uploaded file is not a csv");
+			return mv;
 		}
 		
 		// CSV formatter using RFC4180 (which specifies a comma separated format) and specify the CSV has headers and set the delimiter as a comma.
@@ -268,11 +274,91 @@ public class BookingController {
 		{
 			List<CSVRecord> records = parser.getRecords();
 			System.out.println(records.size());
-		} catch (Exception e) {
+			if (records.isEmpty()) 
+			{
+				System.out.println("There are no records in this csv");
+			} 
+			else 
+			{
+				Pitch pitch = pitchesService.retrievePitch(pitchForm.getPitchId());
+				String accountName = principal.getName();
+				Account account = accountRepository.findByEmail(accountName);
+
+				for (CSVRecord csvRecord : records) 
+				{
+					
+					Map<String, String> recordMap = csvRecord.toMap();
+					
+					Booking newBooking = new Booking();
+					newBooking.setPitch(pitch);
+					newBooking.setAccount(account);
+					
+					String randomUUID = UUID.randomUUID().toString();
+					String bookingReference = randomUUID.substring(0, 13);
+					
+					newBooking.setBookingReference(bookingReference);
+					
+					String name = null;
+					String email = null;
+					String date = null;
+					String bookedFrom = null;
+					String bookedTo = null;
+					String cost = null;
+					
+					DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+					symbols.setDecimalSeparator('.');
+					String pattern = "#.#";
+					DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+					decimalFormat.setParseBigDecimal(true);
+
+					if (recordMap.containsKey("name")) {
+						name = recordMap.get("name").toString();
+					}
+					if (recordMap.containsKey("email")) {
+						email = recordMap.get("email").toString();
+					}
+					if (recordMap.containsKey("date")) {
+						date = recordMap.get("date").toString();
+					}
+					if (recordMap.containsKey("booked from")) {
+						bookedFrom = recordMap.get("booked from").toString();
+					}
+					if (recordMap.containsKey("booked to")) {
+						bookedTo = recordMap.get("booked to").toString();
+					}
+					if (recordMap.containsKey("cost")) {
+						cost = recordMap.get("cost").toString();
+					}
+					if (name != null) {
+						newBooking.setName(name);
+					}
+					if (email != null) {
+						newBooking.setEmail(email);
+					}
+					if (date != null) {
+						Date formattedDate = dateService.stringToDate(date);
+						newBooking.setDate(formattedDate);
+					}
+					if (cost != null) {
+						BigDecimal formattedCost = (BigDecimal) decimalFormat.parse(cost);
+						newBooking.setCost(formattedCost);
+					}
+					if (bookedFrom != null) {
+						Time formattedBookedFrom = dateService.stringToTime(bookedFrom);
+						newBooking.setBookedFrom(formattedBookedFrom);
+					}
+					if (bookedTo != null) {
+						Time formattedBookedTo = dateService.stringToTime(bookedTo);
+						newBooking.setBookedTo(formattedBookedTo);
+					}
+					bookingService.createBooking(newBooking);
+				}
+			}
+		} 
+		catch (Exception e) 
+		{
 			// TODO: handle exception
 		}
-		
-		Pitch pitch = pitchesService.retrievePitch(pitchForm.getPitchId());
 		
 		return mv;
 	}
