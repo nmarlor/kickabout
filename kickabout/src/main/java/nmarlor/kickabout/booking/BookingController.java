@@ -21,6 +21,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -254,17 +255,20 @@ public class BookingController {
 	}
 	
 	@RequestMapping(value = "importBookings", method = RequestMethod.POST)
-	public ModelAndView importBookings(@ModelAttribute("pitchForm") PitchForm pitchForm, Principal principal, BindingResult result, @RequestParam("file") MultipartFile uploadedFile){
+	public ModelAndView importBookings(@ModelAttribute("pitchForm") PitchForm pitchForm, Principal principal, BindingResult result, @RequestParam("file") MultipartFile uploadedFile)
+	{
 		ModelAndView mv = new ModelAndView("booking/importBookings");
 		
+		Errors errors = result;
+		
 		if (uploadedFile.isEmpty()) {
-			System.out.println("uploaded file is empty");
+			errors.reject("file.noFileSelected.message", "X");
 			return mv;
 		}
 		// Check the uploaded file is type CSV. If not we add a message to the front end.
 		if (!FilenameUtils.getExtension(uploadedFile.getOriginalFilename()).equalsIgnoreCase("csv"))
 		{
-			System.out.println("uploaded file is not a csv");
+			errors.reject("file.wrongFileType.message", "X");
 			return mv;
 		}
 		
@@ -273,10 +277,10 @@ public class BookingController {
 		try (CSVParser parser = new CSVParser(new BufferedReader(new InputStreamReader(uploadedFile.getInputStream())), format)) 
 		{
 			List<CSVRecord> records = parser.getRecords();
-			System.out.println(records.size());
 			if (records.isEmpty()) 
 			{
-				System.out.println("There are no records in this csv");
+				errors.reject("file.emptyCsvFile.message", "X");
+				return mv;
 			} 
 			else 
 			{
