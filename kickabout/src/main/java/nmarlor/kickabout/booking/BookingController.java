@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -58,6 +59,9 @@ public class BookingController {
 	
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private ImportBookingValidator importBookingValidator;
 	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.GET)
 	public ModelAndView viewNewBooking(Long pitchId, String date){
@@ -287,6 +291,8 @@ public class BookingController {
 				Pitch pitch = pitchesService.retrievePitch(pitchForm.getPitchId());
 				String accountName = principal.getName();
 				Account account = accountRepository.findByEmail(accountName);
+				
+				List<Booking> newBookings = new ArrayList<>();
 
 				for (CSVRecord csvRecord : records) 
 				{
@@ -333,29 +339,48 @@ public class BookingController {
 					if (recordMap.containsKey("cost")) {
 						cost = recordMap.get("cost").toString();
 					}
-					if (name != null) {
+					if (!name.isEmpty()) {
 						newBooking.setName(name);
 					}
-					if (email != null) {
+					if (!email.isEmpty()) {
 						newBooking.setEmail(email);
 					}
-					if (date != null) {
+					if (!date.isEmpty()) {
 						Date formattedDate = dateService.stringToDate(date);
 						newBooking.setDate(formattedDate);
 					}
-					if (cost != null) {
+					if (!cost.isEmpty()) {
 						BigDecimal formattedCost = (BigDecimal) decimalFormat.parse(cost);
 						newBooking.setCost(formattedCost);
 					}
-					if (bookedFrom != null) {
+					if (!bookedFrom.isEmpty()) {
 						Time formattedBookedFrom = dateService.stringToTime(bookedFrom);
 						newBooking.setBookedFrom(formattedBookedFrom);
 					}
-					if (bookedTo != null) {
+					if (!bookedTo.isEmpty()) {
 						Time formattedBookedTo = dateService.stringToTime(bookedTo);
 						newBooking.setBookedTo(formattedBookedTo);
 					}
-					bookingService.createBooking(newBooking);
+					
+					newBookings.add(newBooking);			
+				}
+				
+				for (Booking booking : newBookings) 
+				{
+					importBookingValidator.validate(booking, result);
+					if (result.hasErrors()) 
+					{
+						errors.reject("file.errors.message", "X");
+						mv.addObject("errors", result);
+						return mv;
+					}
+				}
+				if (!result.hasErrors())
+				{
+					for (Booking booking : newBookings) 
+					{
+						bookingService.createBooking(booking);
+					}
 				}
 			}
 		} 
