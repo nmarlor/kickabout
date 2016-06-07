@@ -82,7 +82,7 @@ public class BookingController {
 	}
 	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.POST)
-	public ModelAndView makeBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, Principal principal, BindingResult bindingResult){
+	public ModelAndView makeBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, Principal principal, BindingResult bindingResult, HttpServletRequest request){
 		Long pitchId = bookingForm.getPitchId();
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
 		
@@ -175,9 +175,17 @@ public class BookingController {
 			return duplicateMv;
 		}
 				
-		ModelAndView successMv = new ModelAndView("booking/bookingSuccessful");
-		successMv.addObject("booking", booking);
 		
+		if (account.getRole().equals("ROLE_USER")) 
+		{
+			ModelAndView successMv = new ModelAndView("booking/myBookings");
+			List<Booking> bookings = bookingService.findBookingsForAccount(account);
+			successMv.addObject("bookings", bookings);
+			return successMv;
+		}
+		
+		//TODO - Add logic for preventing an admin from booking from here?
+		ModelAndView successMv = new ModelAndView("booking/bookingSuccessful");
 		return successMv;
 	}
 	
