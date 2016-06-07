@@ -1,8 +1,14 @@
 package nmarlor.kickabout.account;
 
 import java.security.Principal;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +17,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import nmarlor.kickabout.booking.Booking;
+import nmarlor.kickabout.booking.BookingService;
 import nmarlor.kickabout.company.Company;
 import nmarlor.kickabout.company.CompanyService;
+import nmarlor.kickabout.date.DateService;
 import nmarlor.kickabout.pitch.PitchLocation;
 import nmarlor.kickabout.pitch.PitchLocationService;
 
@@ -37,6 +47,12 @@ public class ManageAccountController {
 	
 	@Autowired
 	private PitchLocationService pitchLocationService;
+	
+	@Autowired
+	private BookingService bookingService;
+	
+	@Autowired
+	private DateService dateService;
 
 	@RequestMapping(value = "/manageAccount", method = RequestMethod.GET)
 	public ModelAndView manageAccount(Principal principal)
@@ -159,5 +175,77 @@ public class ManageAccountController {
 		mv.addObject("locationsForAccount", locationsForAccount);
 		mv.addObject("accountId", accountId);
 		return mv;
+	}
+	
+	@RequestMapping(value = "deleteMyAccount", method = RequestMethod.GET)
+	public ModelAndView deleteMyAccountRequest(Long id){
+		ModelAndView mv = new ModelAndView("manage/deleteMyAccount");
+		
+		Account account = accountService.retrieveAccount(id);
+		
+		UpdateAccountInfoForm accountForm = new UpdateAccountInfoForm();
+		accountForm.setAccountId(account.getId());
+		
+		mv.addObject("accountForm", accountForm);
+		mv.addObject("account", account);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "deleteMyAccount", method = RequestMethod.POST)
+	public ModelAndView deleteMyAccount(@ModelAttribute("accountForm") UpdateAccountInfoForm accountForm, BindingResult result, HttpServletRequest request){		
+		ModelAndView mv = new ModelAndView("manage/deleteMyAccount");
+		Account account = accountService.retrieveAccount(accountForm.getAccountId());
+		mv.addObject("account", account);
+		
+		List<Booking> bookings = bookingService.findBookingsForAccount(account);
+		Date todaysDate = dateService.getTodaysDate();
+		List<Booking> bookingsToDelete = new ArrayList<>();
+		List<Booking> bookingsToReassignAccount = new ArrayList<>();
+		
+		Calendar cal = Calendar.getInstance();
+		Time currentTime = Time.valueOf(
+		          cal.get(Calendar.HOUR_OF_DAY) + ":" +
+		          cal.get(Calendar.MINUTE) + ":" +
+		          cal.get(Calendar.SECOND));
+		
+		if (!bookings.isEmpty()) 
+		{
+			for (Booking booking : bookings) 
+			{
+				Date date = booking.getDate();
+				LocalDate localDate = date.toLocalDate();
+				LocalDate todayLocalDate = todaysDate.toLocalDate();
+				
+				if (localDate.equals(todayLocalDate) || localDate.isAfter(todayLocalDate) && booking.getBookedFrom().after(currentTime) || booking.getBookedTo().after(currentTime)) 
+				{
+					bookingsToDelete.add(booking);
+				}
+				else
+				{
+					bookingsToReassignAccount.add(booking);
+				}
+			}
+			for (Booking booking : bookingsToDelete) 
+			{
+				bookingService.delete(booking);
+			}
+			for (Booking booking : bookingsToReassignAccount) 
+			{
+				Account adminsAccount = booking.getPitch().getPitchLocation().getAccount();
+				booking.setAccount(adminsAccount);
+				bookingService.update(booking);
+			}
+			accountService.deleteAccount(account);
+		}
+		else 
+		{
+			accountService.deleteAccount(account);
+		}
+		
+		//TODO redirect needs to be fixed, throws null pointer!
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath()+ "signin/signin");
 	}
 }

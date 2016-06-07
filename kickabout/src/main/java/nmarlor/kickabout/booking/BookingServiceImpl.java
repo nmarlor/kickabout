@@ -44,4 +44,9 @@ public class BookingServiceImpl implements BookingService{
 		List<Booking> bookings = bookingDAO.findBookingsByPitchAndDate(pitch, date);
 		return bookings;
 	}
+
+	@Override
+	public void update(Booking booking) {
+		bookingDAO.save(booking);
+	}
 }

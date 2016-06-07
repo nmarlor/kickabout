@@ -22,4 +22,10 @@ public class AccountServiceImpl implements AccountService{
 		return accountDAO.save(account);
 	}
 
+	@Override
+	public void deleteAccount(Account account) {
+		accountDAO.remove(account);
+		accountDAO.findAll();
+	}
+
 }
