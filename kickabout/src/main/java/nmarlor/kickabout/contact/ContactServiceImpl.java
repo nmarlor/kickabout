@@ -41,8 +41,8 @@ public class ContactServiceImpl implements ContactService{
 	    InternetAddress toAddress = new InternetAddress();
 	    toAddress.setAddress(kickaboutEmail);
 	    
-	    InternetAddress fromAddress = new InternetAddress();
-	    fromAddress.setAddress(contactForm.getEmail());
+	    String[] from = { contactForm.getEmail() }; 
+	    InternetAddress[] fromAddress = new InternetAddress[from.length];
 	    
 	    try 
 	    {
@@ -51,7 +51,12 @@ public class ContactServiceImpl implements ContactService{
 	    					+ "\n" + "\n" + "Email Address: " + contactForm.getEmail()
 	    					+ "\n" + "\n" + "Message: " + contactForm.getMessage());
 	        message.addRecipient(Message.RecipientType.TO, toAddress);
-	        message.setFrom(fromAddress);
+	        
+            for( int i = 0; i < from.length; i++ ) {
+            	fromAddress[i] = new InternetAddress(from[i]);
+            }
+	        message.setReplyTo(fromAddress);
+	        
 	        Transport transport = session.getTransport("smtp");
 	        transport.connect(host, kickaboutEmail, password);
 	        transport.sendMessage(message, message.getAllRecipients());
