@@ -14,6 +14,9 @@ class ContactUsController {
 	@Autowired
 	private ContactService contactService;
 	
+	@Autowired
+	private ContactUsValidator contactUsValidator;
+	
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)
 	public ModelAndView contactUs()
 	{
@@ -28,8 +31,21 @@ class ContactUsController {
 	@RequestMapping(value = "/contact", method = RequestMethod.POST)
 	public ModelAndView sendEmail(@ModelAttribute("contactForm") ContactForm contactForm, BindingResult bindingResult)
 	{
+		ModelAndView mv = new ModelAndView("contact/contact");
+		
+		contactUsValidator.validate(contactForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			mv.addObject("errors", bindingResult);
+			return mv;
+		}
+		
 		contactService.sendEmail(contactForm);
+		
 		ModelAndView successMv = new ModelAndView("contact/contactSuccessful");
+		ContactForm newContactForm = new ContactForm();
+		successMv.addObject("contactForm", newContactForm);
+		
 		return successMv;
 	}
 }
