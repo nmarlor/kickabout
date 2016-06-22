@@ -1,16 +1,24 @@
 package nmarlor.kickabout.pitch;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -95,9 +103,24 @@ public class PitchController {
 		Pitch pitch = pitchService.retrievePitch(pitchId);
 		List<PitchFeature> pitchFeatures = pitchFeatureService.findPitchFeaturesByPitch(pitch);
 		
+		PitchForm pitchForm = new PitchForm();
+		pitchForm.setPitchId(pitchId);
+		
 		mv.addObject("pitch", pitch);
+		mv.addObject("pitchId", pitchId);
 		mv.addObject("pitchFeatures", pitchFeatures);
+		mv.addObject("pitchForm", pitchForm);
 		return mv;
+	}
+	
+	@RequestMapping(value = "/image", produces = MediaType.IMAGE_JPEG_VALUE) 
+	public ResponseEntity<byte[]> getImage(Long pitchId) throws IOException 
+	{ 
+		Pitch pitch = pitchService.retrievePitch(pitchId);
+		byte[] imageContent =  pitch.getImage();
+		HttpHeaders headers = new HttpHeaders(); 
+		headers.setContentType(MediaType.IMAGE_JPEG); 
+		return new ResponseEntity<byte[]>(imageContent, headers, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "editFeature", method = RequestMethod.GET)
@@ -205,4 +228,36 @@ public class PitchController {
 		jsonView.setModelKey("redirect");
 		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitches/managePitch");
 	}
+	
+	@RequestMapping(value = "uploadImage", method = RequestMethod.POST)
+	public ModelAndView uploadImage(@ModelAttribute("pitchForm") PitchForm pitchForm, Principal principal, BindingResult result, @RequestParam("file") MultipartFile uploadedFile)
+	{
+		ModelAndView mv = new ModelAndView("pitches/managePitch");
+		
+		Long pitchId = pitchForm.getPitchId();
+		Pitch pitch = pitchService.retrievePitch(pitchId);
+		
+		if (!uploadedFile.isEmpty()) 
+		{
+			try 
+			{
+				byte[] image = uploadedFile.getBytes();
+			    pitch.setImage(image);
+			    pitchService.updatePitch(pitch);
+			} 
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+        
+		List<PitchFeature> pitchFeatures = pitchFeatureService.findPitchFeaturesByPitch(pitch);
+        
+		mv.addObject("pitch", pitch);
+		mv.addObject("pitchId", pitchId);
+		mv.addObject("pitchFeatures", pitchFeatures);
+		mv.addObject("pitchForm", pitchForm);
+		
+		return mv;
+	}
+	 
 }

@@ -47,6 +47,9 @@ public class Pitch implements Serializable{
 	
 	@Column(name = "available_to")
 	private Time availableTo;
+	
+	@Column(name = "image", columnDefinition = "LONGBLOB")
+	private byte[] image;
 
 	public Long getId() {
 		return id;
@@ -98,6 +101,14 @@ public class Pitch implements Serializable{
 
 	public void setAvailableTo(Time availableTo) {
 		this.availableTo = availableTo;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 	
 }
