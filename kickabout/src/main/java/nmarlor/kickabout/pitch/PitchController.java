@@ -1,7 +1,14 @@
 package nmarlor.kickabout.pitch;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.Principal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+
 
 @Controller
 public class PitchController {
@@ -230,24 +238,52 @@ public class PitchController {
 	}
 	
 	@RequestMapping(value = "uploadImage", method = RequestMethod.POST)
-	public ModelAndView uploadImage(@ModelAttribute("pitchForm") PitchForm pitchForm, Principal principal, BindingResult result, @RequestParam("file") MultipartFile uploadedFile)
+	public ModelAndView uploadImage(@ModelAttribute("pitchForm") PitchForm pitchForm, Principal principal, BindingResult result, @RequestParam("file") MultipartFile uploadedFile) throws ClassNotFoundException, SQLException, IOException
 	{
 		ModelAndView mv = new ModelAndView("pitches/managePitch");
 		
 		Long pitchId = pitchForm.getPitchId();
 		Pitch pitch = pitchService.retrievePitch(pitchId);
 		
+		// create a java mysql database connection
+	    String myDriver = "com.mysql.jdbc.Driver";
+	    String myUrl = "jdbc:mysql://localhost:3306/kickabout";
+	    Class.forName(myDriver);
+	    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+	    
+	    String query = "update pitches set image = ? where id = ?";
+		
+		FileInputStream fis = null;
+		PreparedStatement preparedStmt = null;
+		
 		if (!uploadedFile.isEmpty()) 
 		{
 			try 
 			{
-				byte[] image = uploadedFile.getBytes();
-			    pitch.setImage(image);
-			    pitchService.updatePitch(pitch);
-			} 
-			catch (Exception e) {
-				// TODO: handle exception
+				conn.setAutoCommit(false);
+			    File convFile = new File(uploadedFile.getOriginalFilename());
+			    convFile.createNewFile(); 
+			    fis = new FileInputStream(convFile);
+			    
+			    // create the java mysql update prepared statement
+			    preparedStmt = conn.prepareStatement(query);
+			    preparedStmt.setBlob(1, fis);
+			    preparedStmt.setLong(2, pitch.getId());
+
+			    // execute the java prepared statement
+			    preparedStmt.executeUpdate();
+			    conn.commit();
 			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				preparedStmt.close();
+				fis.close();
+			}
+			
 		}
         
 		List<PitchFeature> pitchFeatures = pitchFeatureService.findPitchFeaturesByPitch(pitch);
