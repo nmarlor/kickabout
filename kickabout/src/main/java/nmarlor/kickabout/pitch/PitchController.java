@@ -2,7 +2,6 @@ package nmarlor.kickabout.pitch;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.Principal;
 import java.sql.Connection;
@@ -50,7 +49,12 @@ public class PitchController {
 	
 	@Autowired
 	private PitchFeatureService pitchFeatureService;
-
+	
+	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
+	private static final String DB_CONNECTION = "jdbc:mysql://localhost:3306/kickabout";
+	private static final String DB_USER = "root";
+	private static final String DB_PASSWORD = "";
+	
 	@RequestMapping(value = "addPitch", method = RequestMethod.GET)
 	public ModelAndView addPitch(Long locationId){
 		ModelAndView mv = new ModelAndView("pitches/newPitch");
@@ -245,13 +249,9 @@ public class PitchController {
 		Long pitchId = pitchForm.getPitchId();
 		Pitch pitch = pitchService.retrievePitch(pitchId);
 		
-		// create a java mysql database connection
-	    String myDriver = "com.mysql.jdbc.Driver";
-	    String myUrl = "jdbc:mysql://localhost:3306/kickabout";
-	    Class.forName(myDriver);
-	    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+	    Connection conn = getDBConnection();
 	    
-	    String query = "update pitches set image = ? where id = ?";
+	    String query = "UPDATE pitches SET image = ? " + " WHERE id = ?";
 		
 		FileInputStream fis = null;
 		PreparedStatement preparedStmt = null;
@@ -280,10 +280,19 @@ public class PitchController {
 			}
 			finally
 			{
-				preparedStmt.close();
-				fis.close();
+				if (fis != null) 
+				{
+					fis.close();
+				}
+				if (preparedStmt != null) 
+				{
+					preparedStmt.close();
+				}
+				if (conn != null) 
+				{
+					conn.close();
+				}
 			}
-			
 		}
         
 		List<PitchFeature> pitchFeatures = pitchFeatureService.findPitchFeaturesByPitch(pitch);
@@ -294,6 +303,32 @@ public class PitchController {
 		mv.addObject("pitchForm", pitchForm);
 		
 		return mv;
+	}
+	
+	private static Connection getDBConnection()
+	{
+		Connection dbConnection = null;
+		
+		try 
+		{
+			Class.forName(DB_DRIVER);
+		} 
+		catch (ClassNotFoundException e) 
+		{
+			e.getMessage();
+		}
+		
+		try 
+		{
+			dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
+			return dbConnection;
+		} 
+		catch (SQLException  e) 
+		{
+			e.getMessage();
+		}
+		
+		return dbConnection;
 	}
 	 
 }

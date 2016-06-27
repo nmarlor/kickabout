@@ -33,9 +33,9 @@
 			</table>
 			</div>
 		</div>
-		<div class="col-sm-6">
-			<div class ="pitch-gallery">
-				<img src="../../../resources/images/pitch.jpg" th:src="@{/resources/images/pitch.jpg}" class ="img-responsive"/>				
+		<div class="col-sm-6" align="center">
+			<div class ="pitch-gallery col-sm-12">
+				<img th:src="@{/image(pitchId=${pitch.id})}" class ="img-responsive"/>
 			</div>
 		</div>
 	</div>

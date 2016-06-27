@@ -47,7 +47,7 @@
 				</h2>
 				<div class="pitches-table-holder col-sm-12" align="center">
 					<br></br>
-			  		<img th:src="@{/image(pitchId=${pitch.id})}"/>
+			  		<img th:src="@{/image(pitchId=${pitch.id})}" class ="img-responsive"/>
 			  		<br></br>
 			  		<br></br>
 					<form class="upload-form" action="#" th:action="@{uploadImage} + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token}" th:object="${pitchForm}" method="post" enctype="multipart/form-data">
