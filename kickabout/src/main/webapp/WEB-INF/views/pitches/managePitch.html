@@ -59,6 +59,12 @@
 						<div class="col-sm-4">
 			  				<input type="submit" class="btn btn-block btn-success" value="Change image" />
 			  			</div>
+			  			<br></br>
+			  			<br></br>
+			  			<br></br>
+			  			<div class="text-center" style="color:red" if="${#fields.hasAnyErrors()}">
+							<p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
+						</div>
 					</form>
 				</div>
 			</div>

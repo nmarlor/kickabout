@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,6 +44,9 @@ public class PitchController {
 	
 	@Autowired
 	private PitchFeatureService pitchFeatureService;
+	
+	@Autowired
+	private PitchImageValidator imageValidator;
 	
 	@RequestMapping(value = "addPitch", method = RequestMethod.GET)
 	public ModelAndView addPitch(Long locationId){
@@ -235,8 +239,25 @@ public class PitchController {
 	{
 		ModelAndView mv = new ModelAndView("pitches/managePitch");
 		
+		Errors errors = result;
+		
 		Long pitchId = pitchForm.getPitchId();
 		Pitch pitch = pitchService.retrievePitch(pitchId);
+		List<PitchFeature> pitchFeatures = pitchFeatureService.findPitchFeaturesByPitch(pitch);
+		
+		imageValidator.validate(uploadedFile, result);
+		if (result.hasErrors()) 
+		{
+			errors.reject("image.errors.message", "X");
+			
+			mv.addObject("errors", result);
+			mv.addObject("pitch", pitch);
+			mv.addObject("pitchId", pitchId);
+			mv.addObject("pitchFeatures", pitchFeatures);
+			mv.addObject("pitchForm", pitchForm);
+			
+			return mv;
+		}
 		
 		if (!uploadedFile.isEmpty()) 
 		{
@@ -251,9 +272,7 @@ public class PitchController {
 				e.printStackTrace();
 			}
 		}
-        
-		List<PitchFeature> pitchFeatures = pitchFeatureService.findPitchFeaturesByPitch(pitch);
-        
+               
 		mv.addObject("pitch", pitch);
 		mv.addObject("pitchId", pitchId);
 		mv.addObject("pitchFeatures", pitchFeatures);
