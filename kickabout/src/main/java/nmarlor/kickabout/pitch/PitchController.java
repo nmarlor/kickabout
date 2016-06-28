@@ -1,13 +1,7 @@
 package nmarlor.kickabout.pitch;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.Principal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,11 +43,6 @@ public class PitchController {
 	
 	@Autowired
 	private PitchFeatureService pitchFeatureService;
-	
-	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_CONNECTION = "jdbc:mysql://localhost:3306/kickabout";
-	private static final String DB_USER = "root";
-	private static final String DB_PASSWORD = "";
 	
 	@RequestMapping(value = "addPitch", method = RequestMethod.GET)
 	public ModelAndView addPitch(Long locationId){
@@ -242,56 +231,24 @@ public class PitchController {
 	}
 	
 	@RequestMapping(value = "uploadImage", method = RequestMethod.POST)
-	public ModelAndView uploadImage(@ModelAttribute("pitchForm") PitchForm pitchForm, Principal principal, BindingResult result, @RequestParam("file") MultipartFile uploadedFile) throws ClassNotFoundException, SQLException, IOException
+	public ModelAndView uploadImage(@ModelAttribute("pitchForm") PitchForm pitchForm, Principal principal, BindingResult result, @RequestParam("file") MultipartFile uploadedFile)
 	{
 		ModelAndView mv = new ModelAndView("pitches/managePitch");
 		
 		Long pitchId = pitchForm.getPitchId();
 		Pitch pitch = pitchService.retrievePitch(pitchId);
 		
-	    Connection conn = getDBConnection();
-	    
-	    String query = "UPDATE pitches SET image = ? " + " WHERE id = ?";
-		
-		FileInputStream fis = null;
-		PreparedStatement preparedStmt = null;
-		
 		if (!uploadedFile.isEmpty()) 
 		{
 			try 
 			{
-				conn.setAutoCommit(false);
-			    File convFile = new File(uploadedFile.getOriginalFilename());
-			    convFile.createNewFile(); 
-			    fis = new FileInputStream(convFile);
-			    
-			    // create the java mysql update prepared statement
-			    preparedStmt = conn.prepareStatement(query);
-			    preparedStmt.setBlob(1, fis);
-			    preparedStmt.setLong(2, pitch.getId());
-
-			    // execute the java prepared statement
-			    preparedStmt.executeUpdate();
-			    conn.commit();
-			}
-			catch (Exception e) 
+				byte[] image = uploadedFile.getBytes();
+				pitch.setImage(image);
+				pitchService.updatePitch(pitch);
+			} 
+			catch (IOException e) 
 			{
 				e.printStackTrace();
-			}
-			finally
-			{
-				if (fis != null) 
-				{
-					fis.close();
-				}
-				if (preparedStmt != null) 
-				{
-					preparedStmt.close();
-				}
-				if (conn != null) 
-				{
-					conn.close();
-				}
 			}
 		}
         
@@ -305,30 +262,4 @@ public class PitchController {
 		return mv;
 	}
 	
-	private static Connection getDBConnection()
-	{
-		Connection dbConnection = null;
-		
-		try 
-		{
-			Class.forName(DB_DRIVER);
-		} 
-		catch (ClassNotFoundException e) 
-		{
-			e.getMessage();
-		}
-		
-		try 
-		{
-			dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
-			return dbConnection;
-		} 
-		catch (SQLException  e) 
-		{
-			e.getMessage();
-		}
-		
-		return dbConnection;
-	}
-	 
 }
