@@ -115,6 +115,7 @@ public class ManageAccountController {
 		ModelAndView successMv = new ModelAndView("manage/successfulAccountUpdate");
 		successMv.addObject("accountForm", accountForm);
 		successMv.addObject("accountId", accountId);
+		successMv.addObject("account", account);
 		
 		return successMv;
 	}
