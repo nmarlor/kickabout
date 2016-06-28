@@ -21,49 +21,49 @@
 				</h2>
 				<p style="color:red" th:text="|Sorry, there has already been a booking for this date and time!|"></p>
 				
-				<div class="col-sm-12">
+				<div class="col-sm-offset-3 col-sm-6">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-user"></i></span>
 						<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" placeholder="Enter Name..." th:field="*{name}"/>
 					</div>
 				</div>
 				
-				<div class="col-sm-12">
+				<div class="col-sm-offset-3 col-sm-6">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-envelope-square"></i></span>
 						<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" placeholder="Enter Email..." th:field="*{email}"/>
 					</div>
 				</div>
 				
-				<div class="col-sm-12">
+				<div class="col-sm-offset-3 col-sm-6">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 						<input type="text" class="form-control" id="date-input" th:field="*{date}" readonly="readonly"/>
 					</div>
 				</div>
 				
-				<div class="col-sm-12">
+				<div class="col-sm-offset-3 col-sm-6">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 						<input th:errorclass="input-form-error" type="text" class="form-control" id="from-input" placeholder="Time From..." th:field="*{bookedFrom}"/>
 					</div>
 				</div>
 				
-				<div class="col-sm-12">
+				<div class="col-sm-offset-3 col-sm-6">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 						<input th:errorclass="input-form-error" type="text" class="form-control" id="to-input" placeholder="Time To..." th:field="*{bookedTo}"/>
 					</div>
 				</div>
 				
-				<div class="col-sm-12">
+				<div class="col-sm-offset-3 col-sm-6">
 					<div class="input-group form-group">
 						<span class="input-group-addon"><i class="fa fa-gbp"></i></span>
 						<input type="text" class="form-control" id="cost-input" th:field="*{cost}" readonly="readonly"/>
 					</div>
 				</div>
 				
-				<div class="create-btn col-sm-2">
+				<div class="create-btn col-sm-offset-7 col-sm-2">
 					<input type="submit" value="Book this pitch!" class="btn btn-block btn-success create-button" onclick="window.location.href=BookingSuccessful.html" />
 				</div>
 		</div>
