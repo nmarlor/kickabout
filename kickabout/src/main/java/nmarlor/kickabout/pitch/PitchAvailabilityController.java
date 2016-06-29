@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -67,7 +68,7 @@ public class PitchAvailabilityController {
 		pitchForm.setPitchId(pitchId);
 		
 		// Date to be displayed on the front end
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String date = df.format(formattedDate);
 		
 		mv.addObject("pitchId", pitchId);
@@ -116,7 +117,7 @@ public class PitchAvailabilityController {
 		pitchForm.setPitchId(pitchId);
 		
 		// Date to be displayed on the front end
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String date = df.format(formattedDate);
 		
 		mv.addObject("pitchId", pitchId);
@@ -193,7 +194,7 @@ public class PitchAvailabilityController {
 		}
 		
 		// Date to be displayed on the front end
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String date = df.format(formattedDate);
 		
 		mv.addObject("location", location);
@@ -228,7 +229,7 @@ public class PitchAvailabilityController {
 		}
 
 		// Date to be displayed on the front end
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		date = df.format(availabilityDate);
 		
 		mv.addObject("locationForm", locationForm);
@@ -304,6 +305,11 @@ public class PitchAvailabilityController {
 		booking.setDate(formattedDate);
 		booking.setEmail(bookingForm.getEmail());
 		booking.setName(bookingName);
+		
+		String randomUUID = UUID.randomUUID().toString();
+		String bookingReference = randomUUID.substring(0, 13);
+		
+		booking.setBookingReference(bookingReference);
 		
 		List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
 		for (Booking bookedDate : bookedDates) 

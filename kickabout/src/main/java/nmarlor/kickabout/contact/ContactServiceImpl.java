@@ -1,13 +1,10 @@
 package nmarlor.kickabout.contact;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
@@ -18,34 +15,56 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class ContactServiceImpl implements ContactService{
 	
+	private static String USER_NAME = "testkickabout@gmail.com";
+    private static String PASSWORD = "testkickabout1";
+
 	@Override
 	public void sendEmail(ContactForm contactForm) 
 	{
-		Properties props = new Properties();
-		Session session = Session.getDefaultInstance(props, null);
+		String password = PASSWORD;
+		String username = USER_NAME;
 		
-		String name = contactForm.getName();
-		String email = contactForm.getEmail();
-		String subject = contactForm.getSubject();
-		String emaiMessage = contactForm.getMessage();
+		Properties props = System.getProperties();
+	    String host = "smtp.gmail.com";
+	    props.put("mail.smtp.starttls.enable", "true");
+	    props.put("mail.smtp.host", host);
+	    props.put("mail.smtp.user", username);
+	    props.put("mail.smtp.password", password);
+	    props.put("mail.smtp.port", "587");
+	    props.put("mail.smtp.auth", "true");
 		
-		try {
-	        Message msg = new MimeMessage(session);
-	        msg.setFrom(new InternetAddress(email, name));
-	        msg.addRecipient(Message.RecipientType.TO,
-	                         new InternetAddress("nickmarlor@hotmail.com", "nickmarlor@hotmail.com"));
-	        msg.setSubject(subject);
-	        msg.setText(emaiMessage);
-	        Transport.send(msg);
-
-	    } catch (AddressException e) {
-	        // ...
-	    } catch (MessagingException e) {
-	        // ...
-	    } catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+	    Session session = Session.getDefaultInstance(props);
+	    MimeMessage message = new MimeMessage(session);
+	    
+	    String kickaboutEmail = username;
+	    
+	    InternetAddress toAddress = new InternetAddress();
+	    toAddress.setAddress(kickaboutEmail);
+	    
+	    String[] from = { contactForm.getEmail() }; 
+	    InternetAddress[] fromAddress = new InternetAddress[from.length];
+	    
+	    try 
+	    {
+	    	message.setSubject(contactForm.getSubject());
+	    	message.setText("Name: " + contactForm.getName()
+	    					+ "\n" + "\n" + "Email Address: " + contactForm.getEmail()
+	    					+ "\n" + "\n" + "Message: " + contactForm.getMessage());
+	        message.addRecipient(Message.RecipientType.TO, toAddress);
+	        
+            for( int i = 0; i < from.length; i++ ) {
+            	fromAddress[i] = new InternetAddress(from[i]);
+            }
+	        message.setReplyTo(fromAddress);
+	        
+	        Transport transport = session.getTransport("smtp");
+	        transport.connect(host, kickaboutEmail, password);
+	        transport.sendMessage(message, message.getAllRecipients());
+	        transport.close();
+		} 
+	    catch (Exception e) 
+	    {
 			e.printStackTrace();
 		}
 	}
-	
 }

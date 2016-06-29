@@ -17,4 +17,6 @@ public interface BookingService
 	public void delete(Booking booking);
 	
 	public List<Booking> findBookingsByPitchAndDate(Pitch pitch, Date date);
+	
+	public void update(Booking booking);
 }

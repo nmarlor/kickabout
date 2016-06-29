@@ -93,9 +93,11 @@ body {
 	overflow-y: auto;
 }
 
-.pitch-gallery {
+ .pitch-gallery {
 	margin-top: 40px;
 	width: 100%;
+	max-width:100%;
+	max-height:100%;
 }
 
 .input-form-error {

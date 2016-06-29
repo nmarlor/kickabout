@@ -1,18 +1,33 @@
 package nmarlor.kickabout.booking;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -21,6 +36,7 @@ import nmarlor.kickabout.account.AccountRepository;
 import nmarlor.kickabout.account.AccountService;
 import nmarlor.kickabout.date.DateService;
 import nmarlor.kickabout.pitch.Pitch;
+import nmarlor.kickabout.pitch.PitchForm;
 import nmarlor.kickabout.pitch.PitchesService;
 
 @Controller
@@ -44,6 +60,9 @@ public class BookingController {
 	@Autowired
 	private AccountRepository accountRepository;
 	
+	@Autowired
+	private ImportBookingValidator importBookingValidator;
+	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.GET)
 	public ModelAndView viewNewBooking(Long pitchId, String date){
 		ModelAndView result = new ModelAndView("booking/newBooking");
@@ -63,7 +82,7 @@ public class BookingController {
 	}
 	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.POST)
-	public ModelAndView makeBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, Principal principal, BindingResult bindingResult){
+	public ModelAndView makeBooking(@ModelAttribute("bookingForm") BookingForm bookingForm, Principal principal, BindingResult bindingResult, HttpServletRequest request){
 		Long pitchId = bookingForm.getPitchId();
 		Pitch pitch = pitchesService.retrievePitch(pitchId);
 		
@@ -117,6 +136,11 @@ public class BookingController {
 		booking.setEmail(bookingForm.getEmail());
 		booking.setName(bookingName);
 		
+		String randomUUID = UUID.randomUUID().toString();
+		String bookingReference = randomUUID.substring(0, 13);
+		
+		booking.setBookingReference(bookingReference);
+		
 		List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
 		for (Booking bookedDate : bookedDates) 
 		{
@@ -151,9 +175,17 @@ public class BookingController {
 			return duplicateMv;
 		}
 				
-		ModelAndView successMv = new ModelAndView("booking/bookingSuccessful");
-		successMv.addObject("booking", booking);
 		
+		if (account.getRole().equals("ROLE_USER")) 
+		{
+			ModelAndView successMv = new ModelAndView("booking/myBookings");
+			List<Booking> bookings = bookingService.findBookingsForAccount(account);
+			successMv.addObject("bookings", bookings);
+			return successMv;
+		}
+		
+		//TODO - Add logic for preventing an admin from booking from here?
+		ModelAndView successMv = new ModelAndView("booking/bookingSuccessful");
 		return successMv;
 	}
 	
@@ -215,6 +247,156 @@ public class BookingController {
 		Booking booking = bookingService.retrieve(id);
 		
 		mv.addObject("booking", booking);
+		return mv;
+	}
+	
+	@RequestMapping(value = "importBookings", method = RequestMethod.GET)
+	public ModelAndView importBookingsRequest(Long pitchId){
+		ModelAndView mv = new ModelAndView("booking/importBookings");
+		
+		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		
+		PitchForm pitchForm = new PitchForm();
+		pitchForm.setPitchId(pitchId);
+		
+		mv.addObject("pitchId", pitchId);
+		mv.addObject("pitch", pitch);
+		mv.addObject("pitchForm", pitchForm);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "importBookings", method = RequestMethod.POST)
+	public ModelAndView importBookings(@ModelAttribute("pitchForm") PitchForm pitchForm, Principal principal, BindingResult result, @RequestParam("file") MultipartFile uploadedFile)
+	{
+		ModelAndView mv = new ModelAndView("booking/importBookings");
+		
+		Errors errors = result;
+		
+		if (uploadedFile.isEmpty()) {
+			errors.reject("file.noFileSelected.message", "X");
+			return mv;
+		}
+		// Check the uploaded file is type CSV. If not we add a message to the front end.
+		if (!FilenameUtils.getExtension(uploadedFile.getOriginalFilename()).equalsIgnoreCase("csv"))
+		{
+			errors.reject("file.wrongFileType.message", "X");
+			return mv;
+		}
+		
+		// CSV formatter using RFC4180 (which specifies a comma separated format) and specify the CSV has headers and set the delimiter as a comma.
+		CSVFormat format = CSVFormat.RFC4180.withHeader().withDelimiter(',');
+		try (CSVParser parser = new CSVParser(new BufferedReader(new InputStreamReader(uploadedFile.getInputStream())), format)) 
+		{
+			List<CSVRecord> records = parser.getRecords();
+			if (records.isEmpty()) 
+			{
+				errors.reject("file.emptyCsvFile.message", "X");
+				return mv;
+			} 
+			else 
+			{
+				Pitch pitch = pitchesService.retrievePitch(pitchForm.getPitchId());
+				String accountName = principal.getName();
+				Account account = accountRepository.findByEmail(accountName);
+				
+				List<Booking> newBookings = new ArrayList<>();
+
+				for (CSVRecord csvRecord : records) 
+				{
+					
+					Map<String, String> recordMap = csvRecord.toMap();
+					
+					Booking newBooking = new Booking();
+					newBooking.setPitch(pitch);
+					newBooking.setAccount(account);
+					
+					String randomUUID = UUID.randomUUID().toString();
+					String bookingReference = randomUUID.substring(0, 13);
+					
+					newBooking.setBookingReference(bookingReference);
+					
+					String name = null;
+					String email = null;
+					String date = null;
+					String bookedFrom = null;
+					String bookedTo = null;
+					String cost = null;
+					
+					DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+					symbols.setDecimalSeparator('.');
+					String pattern = "#.#";
+					DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+					decimalFormat.setParseBigDecimal(true);
+
+					if (recordMap.containsKey("name")) {
+						name = recordMap.get("name").toString();
+					}
+					if (recordMap.containsKey("email")) {
+						email = recordMap.get("email").toString();
+					}
+					if (recordMap.containsKey("date")) {
+						date = recordMap.get("date").toString();
+					}
+					if (recordMap.containsKey("booked from")) {
+						bookedFrom = recordMap.get("booked from").toString();
+					}
+					if (recordMap.containsKey("booked to")) {
+						bookedTo = recordMap.get("booked to").toString();
+					}
+					if (recordMap.containsKey("cost")) {
+						cost = recordMap.get("cost").toString();
+					}
+					if (!name.isEmpty()) {
+						newBooking.setName(name);
+					}
+					if (!email.isEmpty()) {
+						newBooking.setEmail(email);
+					}
+					if (!date.isEmpty()) {
+						Date formattedDate = dateService.stringToDate(date);
+						newBooking.setDate(formattedDate);
+					}
+					if (!cost.isEmpty()) {
+						BigDecimal formattedCost = (BigDecimal) decimalFormat.parse(cost);
+						newBooking.setCost(formattedCost);
+					}
+					if (!bookedFrom.isEmpty()) {
+						Time formattedBookedFrom = dateService.stringToTime(bookedFrom);
+						newBooking.setBookedFrom(formattedBookedFrom);
+					}
+					if (!bookedTo.isEmpty()) {
+						Time formattedBookedTo = dateService.stringToTime(bookedTo);
+						newBooking.setBookedTo(formattedBookedTo);
+					}
+					
+					newBookings.add(newBooking);			
+				}
+				
+				for (Booking booking : newBookings) 
+				{
+					importBookingValidator.validate(booking, result);
+					if (result.hasErrors()) 
+					{
+						errors.reject("file.errors.message", "X");
+						mv.addObject("errors", result);
+						return mv;
+					}
+				}
+				if (!result.hasErrors())
+				{
+					for (Booking booking : newBookings) 
+					{
+						bookingService.createBooking(booking);
+					}
+				}
+			}
+		} 
+		catch (Exception e) 
+		{
+			// TODO: handle exception
+		}
+		
 		return mv;
 	}
 }

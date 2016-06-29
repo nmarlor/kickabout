@@ -13,13 +13,13 @@
 			<h2 class="text-center" th:text="|${location.company} Bookings|"></h2>
 			<br></br>
 			<form method="post" th:action="@{/viewBookingsForAllPitches}" th:object="${locationForm}">
-				<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
+				<div class="pitches-table-holder col-sm-12" align="center">
 				<input type="hidden" th:value="locationId" th:field="*{locationId}"/>
 					<div class="col-sm-12">
 						<div id="availabilityDateCal">
 							<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
 							<br></br>
-							<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd-mm-yyyy" name="date" th:href="@{/viewBookingsForAllPitches}"></input>
+							<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd/mm/yyyy" name="date" th:href="@{/viewBookingsForAllPitches}"></input>
 							<button class="btn btn-default search-date-btn" type="submit"></button>
 						</div>
 						<span th:text="|Booking Schedule - ${date}|"></span>
@@ -31,6 +31,7 @@
 						<thead>
 							<tr>
 								<th class="col-sm-2 text-center">Name</th>
+								<th class="col-sm-2 text-center">Reference</th>
 								<th class="col-sm-2 text-center">Pitch Number</th>
 								<th class="col-sm-2 text-center">Time</th>
 								<th class="col-sm-2 text-center">Cost</th>
@@ -40,6 +41,7 @@
 						<tbody>
 							<tr th:each="booking : ${bookings}">
 								<td class="col-sm-2 text-center" th:text="${booking.name}"> </td>
+								<td class="col-sm-2 text-center" th:text="${booking.bookingReference}"> </td>
 								<td class="col-sm-2 text-center" th:text="${booking.pitch.pitchNumber}"> </td>
 								<td class="col-sm-2 text-center" th:text="|${booking.bookedFrom} - ${booking.bookedTo}|"></td>
 								<td class="col-sm-2 text-center" th:text="${booking.cost}"></td>

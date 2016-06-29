@@ -32,14 +32,12 @@ public class PitchesServiceImpl implements PitchesService{
 
 	@Override
 	public void deletePitch(Pitch pitch) {
-		// TODO Auto-generated method stub
-		
+		pitchDAO.remove(pitch);
 	}
 
 	@Override
 	public Pitch updatePitch(Pitch pitch) {
-		// TODO Auto-generated method stub
-		return null;
+		return pitchDAO.save(pitch);
 	}
 
 	@Override

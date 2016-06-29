@@ -33,9 +33,9 @@
 			</table>
 			</div>
 		</div>
-		<div class="col-sm-6">
-			<div class ="pitch-gallery">
-				<img src="../../../resources/images/pitch.jpg" th:src="@{/resources/images/pitch.jpg}" class ="img-responsive"/>
+		<div class="col-sm-6" align="center">
+			<div class ="pitch-gallery col-sm-12">
+				<img th:src="@{/image(pitchId=${pitch.id})}" class ="img-responsive"/>
 			</div>
 		</div>
 	</div>
@@ -52,7 +52,7 @@
 				<div class="col-sm-12">
 					<div id="availabilityDateCal">
 						<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
-						<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd-mm-yyyy" name="date" th:href="@{/availability}"></input>
+						<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd/mm/yyyy" name="date" th:href="@{/availability}"></input>
 						<button class="btn btn-default search-date-btn" type="submit"></button>
 					</div>
 				</div>

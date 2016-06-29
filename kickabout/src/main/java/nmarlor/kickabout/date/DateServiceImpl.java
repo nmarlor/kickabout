@@ -27,7 +27,7 @@ public class DateServiceImpl implements DateService{
 
 	@Override
 	public Date stringToDate(String date) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyy");
 		LocalDate dateToFormat = LocalDate.parse(date, formatter);
 		Date formattedDate = Date.valueOf(dateToFormat);
 		return formattedDate;

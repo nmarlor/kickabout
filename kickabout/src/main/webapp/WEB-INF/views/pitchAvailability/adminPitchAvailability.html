@@ -13,13 +13,13 @@
 		<h2 class="text-center" th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber} Bookings|"></h2>
 		<br></br>
 		<form method="post" th:action="@{/adminPitchAvailability}" th:object="${pitchForm}">
-			<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
+			<div class="pitches-table-holder col-sm-offset-2 col-sm-8" align="center">
 				<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
 				<div class="col-sm-12">
 					<div id="availabilityDateCal">
 						<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
 						<br></br>
-						<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd-mm-yyyy" name="date" th:href="@{/availability}"></input>
+						<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd/mm/yyyy" name="date" th:href="@{/availability}"></input>
 						<button class="btn btn-default search-date-btn" type="submit"></button>
 					</div>
 					<span th:text="|Booking Schedule - ${date}|"></span>
@@ -28,7 +28,7 @@
 					<br></br>
 					<a class="btn addBookingBtn" th:id="${pitch.id}" data-toggle="modal" data-target="#addBookingModal">Add booking</a>
 					<span>/</span>
-					<a  class="btn">Import bookings</a>
+					<a class="btn" th:href="@{importBookings(pitchId=${pitch.id})}">Import bookings</a>
 					<br></br>
 					<br></br>
 				</div>
@@ -36,6 +36,7 @@
 					<thead>
 						<tr>
 							<th class="col-sm-2 text-center">Name</th>
+							<th class="col-sm-2 text-center">Reference</th>
 							<th class="col-sm-2 text-center">Time</th>
 							<th class="col-sm-2"></th>
 						</tr>
@@ -43,6 +44,7 @@
 					<tbody>
 						<tr th:each="availability : ${pitchAvailabilities}">
 							<td class="col-sm-2 text-center" th:text="${availability.name}"> </td>
+							<td class="col-sm-2 text-center" th:text="${availability.bookingReference}"> </td>
 							<td class="col-sm-2 text-center" th:text="|${availability.bookedFrom} - ${availability.bookedTo}|"> </td>
 							<td class="col-sm-2 text-center">
 								<span class="btn-group">
