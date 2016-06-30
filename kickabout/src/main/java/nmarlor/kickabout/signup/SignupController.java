@@ -1,5 +1,7 @@
 package nmarlor.kickabout.signup;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class SignupController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	AccountService accountService;
+	
 	@RequestMapping(value = "signup")
 	public String signup(Model model) {
 		model.addAttribute(new SignupForm());
@@ -33,6 +38,16 @@ public class SignupController {
 	public String signup(@Valid @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra) {
 		if (errors.hasErrors()) {
 			return SIGNUP_VIEW_NAME;
+		}
+		String email = signupForm.getEmail();
+		List<Account> accounts = accountService.findAll();
+		for (Account account : accounts) 
+		{
+			if (account.getEmail().equals(email)) 
+			{
+				errors.rejectValue("email", "email.exists.message");
+				return SIGNUP_VIEW_NAME;
+			}
 		}
 		Account account = accountRepository.save(signupForm.createAccount());
 		userService.signin(account);
