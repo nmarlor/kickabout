@@ -262,4 +262,26 @@ public class ManageAccountController {
 		jsonView.setModelKey("redirect");
 		return new ModelAndView (jsonView, "redirect", request.getContextPath()+ "signin/signin");
 	}
+	
+	@RequestMapping(value = "addNewUser", method = RequestMethod.GET)
+	public ModelAndView addNewUserRequest(Principal principal){
+		ModelAndView mv = new ModelAndView("manage/newUser");
+		
+		NewAccountForm accountForm = new NewAccountForm();
+		
+		mv.addObject("accountForm", accountForm);
+		return mv;
+	}
+	
+	@RequestMapping(value = "addNewUser", method = RequestMethod.POST)
+	public ModelAndView addNewUser(@ModelAttribute("accountForm") NewAccountForm accountForm, BindingResult bindingResult){
+		ModelAndView thisMv = new ModelAndView("manage/newUser");
+		
+		accountRepository.save(new Account(accountForm.getEmail(),
+											accountForm.getName(), 
+											accountForm.getPassword(), 
+											accountForm.getRole()));
+		
+		return thisMv;
+	}
 }
