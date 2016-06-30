@@ -127,3 +127,7 @@ body {
 .u {
     text-decoration: underline;
 }
+
+.select-center {
+    padding: 0 0 0 125px;
+}

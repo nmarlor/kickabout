@@ -13,11 +13,9 @@
 			<div class="jumbotron default">
 				<h2 class="text-center">New user</h2>
 				<br></br>
-				<div class="col-sm-offset-4 col-sm-2 text-center">
-					<span>User type</span>
-				</div>
-				<div class="col-sm-3">
-	  				<select class="form-control" id="user-type-input" th:field="*{role}">
+				<div class="col-sm-offset-4 col-sm-4">
+					<span>User type:</span>
+	  				<select class="form-control select-center" id="user-type-input" th:field="*{role}">
 						<option value="" >Select role</option>
 						<option value="ROLE_USER">User</option>
 						<option value="ROLE_ADMIN">Admin</option>
@@ -25,29 +23,22 @@
 					</select>
 					<br></br>
 				</div>
-				<div class="col-sm-offset-4 col-sm-2 text-center">
-					<span>Name</span>
-				</div>
-				<div class="col-sm-3">
-	  				<input type="text" class="form-control" id="name-input" th:field="*{name}"/>
+				<div class="col-sm-offset-4 col-sm-4">
+					<span>Name:</span>
+	  				<input type="text" class="form-control text-center" id="name-input" th:field="*{name}"/>
 					<br></br>
 				</div>
-				<div class="col-sm-offset-4 col-sm-2 text-center">
-					<span>Email</span>
-				</div>
-				<div class="col-sm-3">
-	  				<input type="text" class="form-control" id="email-input" th:field="*{email}"/>
+				<div class="col-sm-offset-4 col-sm-4">
+					<span>Email:</span>
+	  				<input type="text" class="form-control text-center" id="email-input" th:field="*{email}"/>
 					<br></br>
 				</div>
-				<div class="col-sm-offset-4 col-sm-2 text-center">
-					<span>Password</span>
-				</div>
-				<div class="col-sm-3">
-	  				<input type="password" class="form-control" id="password-input" th:field="*{password}"/>
+				<div class="col-sm-offset-4 col-sm-4">
+					<span>Password:</span>
+	  				<input type="password" class="form-control text-center" id="password-input" th:field="*{password}"/>
 					<br></br>
 				</div>
-				<div class="create-btn col-sm-offset-4 col-sm-2"></div>
-				<div class="col-sm-3">
+				<div class="create-btn col-sm-offset-5 col-sm-2">
 					<input type="submit" value="Add user" class="btn btn-block btn-success create-button"/>
 				</div>
 			</div>
