@@ -123,3 +123,7 @@ body {
 	border-collapse: collapse;
 	background-color: transparent;
 }
+
+.u {
+    text-decoration: underline;
+}

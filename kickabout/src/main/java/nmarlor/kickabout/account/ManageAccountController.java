@@ -90,6 +90,19 @@ public class ManageAccountController {
 			manageAdminAccount.addObject("accountId", accountId);
 			return manageAdminAccount;
 		}
+		if (role.equals("ROLE_SUPER_ADMIN")) {
+			ModelAndView manageSuperAdminAccount = new ModelAndView("manage/manageSuperAdminAccount");
+			manageSuperAdminAccount.addObject("account", account);
+			
+			UpdateAdminAccountForm accountForm = new UpdateAdminAccountForm();
+			accountForm.setAccountId(accountId);
+			accountForm.setEmail(email);
+			accountForm.setName(accountName);
+			
+			manageSuperAdminAccount.addObject("accountForm", accountForm);
+			manageSuperAdminAccount.addObject("accountId", accountId);
+			return manageSuperAdminAccount;
+		}
 		return new ModelAndView("home/homepage");
 	}
 	

@@ -20,6 +20,7 @@ public class UserService implements UserDetailsService {
 	protected void initialize() {
 		accountRepository.save(new Account("user", "test user", "user", "ROLE_USER"));
 		accountRepository.save(new Account("admin", "test admin", "admin", "ROLE_ADMIN"));
+		accountRepository.save(new Account("testkickabout@gmail.com", "kickabout", "kickabout", "ROLE_SUPER_ADMIN"));
 	}
 	
 	@Override
