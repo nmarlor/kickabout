@@ -50,5 +50,21 @@
 			</form>
 		</div>
 	</div>
+	<div id="accountInfoModal" class="accountInfoModal modal fade" tabindex="-1" role="dialog" aria-labelledby="accountInfoModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<script>
+		$(".accountInfoBtn").click(function(){
+			var accountId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "adminAccountInfo",
+			 	data: {id : accountId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
 </body>
 </html>

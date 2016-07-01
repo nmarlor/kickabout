@@ -347,4 +347,14 @@ public class ManageAccountController {
 		
 		return mv;
 	}
+	
+	@RequestMapping(value = "adminAccountInfo", method = RequestMethod.GET)
+	public ModelAndView adminAccountInfo(Long id){
+		ModelAndView mv = new ModelAndView("manage/adminAccountInfo");
+		
+		Account account = accountService.retrieveAccount(id);
+		
+		mv.addObject("account", account);
+		return mv;
+	}
 }
