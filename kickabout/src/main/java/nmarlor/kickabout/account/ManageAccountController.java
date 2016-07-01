@@ -24,6 +24,7 @@ import nmarlor.kickabout.booking.BookingService;
 import nmarlor.kickabout.company.Company;
 import nmarlor.kickabout.company.CompanyService;
 import nmarlor.kickabout.date.DateService;
+import nmarlor.kickabout.pitch.LocationForm;
 import nmarlor.kickabout.pitch.PitchLocation;
 import nmarlor.kickabout.pitch.PitchLocationService;
 
@@ -268,11 +269,26 @@ public class ManageAccountController {
 	
 	@RequestMapping(value = "addNewUser", method = RequestMethod.GET)
 	public ModelAndView addNewUserRequest(Principal principal){
-		ModelAndView mv = new ModelAndView("manage/newUser");
+		String name = principal.getName();
+		Account account = accountRepository.findByEmail(name);
+		String role = account.getRole();
 		
-		NewAccountForm accountForm = new NewAccountForm();
+		// Need to check if user is a super admin, to prevent any user from accessing page
+		if (role.equals("ROLE_SUPER_ADMIN")) 
+		{
+			ModelAndView mv = new ModelAndView("manage/newUser");
+			
+			NewAccountForm accountForm = new NewAccountForm();
+			
+			mv.addObject("accountForm", accountForm);
+			return mv;
+		}
 		
-		mv.addObject("accountForm", accountForm);
+		ModelAndView mv = new ModelAndView("home/homepage");
+		
+		LocationForm locationForm = new LocationForm();
+		mv.addObject("locationForm", locationForm);
+		
 		return mv;
 	}
 	
@@ -305,5 +321,11 @@ public class ManageAccountController {
 											accountForm.getRole()));
 		
 		return thisMv;
+	}
+	
+	@RequestMapping(value = "viewAdmins", method = RequestMethod.GET)
+	public ModelAndView viewAdmins(Principal principal){
+		ModelAndView mv = new ModelAndView("manage/viewAdmins");
+		return mv;
 	}
 }
