@@ -11,4 +11,6 @@ public interface AccountService
 	public void deleteAccount(Account account);
 	
 	public List<Account> findAll();
+	
+	public List<Account> findAllAdmins(String adminRole);
 }

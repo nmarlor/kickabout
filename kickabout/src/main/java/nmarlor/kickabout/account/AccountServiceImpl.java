@@ -35,4 +35,10 @@ public class AccountServiceImpl implements AccountService{
 		return accountDAO.findAll();
 	}
 
+	@Override
+	public List<Account> findAllAdmins(String adminRole) {
+		List<Account> adminAccounts = accountDAO.findAllAdminAccounts(adminRole);
+		return adminAccounts;
+	}
+
 }

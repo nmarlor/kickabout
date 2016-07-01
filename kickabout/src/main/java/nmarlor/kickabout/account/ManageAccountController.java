@@ -323,9 +323,28 @@ public class ManageAccountController {
 		return thisMv;
 	}
 	
-	@RequestMapping(value = "viewAdmins", method = RequestMethod.GET)
-	public ModelAndView viewAdmins(Principal principal){
-		ModelAndView mv = new ModelAndView("manage/viewAdmins");
+	@RequestMapping(value = "viewAdminUsers", method = RequestMethod.GET)
+	public ModelAndView viewAdminUsers(Principal principal){
+		String name = principal.getName();
+		Account account = accountRepository.findByEmail(name);
+		String role = account.getRole();
+		
+		// Need to check if user is a super admin, to prevent any user from accessing page
+		if (role.equals("ROLE_SUPER_ADMIN")) 
+			{
+				ModelAndView mv = new ModelAndView("manage/viewAdminUsers");
+				
+				List<Account> adminAccounts = accountService.findAllAdmins("ROLE_ADMIN");
+				
+				mv.addObject("adminAccounts", adminAccounts);
+				return mv;
+			}
+		
+		ModelAndView mv = new ModelAndView("home/homepage");
+		
+		LocationForm locationForm = new LocationForm();
+		mv.addObject("locationForm", locationForm);
+		
 		return mv;
 	}
 }
