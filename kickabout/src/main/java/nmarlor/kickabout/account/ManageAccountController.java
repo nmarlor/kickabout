@@ -53,6 +53,9 @@ public class ManageAccountController {
 	
 	@Autowired
 	private DateService dateService;
+	
+	@Autowired
+	private NewAccountValidator newAccountValidator;
 
 	@RequestMapping(value = "/manageAccount", method = RequestMethod.GET)
 	public ModelAndView manageAccount(Principal principal)
@@ -276,6 +279,25 @@ public class ManageAccountController {
 	@RequestMapping(value = "addNewUser", method = RequestMethod.POST)
 	public ModelAndView addNewUser(@ModelAttribute("accountForm") NewAccountForm accountForm, BindingResult bindingResult){
 		ModelAndView thisMv = new ModelAndView("manage/newUser");
+		
+		newAccountValidator.validate(accountForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			thisMv.addObject("errors", bindingResult);
+			return thisMv;
+		}
+		
+		String email = accountForm.getEmail();
+		List<Account> accounts = accountService.findAll();
+		for (Account account : accounts) 
+		{
+			if (account.getEmail().equals(email)) 
+			{
+				bindingResult.rejectValue("email", "email.exists.message");
+				thisMv.addObject("errors", bindingResult);
+				return thisMv;
+			}
+		}
 		
 		accountRepository.save(new Account(accountForm.getEmail(),
 											accountForm.getName(), 

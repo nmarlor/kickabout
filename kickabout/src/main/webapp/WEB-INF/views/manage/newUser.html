@@ -14,6 +14,12 @@
 				<h2 class="text-center">New user</h2>
 				<br></br>
 				<div class="col-sm-offset-4 col-sm-4">
+					<!--/* Show general error message when form contains errors */-->
+		    		<th:block th:if="${#fields.hasErrors('${accountForm.*}')}">
+		        		<div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+		   			</th:block>
+				</div>
+				<div class="col-sm-offset-4 col-sm-4" th:classappend="${#fields.hasErrors('role')}? 'has-error'">
 					<span>User type:</span>
 	  				<select class="form-control select-center" id="user-type-input" th:field="*{role}">
 						<option value="" >Select role</option>
@@ -21,21 +27,25 @@
 						<option value="ROLE_ADMIN">Super admin</option>
 						<option value="ROLE_SUPER_ADMIN">User</option>
 					</select>
+					<span class="help-block" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Select a role</span>
 					<br></br>
 				</div>
-				<div class="col-sm-offset-4 col-sm-4">
+				<div class="col-sm-offset-4 col-sm-4" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
 					<span>Name:</span>
 	  				<input type="text" class="form-control text-center" id="name-input" th:field="*{name}"/>
+					<span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Enter a name</span>
 					<br></br>
 				</div>
-				<div class="col-sm-offset-4 col-sm-4">
+				<div class="col-sm-offset-4 col-sm-4" th:classappend="${#fields.hasErrors('email')}? 'has-error'">
 					<span>Email:</span>
 	  				<input type="text" class="form-control text-center" id="email-input" th:field="*{email}"/>
+	  				<span class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect email</span>
 					<br></br>
 				</div>
-				<div class="col-sm-offset-4 col-sm-4">
+				<div class="col-sm-offset-4 col-sm-4" th:classappend="${#fields.hasErrors('password')}? 'has-error'">
 					<span>Password:</span>
 	  				<input type="password" class="form-control text-center" id="password-input" th:field="*{password}"/>
+					<span class="help-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Incorrect password</span>
 					<br></br>
 				</div>
 				<div class="create-btn col-sm-offset-5 col-sm-2">
