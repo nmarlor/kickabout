@@ -23,5 +23,8 @@ public class UpdateAdminAccountInfoValidator implements Validator {
 		
 		if (StringUtil.isEmpty(accountForm.getName())) 
 			errors.rejectValue("name", "name.message");
+		
+		if (StringUtil.isEmpty(accountForm.getTelephone())) 
+			errors.rejectValue("telephone", "telephoneEmpty.message");
 	}
 }

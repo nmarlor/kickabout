@@ -364,4 +364,44 @@ public class ManageAccountController {
 		mv.addObject("account", account);
 		return mv;
 	}
+	
+	@RequestMapping(value = "editAdminAccountInfo", method = RequestMethod.GET)
+	public ModelAndView editAdminAccountInfoRequest(Long id){
+		ModelAndView mv = new ModelAndView("manage/editAdminAccountInfo");
+		
+		Account account = accountService.retrieveAccount(id);
+		
+		UpdateAdminAccountForm accountForm = new UpdateAdminAccountForm();
+		accountForm.setAccountId(id);
+		accountForm.setEmail(account.getEmail());
+		accountForm.setName(account.getName());
+		accountForm.setTelephone(account.getTelephone());
+		
+		mv.addObject("account", account);
+		mv.addObject("accountForm", accountForm);
+		return mv;
+	}
+	
+	@RequestMapping(value = "editAdminAccountInfo", method = RequestMethod.POST)
+	public ModelAndView editAdminAccountInfo(@ModelAttribute("accountForm") UpdateAdminAccountForm accountForm, BindingResult result, HttpServletRequest request){
+		ModelAndView thisMv = new ModelAndView("manage/editAdminAccountInfo");
+		Account account = accountService.retrieveAccount(accountForm.getAccountId());
+		
+		adminAccountInfoValidator.validate(accountForm, result);
+		if (result.hasErrors()) 
+		{
+			thisMv.addObject("errors", result);
+			return thisMv;
+		}
+		
+		account.setEmail(accountForm.getEmail());
+		account.setName(accountForm.getEmail());
+		account.setTelephone(accountForm.getTelephone());
+		
+		accountService.updateAccount(account);
+		
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "manage/viewAdminUsers");
+	}
 }

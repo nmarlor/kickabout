@@ -54,11 +54,26 @@
 		<div class="replaceable">
 		</div>
 	</div>
+	<div id="changeDetailsModal" class="changeDetailsModal modal fade" tabindex="-1" role="dialog" aria-labelledby="changeDetailsModal">
+		<div class="replaceable">
+		</div>
+	</div>
 	<script>
 		$(".accountInfoBtn").click(function(){
 			var accountId = $(this).attr("id");
 			$.ajax({
 			 	url: base_url + "adminAccountInfo",
+			 	data: {id : accountId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+		
+		$(".changeDetailsBtn").click(function(){
+			var accountId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "editAdminAccountInfo",
 			 	data: {id : accountId},
 			 	success: function(result){
 			 		$(".replaceable").html(result);
