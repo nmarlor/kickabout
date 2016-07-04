@@ -19,11 +19,14 @@
 	  				<a class="btn deleteAccountBtn" th:id="${account.id}" data-toggle="modal" data-target="#deleteAccountModal">Delete my account</a>
 	  			</div>
 	  			<br></br>
-	  				<span>Email Address</span>
+	  				<span>Email address</span>
 	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>
 	  			<br></br>
 	  				<span>Name</span>
 	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" th:field="*{name}"/>
+	  			<br></br>
+	  				<span>Telephone number</span>
+	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="telephone-input" th:field="*{telephone}"/>
 	  			</div>
 	  			<div class="create-btn col-sm-offset-2 col-sm-8" style="margin-bottom: 20px;">
 					<input type="submit" value="Save Changes" class="btn btn-block btn-success create-button" onclick="" />

@@ -5,6 +5,7 @@ public class UpdateAdminAccountForm {
 	private Long accountId;
 	private String name;
 	private String email;
+	private String telephone;
 	
 	public Long getAccountId() {
 		return accountId;
@@ -23,6 +24,12 @@ public class UpdateAdminAccountForm {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getTelephone() {
+		return telephone;
+	}
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 	
 }

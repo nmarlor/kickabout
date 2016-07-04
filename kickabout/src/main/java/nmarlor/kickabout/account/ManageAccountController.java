@@ -67,6 +67,7 @@ public class ManageAccountController {
 		Long accountId = account.getId();
 		String accountName = account.getName();
 		String email = account.getEmail();
+		String telephone = account.getTelephone();
 		
 		if (role.equals("ROLE_USER")) {
 			ModelAndView manageClientAccount = new ModelAndView("manage/manageClientAccount");
@@ -76,6 +77,7 @@ public class ManageAccountController {
 			accountForm.setAccountId(accountId);
 			accountForm.setEmail(email);
 			accountForm.setName(accountName);
+			accountForm.setTelephone(telephone);
 			
 			manageClientAccount.addObject("accountForm", accountForm);
 			manageClientAccount.addObject("accountId", accountId);
@@ -89,6 +91,7 @@ public class ManageAccountController {
 			accountForm.setAccountId(accountId);
 			accountForm.setEmail(email);
 			accountForm.setName(accountName);
+			accountForm.setTelephone(telephone);
 			
 			manageAdminAccount.addObject("accountForm", accountForm);
 			manageAdminAccount.addObject("accountId", accountId);
@@ -102,6 +105,7 @@ public class ManageAccountController {
 			accountForm.setAccountId(accountId);
 			accountForm.setEmail(email);
 			accountForm.setName(accountName);
+			accountForm.setTelephone(telephone);
 			
 			manageSuperAdminAccount.addObject("accountForm", accountForm);
 			manageSuperAdminAccount.addObject("accountId", accountId);
@@ -127,6 +131,7 @@ public class ManageAccountController {
 		
 		account.setEmail(accountForm.getEmail());
 		account.setName(accountForm.getName());
+		account.setTelephone(accountForm.getTelephone());
 		accountService.updateAccount(account);
 		
 		ModelAndView successMv = new ModelAndView("manage/successfulAccountUpdate");
@@ -154,6 +159,7 @@ public class ManageAccountController {
 		
 		account.setEmail(accountForm.getEmail());
 		account.setName(accountForm.getName());
+		account.setTelephone(accountForm.getTelephone());
 		accountService.updateAccount(account);
 		
 		ModelAndView successMv = new ModelAndView("manage/successfulAccountUpdate");
@@ -317,7 +323,8 @@ public class ManageAccountController {
 		
 		accountRepository.save(new Account(accountForm.getEmail(),
 											accountForm.getName(), 
-											accountForm.getPassword(), 
+											accountForm.getPassword(),
+											accountForm.getTelephone(),
 											accountForm.getRole()));
 		
 		return thisMv;

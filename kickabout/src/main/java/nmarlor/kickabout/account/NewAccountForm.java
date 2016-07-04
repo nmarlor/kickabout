@@ -5,6 +5,7 @@ public class NewAccountForm
 	private String name;
 	private String email;
 	private String password;
+	private String telephone;
 	private String role;
 	
 	public String getName() {
@@ -30,6 +31,12 @@ public class NewAccountForm
 	}
 	public void setRole(String role) {
 		this.role = role;
+	}
+	public String getTelephone() {
+		return telephone;
+	}
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 	
 }

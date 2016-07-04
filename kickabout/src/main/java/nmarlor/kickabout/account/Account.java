@@ -35,6 +35,9 @@ public class Account implements java.io.Serializable {
 	@JsonIgnore
 	@Column
 	private String password;
+	
+	@Column
+	private String telephone;
 
 	private String role = "ROLE_USER";
 
@@ -42,10 +45,11 @@ public class Account implements java.io.Serializable {
 
 	}
 	
-	public Account(String email, String name, String password, String role) {
+	public Account(String email, String name, String password, String telephone, String role) {
 		this.email = email;
 		this.name = name;
 		this.password = password;
+		this.telephone = telephone;
 		this.role = role;
 	}
 
@@ -75,6 +79,14 @@ public class Account implements java.io.Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getRole() {

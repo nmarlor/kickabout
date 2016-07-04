@@ -23,9 +23,9 @@
 					<span>User type:</span>
 	  				<select class="form-control select-center" id="user-type-input" th:field="*{role}">
 						<option value="" >Select role</option>
-						<option value="ROLE_USER">Admin</option>
-						<option value="ROLE_ADMIN">Super admin</option>
-						<option value="ROLE_SUPER_ADMIN">User</option>
+						<option value="ROLE_ADMIN">Admin</option>
+						<option value="ROLE_USER">User</option>
+						<option value="ROLE_SUPER_ADMIN">Super admin</option>
 					</select>
 					<span class="help-block" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Select a role</span>
 					<br></br>
@@ -40,6 +40,12 @@
 					<span>Email:</span>
 	  				<input type="text" class="form-control text-center" id="email-input" th:field="*{email}"/>
 	  				<span class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect email</span>
+					<br></br>
+				</div>
+				<div class="col-sm-offset-4 col-sm-4" th:classappend="${#fields.hasErrors('telephone')}? 'has-error'">
+					<span>Telephone number:</span>
+	  				<input type="text" class="form-control text-center" id="telephone-input" th:field="*{telephone}"/>
+	  				<span class="help-block" th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}">Enter a telephone number</span>
 					<br></br>
 				</div>
 				<div class="col-sm-offset-4 col-sm-4" th:classappend="${#fields.hasErrors('password')}? 'has-error'">
