@@ -394,9 +394,13 @@ public class ManageAccountController {
 			return thisMv;
 		}
 		
-		account.setEmail(accountForm.getEmail());
-		account.setName(accountForm.getEmail());
-		account.setTelephone(accountForm.getTelephone());
+		String email = accountForm.getEmail();
+		String name = accountForm.getName();
+		String telephone = accountForm.getTelephone();
+		
+		account.setEmail(email);
+		account.setName(name);
+		account.setTelephone(telephone);
 		
 		accountService.updateAccount(account);
 		
