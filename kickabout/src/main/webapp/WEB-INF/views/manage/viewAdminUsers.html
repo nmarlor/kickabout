@@ -31,8 +31,10 @@
 										<a class="btn btn-info accountInfoBtn" th:id="${account.id}" data-toggle="modal" data-target="#accountInfoModal"><i class="glyphicon glyphicon-info-sign"></i></a>
 							  		</span>
 								</td>
-								<td class="col-sm-2 text-left">View bookings</td>
-								<td class="col-sm-1 text-left">
+								<td class="col-sm-2 text-left">
+ 									<a href="viewAllBookings" th:href="@{viewBookingsForAccount(accountId=${account.id})}">View bookings</a>
+ 								</td>
+ 								<td class="col-sm-1 text-left">
 									<span class="btn-group btn-group-xs">
 										<a class="btn btn-info changeDetailsBtn" th:id="${account.id}" data-toggle="modal" data-target="#changeDetailsModal"><i class="fa fa-pencil"></i></a>
 								  	</span>

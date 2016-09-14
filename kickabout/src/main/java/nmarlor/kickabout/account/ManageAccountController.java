@@ -408,4 +408,11 @@ public class ManageAccountController {
 		jsonView.setModelKey("redirect");
 		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "manage/viewAdminUsers");
 	}
+	
+	@RequestMapping(value = "/viewBookingsForAccount", method = RequestMethod.GET)
+	public ModelAndView viewBookingsForAllPitches(Long accountId){
+		ModelAndView mv = new ModelAndView("booking/viewBookingsForAccount");
+		
+		return mv;
+	}
 }
