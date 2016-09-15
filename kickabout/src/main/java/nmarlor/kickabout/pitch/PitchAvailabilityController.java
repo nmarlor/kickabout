@@ -28,6 +28,7 @@ import nmarlor.kickabout.booking.Booking;
 import nmarlor.kickabout.booking.BookingForm;
 import nmarlor.kickabout.booking.BookingService;
 import nmarlor.kickabout.booking.DeleteBookingForm;
+import nmarlor.kickabout.booking.EditBookingForm;
 import nmarlor.kickabout.date.DateService;
 
 @Controller
@@ -169,6 +170,61 @@ public class PitchAvailabilityController {
 		Booking booking = bookingService.retrieve(bookingForm.getBookingId());
 		
 		bookingService.delete(booking);
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitchAvailability/adminPitchAvailability");
+	}
+	
+	@RequestMapping(value = "adminEditBooking", method = RequestMethod.GET)
+	public ModelAndView adminEditBookingRequest(Long id){
+		ModelAndView mv = new ModelAndView("pitchAvailability/adminEditBooking");
+		
+		Booking booking = bookingService.retrieve(id);
+		
+		// Need to convert each of these to a string then set to booking form
+		Time bookedFrom = booking.getBookedFrom();
+		Time bookedTo = booking.getBookedTo();
+		Date date = booking.getDate();
+		
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String stringDate = df.format(date);
+		
+		String stringBookedFrom = bookedFrom.toString();
+		String stringBookedTo = bookedTo.toString();
+		
+		EditBookingForm bookingForm = new EditBookingForm();
+		bookingForm.setBookingId(booking.getId());
+		bookingForm.setName(booking.getName());
+		bookingForm.setBookedFrom(stringBookedFrom);
+		bookingForm.setBookedTo(stringBookedTo);
+		bookingForm.setDate(stringDate);
+		
+		mv.addObject("bookingForm", bookingForm);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "adminEditBooking", method = RequestMethod.POST)
+	public ModelAndView adminEditBooking(@ModelAttribute("bookingForm") EditBookingForm bookingForm, BindingResult result, HttpServletRequest request){
+		Booking booking = bookingService.retrieve(bookingForm.getBookingId());
+		
+		//Need to convert each of these to correct format then set to booking
+		String bookedFrom = bookingForm.getBookedFrom();
+		String bookedTo = bookingForm.getBookedTo();
+		
+		Time formattedBookedFrom = dateService.stringToTime(bookedFrom);
+		Time formattedBookedTo = dateService.stringToTime(bookedTo);
+		
+		String date = bookingForm.getDate();
+		Date formattedDate = dateService.stringToDate(date);
+		
+		booking.setName(bookingForm.getName());
+		booking.setDate(formattedDate);
+		booking.setBookedFrom(formattedBookedFrom);
+		booking.setBookedTo(formattedBookedTo);
+		
+		bookingService.update(booking);
 		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
 		jsonView.setModelKey("redirect");
 		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitchAvailability/adminPitchAvailability");
