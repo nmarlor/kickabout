@@ -3,12 +3,17 @@ package nmarlor.kickabout.account;
 import java.security.Principal;
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,8 +30,10 @@ import nmarlor.kickabout.company.Company;
 import nmarlor.kickabout.company.CompanyService;
 import nmarlor.kickabout.date.DateService;
 import nmarlor.kickabout.pitch.LocationForm;
+import nmarlor.kickabout.pitch.Pitch;
 import nmarlor.kickabout.pitch.PitchLocation;
 import nmarlor.kickabout.pitch.PitchLocationService;
+import nmarlor.kickabout.pitch.PitchesService;
 
 @Controller
 public class ManageAccountController {
@@ -57,6 +64,12 @@ public class ManageAccountController {
 	
 	@Autowired
 	private NewAccountValidator newAccountValidator;
+	
+	@Autowired
+	private PitchesService pitchesService;
+	
+	@Autowired
+	private PitchLocationService locationService;
 
 	@RequestMapping(value = "/manageAccount", method = RequestMethod.GET)
 	public ModelAndView manageAccount(Principal principal)
@@ -413,6 +426,95 @@ public class ManageAccountController {
 	public ModelAndView viewBookingsForAllPitches(Long accountId){
 		ModelAndView mv = new ModelAndView("booking/viewBookingsForAccount");
 		
+		Date formattedDate = dateService.getTodaysDate();
+		
+		Account account = accountService.retrieveAccount(accountId);
+		List<PitchLocation> locations = pitchLocationService.findPitchLocationsForAccount(account);
+		
+		LocationForm locationForm = new LocationForm();
+		locationForm.setAccountId(accountId);
+		
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String date = df.format(formattedDate);
+		
+		List<Booking> bookings = new ArrayList<>();
+		
+		if (!locations.isEmpty()) 
+		{
+			Set<Long> locationIds = new HashSet<>();
+			
+			for (PitchLocation location : locations) 
+			{
+				List<Pitch> pitches = pitchesService.findPitchesByLocation(location);
+				
+				Long locationId = location.getId();
+				locationIds.add(locationId);
+				
+				for (Pitch pitch : pitches) 
+				{
+					List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+					bookings.addAll(pitchAvailabilities);
+				}
+			}
+			
+			locationForm.setLocationIds(locationIds);
+		
+			mv.addObject("locationForm", locationForm);
+			mv.addObject("account", account);
+			mv.addObject("date", date);
+			mv.addObject("bookings", bookings);
+			
+			return mv;
+		}
+		
+		//Else there are no locations for the account so screen shows empty table
+		mv.addObject("locationForm", locationForm);
+		mv.addObject("account", account);
+		mv.addObject("date", date);
+		mv.addObject("bookings", bookings);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/viewBookingsForAccount", method = RequestMethod.POST)
+	public ModelAndView viewBookingsForAccount(@Valid @ModelAttribute("locationForm") LocationForm locationForm, BindingResult bindingResult, String date) {
+		ModelAndView mv = new ModelAndView("booking/viewBookingsForAccount");
+		mv.addObject("locationForm", locationForm);
+		
+		Set<Long> locationIds = locationForm.getLocationIds();
+		
+		Long accountId = locationForm.getAccountId();
+		Account account = accountService.retrieveAccount(accountId);
+		
+		List<Booking> bookings = new ArrayList<>();
+		
+		Date availabilityDate = dateService.stringToDate(date);
+		
+		for (Long locationId : locationIds) 
+		{
+			PitchLocation location = locationService.retrieve(locationId);
+			List<Pitch> pitches = pitchesService.findPitchesByLocation(location);
+			
+			if (availabilityDate != null) 
+			{
+				for (Pitch pitch : pitches) 
+				{
+					List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, availabilityDate);
+					bookings.addAll(pitchAvailabilities);
+				}
+			}
+		}
+
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		date = df.format(availabilityDate);
+		
+		mv.addObject("locationForm", locationForm);
+		mv.addObject("date", date);
+		mv.addObject("bookings", bookings);
+		mv.addObject("account", account);
+				
 		return mv;
 	}
 }

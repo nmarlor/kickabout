@@ -9,9 +9,56 @@
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
 		<div class="col-sm-12" align="center">
-			<h2 class="text-center" th:text="|Bookings for account|"></h2>
+			<h2 class="text-center" th:text="|${account.name} bookings|"></h2>
 			<br></br>
+			<form method="post" th:action="@{/viewBookingsForAccount}" th:object="${locationForm}">
+				<div class="pitches-table-holder col-sm-12" align="center">
+				<input type="hidden" th:value="accountId" th:field="*{accountId}"/>
+				<input type="hidden" th:value="locationIds" th:field="*{locationIds}"/>
+					<div class="col-sm-12">
+						<div id="availabilityDateCal">
+							<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
+							<br></br>
+							<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd/mm/yyyy" name="date" th:href="@{/viewBookingsForAccount}"></input>
+							<button class="btn btn-default search-date-btn" type="submit"></button>
+						</div>
+						<span th:text="|Booking Schedule - ${date}|"></span>
+						<br></br>
+						<br></br>
+					</div>
+					<div class="bookings-table">
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="col-sm-2 text-center">Name</th>
+								<th class="col-sm-2 text-center">Reference</th>
+								<th class="col-sm-2 text-center">Pitch</th>
+								<th class="col-sm-2 text-center">Time</th>
+								<th class="col-sm-2 text-center">Cost</th>
+								<th class="col-sm-2"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="booking : ${bookings}">
+								<td class="col-sm-2 text-center" th:text="${booking.name}"> </td>
+								<td class="col-sm-2 text-center" th:text="${booking.bookingReference}"> </td>
+								<td class="col-sm-2 text-center" th:text="|${booking.pitch.pitchLocation.company} Pitch ${booking.pitch.pitchNumber}|"> </td>
+								<td class="col-sm-2 text-center" th:text="|${booking.bookedFrom} - ${booking.bookedTo}|"></td>
+								<td class="col-sm-1 text-center" th:text="${booking.cost}"></td>
+								<td class="col-sm-2 text-center">
+									<span class="btn-group">
+					  					<a class="btn btn-danger cancelBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#cancelBookingModal">Cancel Booking</a>
+					  				</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
+	<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
+	<script th:src="@{/resources/js/pitchAvailability.js}"></script>
 </body>
 </html>

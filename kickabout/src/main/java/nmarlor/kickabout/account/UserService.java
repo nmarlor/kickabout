@@ -21,6 +21,7 @@ public class UserService implements UserDetailsService {
 		accountRepository.save(new Account("user", "test user", "user", "0161 234 8953", "ROLE_USER"));
 		accountRepository.save(new Account("admin", "test admin", "admin", "0161 766 1092", "ROLE_ADMIN"));
 		accountRepository.save(new Account("testkickabout@gmail.com", "kickabout", "kickabout", "0161 794 6835", "ROLE_SUPER_ADMIN"));
+		accountRepository.save(new Account("anotheradmin@admin", "another admin", "admin", "0161 773 4192", "ROLE_ADMIN"));
 	}
 	
 	@Override
