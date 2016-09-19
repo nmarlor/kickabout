@@ -517,4 +517,42 @@ public class ManageAccountController {
 				
 		return mv;
 	}
+	
+	@RequestMapping(value = "viewStandardUsers", method = RequestMethod.GET)
+	public ModelAndView viewStandardUsers(Principal principal){
+		String name = principal.getName();
+		Account account = accountRepository.findByEmail(name);
+		String role = account.getRole();
+		
+		// Need to check if user is a super admin, to prevent any user from accessing page
+		if (role.equals("ROLE_SUPER_ADMIN")) 
+			{
+				ModelAndView mv = new ModelAndView("manage/viewStandardUsers");
+				
+				List<Account> standardAccounts = accountService.findAllAdmins("ROLE_USER");
+				
+				mv.addObject("standardAccounts", standardAccounts);
+				return mv;
+			}
+		
+		ModelAndView mv = new ModelAndView("home/homepage");
+		
+		LocationForm locationForm = new LocationForm();
+		mv.addObject("locationForm", locationForm);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "viewUsersBookings", method = RequestMethod.GET)
+	public ModelAndView viewUsersBookings(Long accountId){
+		Account account = accountService.retrieveAccount(accountId);
+		
+		ModelAndView mv = new ModelAndView("booking/viewUsersBookings");
+		
+		List<Booking> bookings = bookingService.findBookingsForAccount(account);
+		
+		mv.addObject("account", account);
+		mv.addObject("bookings", bookings);
+		return mv;
+	}
 }
