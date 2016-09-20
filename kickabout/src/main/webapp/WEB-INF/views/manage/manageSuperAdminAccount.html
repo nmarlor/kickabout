@@ -7,7 +7,7 @@
 </head>
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
-	<form method="post" th:action="@{/manageSuperAdminAccount}" th:object="${accountForm}">
+	<form th:action="@{/manageSuperAdminAccount}" method="get" th:object="${accountForm}">
 	<input type="hidden" th:value="accountId" th:field="*{accountId}"/>
 	
 	<div class="jumbotron default">
@@ -27,12 +27,29 @@
 	  				<p><a class="u" href="">View bookings</a></p>
 	  			</div>
 	  			<div class="text-center">
-	  				<p><a class="u" href="">Change account details</a></p>
+	  				<p><a class="u changeDetailsBtn" th:id="${account.id}" data-toggle="modal" data-target="#changeDetailsModal">Change account details</a></p>
 	  			</div>
 	  		</div>
 		</div>
 	</div>
 	
 	</form>
+	
+	<div id="changeDetailsModal" class="changeDetailsModal modal fade" tabindex="-1" role="dialog" aria-labelledby="changeDetailsModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<script>
+		$(".changeDetailsBtn").click(function(){
+			var accountId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "editSuperAdminAccountInfo",
+			 	data: {id : accountId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
 </body>
 </html>

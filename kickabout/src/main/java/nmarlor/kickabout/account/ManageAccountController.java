@@ -422,6 +422,55 @@ public class ManageAccountController {
 		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "manage/viewAdminUsers");
 	}
 	
+	@RequestMapping(value = "editSuperAdminAccountInfo", method = RequestMethod.GET)
+	public ModelAndView editSuperAdminAccountInfoRequest(Long id){
+		ModelAndView mv = new ModelAndView("manage/editSuperAdminAccountInfo");
+		
+		Account account = accountService.retrieveAccount(id);
+		
+		if (account.getRole().equals("ROLE_SUPER_ADMIN")) 
+		{
+			UpdateAdminAccountForm accountForm = new UpdateAdminAccountForm();
+			accountForm.setAccountId(id);
+			accountForm.setEmail(account.getEmail());
+			accountForm.setName(account.getName());
+			accountForm.setTelephone(account.getTelephone());
+			
+			mv.addObject("account", account);
+			mv.addObject("accountForm", accountForm);
+			return mv;
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "editSuperAdminAccountInfo", method = RequestMethod.POST)
+	public ModelAndView editSuperAdminAccountInfo(@ModelAttribute("accountForm") UpdateAdminAccountForm accountForm, BindingResult result, HttpServletRequest request){
+		ModelAndView thisMv = new ModelAndView("manage/editSuperAdminAccountInfo");
+		Account account = accountService.retrieveAccount(accountForm.getAccountId());
+		
+		adminAccountInfoValidator.validate(accountForm, result);
+		if (result.hasErrors()) 
+		{
+			thisMv.addObject("errors", result);
+			return thisMv;
+		}
+		
+		String email = accountForm.getEmail();
+		String name = accountForm.getName();
+		String telephone = accountForm.getTelephone();
+		
+		account.setEmail(email);
+		account.setName(name);
+		account.setTelephone(telephone);
+		
+		accountService.updateAccount(account);
+		
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "manage/manageSuperAdminAccount");
+	}
+	
 	@RequestMapping(value = "/viewBookingsForAccount", method = RequestMethod.GET)
 	public ModelAndView viewBookingsForAllPitches(Long accountId){
 		ModelAndView mv = new ModelAndView("booking/viewBookingsForAccount");
