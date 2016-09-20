@@ -49,4 +49,10 @@ public class BookingServiceImpl implements BookingService{
 	public void update(Booking booking) {
 		bookingDAO.save(booking);
 	}
+
+	@Override
+	public List<Booking> findAllByDate(Date date) {
+		List<Booking> bookings = bookingDAO.findAllByDate(date);
+		return bookings;
+	}
 }

@@ -19,4 +19,6 @@ public interface BookingService
 	public List<Booking> findBookingsByPitchAndDate(Pitch pitch, Date date);
 	
 	public void update(Booking booking);
+	
+	public List<Booking> findAllByDate(Date date);
 }

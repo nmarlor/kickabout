@@ -30,4 +30,11 @@ public class BookingDAOImpl extends HibernateJPABase<Booking, Long> implements B
 		return super.search(search);
 	}
 
+	@Override
+	public List<Booking> findAllByDate(Date date) {
+		Search search = new Search(Booking.class);
+		search.addFilterEqual("date", date);
+		return super.search(search);
+	}
+
 }

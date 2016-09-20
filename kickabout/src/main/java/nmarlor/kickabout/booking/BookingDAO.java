@@ -13,4 +13,6 @@ public interface BookingDAO extends GenericDAO<Booking, Long>
 	List<Booking> findBookingsForAccount(Account account);
 	
 	List<Booking> findBookingsByPitchAndDate(Pitch pitch, Date date);
+	
+	List<Booking> findAllByDate(Date date);
 }

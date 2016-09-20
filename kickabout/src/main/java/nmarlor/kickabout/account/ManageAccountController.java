@@ -604,4 +604,43 @@ public class ManageAccountController {
 		mv.addObject("bookings", bookings);
 		return mv;
 	}
+	
+	@RequestMapping(value = "viewAllBookings", method = RequestMethod.GET)
+	public ModelAndView viewAllBookings(Principal principal){
+		ModelAndView mv = new ModelAndView("booking/viewAllBookings");
+		
+		String name = principal.getName();
+		Account account = accountRepository.findByEmail(name);
+		
+		Date formattedDate = dateService.getTodaysDate();
+		
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String date = df.format(formattedDate);
+		
+		List<Booking> bookings = bookingService.findAllByDate(formattedDate);
+		
+		mv.addObject("date", date);
+		mv.addObject("account", account);
+		mv.addObject("bookings", bookings);
+		return mv;
+	}
+	
+	@RequestMapping(value = "/viewAllBookings", method = RequestMethod.POST)
+	public ModelAndView viewAllBookings(String date) {
+		ModelAndView mv = new ModelAndView("booking/viewAllBookings");
+		
+		Date formattedDate = dateService.stringToDate(date);
+		
+		List<Booking> bookings = bookingService.findAllByDate(formattedDate);
+
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		date = df.format(formattedDate);
+		
+		mv.addObject("date", date);
+		mv.addObject("bookings", bookings);
+				
+		return mv;
+	}
 }
