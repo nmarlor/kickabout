@@ -26,6 +26,8 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import nmarlor.kickabout.booking.Booking;
 import nmarlor.kickabout.booking.BookingService;
+import nmarlor.kickabout.booking.ReferenceOrNameForm;
+import nmarlor.kickabout.booking.SearchByReferenceOrNameValidator;
 import nmarlor.kickabout.company.Company;
 import nmarlor.kickabout.company.CompanyService;
 import nmarlor.kickabout.date.DateService;
@@ -70,6 +72,9 @@ public class ManageAccountController {
 	
 	@Autowired
 	private PitchLocationService locationService;
+	
+	@Autowired
+	private SearchByReferenceOrNameValidator referenceOrNameValidator;
 
 	@RequestMapping(value = "/manageAccount", method = RequestMethod.GET)
 	public ModelAndView manageAccount(Principal principal)
@@ -620,6 +625,10 @@ public class ManageAccountController {
 		
 		List<Booking> bookings = bookingService.findAllByDate(formattedDate);
 		
+		ReferenceOrNameForm referenceOrNameForm = new ReferenceOrNameForm();
+		referenceOrNameForm.setAccount(account);
+		
+		mv.addObject("referenceOrNameForm", referenceOrNameForm);
 		mv.addObject("date", date);
 		mv.addObject("account", account);
 		mv.addObject("bookings", bookings);
@@ -638,7 +647,47 @@ public class ManageAccountController {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		date = df.format(formattedDate);
 		
+		ReferenceOrNameForm referenceOrNameForm = new ReferenceOrNameForm();
+		
+		mv.addObject("referenceOrNameForm", referenceOrNameForm);
 		mv.addObject("date", date);
+		mv.addObject("bookings", bookings);
+				
+		return mv;
+	}
+	
+	@RequestMapping(value = "/searchByReferenceOrName", method = RequestMethod.POST)
+	public ModelAndView viewAllBookings(@Valid @ModelAttribute("referenceOrNameForm") ReferenceOrNameForm referenceOrNameForm, BindingResult bindingResult) {
+		Account account = referenceOrNameForm.getAccount();
+		
+		Date formattedDate = dateService.getTodaysDate();
+		
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String date = df.format(formattedDate);
+		
+		referenceOrNameValidator.validate(referenceOrNameForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			ModelAndView thisMv = new ModelAndView("booking/viewAllBookings");
+			
+			List<Booking> bookings = bookingService.findAllByDate(formattedDate);
+
+			thisMv.addObject("errors", bindingResult);
+			thisMv.addObject("referenceOrNameForm", referenceOrNameForm);
+			thisMv.addObject("date", date);
+			thisMv.addObject("bookings", bookings);
+			thisMv.addObject("account", account);
+			
+			return thisMv;
+		}
+		
+		ModelAndView mv = new ModelAndView("booking/searchByReferenceOrName");
+		
+		String search = referenceOrNameForm.getSearch();
+		
+		List<Booking> bookings = bookingService.findBookingsByReferenceOrName(search);
+
 		mv.addObject("bookings", bookings);
 				
 		return mv;

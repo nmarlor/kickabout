@@ -15,4 +15,6 @@ public interface BookingDAO extends GenericDAO<Booking, Long>
 	List<Booking> findBookingsByPitchAndDate(Pitch pitch, Date date);
 	
 	List<Booking> findAllByDate(Date date);
+	
+	List<Booking> findByReferenceOrName(String toSearch);
 }

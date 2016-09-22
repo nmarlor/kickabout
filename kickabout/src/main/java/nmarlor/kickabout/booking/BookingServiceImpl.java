@@ -55,4 +55,10 @@ public class BookingServiceImpl implements BookingService{
 		List<Booking> bookings = bookingDAO.findAllByDate(date);
 		return bookings;
 	}
+
+	@Override
+	public List<Booking> findBookingsByReferenceOrName(String search) {
+		List<Booking> bookings = bookingDAO.findByReferenceOrName(search);
+		return bookings;
+	}
 }

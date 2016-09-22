@@ -21,4 +21,6 @@ public interface BookingService
 	public void update(Booking booking);
 	
 	public List<Booking> findAllByDate(Date date);
+	
+	public List<Booking> findBookingsByReferenceOrName(String search);
 }

@@ -37,4 +37,22 @@ public class BookingDAOImpl extends HibernateJPABase<Booking, Long> implements B
 		return super.search(search);
 	}
 
+	@Override
+	public List<Booking> findByReferenceOrName(String toSearch) {
+		Search referenceSearch = new Search(Booking.class);
+		referenceSearch.addFilterEqual("bookingReference", toSearch);
+		
+		List<Booking> bookings = super.search(referenceSearch);
+		
+		if (bookings.isEmpty()) 
+		{
+			Search nameSearch = new Search(Booking.class);
+			nameSearch.addFilterEqual("name", toSearch);
+			List<Booking> bookingsForName = super.search(nameSearch);
+			return bookingsForName;
+		}
+		
+		return bookings;
+	}
+
 }
