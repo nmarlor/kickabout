@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<div class="jumbotron default">
+		<div class="col-sm-12" align="center">
+			<h2 class="text-center">All bookings</h2>
+			<br></br>
+			<form method="post" th:action="@{/searchByReferenceOrName}" th:object="${referenceOrNameForm}">
+				<div class="row">
+					<div class="col-sm-4"></div>
+					<div class="col-sm-2">	    			
+						<input th:errorclass="input-form-error" type="text" class="form-control text-center" id="name-input" placeholder="Enter reference or name..." th:field="*{search}"/>
+					</div>
+					<div class="col-sm-2">
+						<input type="submit" value="Search" class="btn btn-block btn-success create-button"/>
+					</div>
+				</div>
+					<br></br>
+					<p style="color:red" th:text="|No bookings found for *{search}, please try again|"></p>
+			</form>
+			<form method="post" th:action="@{/viewAllBookings}">
+				<div class="pitches-table-holder col-sm-12" align="center">
+					<div class="col-sm-12">
+						<div id="availabilityDateCal">
+							<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
+							<br></br>
+							<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd/mm/yyyy" name="date" th:href="@{/viewAllBookings}"></input>
+							<button class="btn btn-default search-date-btn" type="submit"></button>
+						</div>
+						<span th:text="|Booking Schedule - ${date}|"></span>
+						<br></br>
+						<br></br>
+					</div>
+					<div class="bookings-table">
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="col-sm-2 text-center">Name</th>
+								<th class="col-sm-1"></th>
+								<th class="col-sm-2 text-center">Reference</th>
+								<th class="col-sm-2 text-center">Pitch</th>
+								<th class="col-sm-1"></th>
+								<th class="col-sm-2 text-center">Time</th>
+								<th class="col-sm-1 text-center">Cost</th>
+								<th class="col-sm-1"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="booking : ${bookings}">
+								<td class="col-sm-2 text-center" th:text="${booking.name}"> </td>
+								<td class="col-sm-1 text-left">
+									<span class="btn-group btn-group-xs">
+										<a class="btn btn-info accountInfoBtn" th:id="${booking.account.id}" data-toggle="modal" data-target="#accountInfoModal"><i class="glyphicon glyphicon-info-sign"></i></a>
+							  		</span>
+								</td>
+								<td class="col-sm-2 text-center" th:text="${booking.bookingReference}"> </td>
+								<td class="col-sm-2 text-center" th:text="|${booking.pitch.pitchLocation.company} Pitch ${booking.pitch.pitchNumber}|"> </td>
+								<td class="col-xs-1 text-left">
+									<span class="btn-group btn-group-xs">
+										<a class="btn btn-info pitchInfoBtn" th:id="${booking.id}" data-toggle="modal" data-target="#pitchInfoModal"><i class="glyphicon glyphicon-info-sign"></i></a>
+							  		</span>
+								</td>
+								<td class="col-sm-2 text-center" th:text="|${booking.bookedFrom} - ${booking.bookedTo}|"></td>
+								<td class="col-sm-1 text-center" th:text="${booking.cost}"></td>
+								<td class="col-sm-1 text-center">
+									<span class="btn-group btn-group-xs">
+										<a class="btn btn-danger cancelBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#cancelBookingModal"><i class="fa fa-trash-o danger"></i></a>
+								  	</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="accountInfoModal" class="accountInfoModal modal fade" tabindex="-1" role="dialog" aria-labelledby="accountInfoModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<div id="pitchInfoModal" class="pitchInfoModal modal fade" tabindex="-1" role="dialog" aria-labelledby="pitchInfoModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<div id="cancelBookingModal" class="cancelBookingModal modal fade" tabindex="-1" role="dialog" aria-labelledby="cancelBookingModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<script>
+		$(".accountInfoBtn").click(function(){
+			var accountId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "adminAccountInfo",
+			 	data: {id : accountId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+	<script>
+		$(".pitchInfoBtn").click(function(){
+			var bookingId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "myBookingPitchInfo",
+			 	data: {id : bookingId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+	<script>
+		$(".cancelBookingBtn").click(function(){
+			var bookingId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "cancelMyBooking",
+			 	data: {id : bookingId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+	<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
+	<script th:src="@{/resources/js/pitchAvailability.js}"></script>
+</body>
+</html>

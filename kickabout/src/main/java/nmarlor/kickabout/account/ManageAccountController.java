@@ -648,6 +648,7 @@ public class ManageAccountController {
 		date = df.format(formattedDate);
 		
 		ReferenceOrNameForm referenceOrNameForm = new ReferenceOrNameForm();
+		referenceOrNameForm.setDate(date);
 		
 		mv.addObject("referenceOrNameForm", referenceOrNameForm);
 		mv.addObject("date", date);
@@ -687,6 +688,20 @@ public class ManageAccountController {
 		String search = referenceOrNameForm.getSearch();
 		
 		List<Booking> bookings = bookingService.findBookingsByReferenceOrName(search);
+		
+		if (bookings.isEmpty()) 
+		{
+			ModelAndView errorMv = new ModelAndView("booking/noBookingsFound");
+			
+			List<Booking> bookingsForDate = bookingService.findAllByDate(formattedDate);
+
+			errorMv.addObject("referenceOrNameForm", referenceOrNameForm);
+			errorMv.addObject("date", date);
+			errorMv.addObject("bookings", bookingsForDate);
+			errorMv.addObject("account", account);
+			
+			return errorMv;
+		}
 
 		mv.addObject("bookings", bookings);
 				

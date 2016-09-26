@@ -1,14 +1,12 @@
 package nmarlor.kickabout.booking;
 
-import java.sql.Date;
-
 import nmarlor.kickabout.account.Account;
 
 public class ReferenceOrNameForm 
 {
 	private String search;
 	private Account account;
-	private Date date;
+	private String date;
 
 	public String getSearch() {
 		return search;
@@ -26,11 +24,11 @@ public class ReferenceOrNameForm
 		this.account = account;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 }
