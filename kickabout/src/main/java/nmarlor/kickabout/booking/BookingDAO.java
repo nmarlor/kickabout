@@ -7,6 +7,7 @@ import com.googlecode.genericdao.dao.jpa.GenericDAO;
 
 import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.pitch.Pitch;
+import nmarlor.kickabout.pitch.PitchLocation;
 
 public interface BookingDAO extends GenericDAO<Booking, Long>
 {
@@ -17,4 +18,6 @@ public interface BookingDAO extends GenericDAO<Booking, Long>
 	List<Booking> findAllByDate(Date date);
 	
 	List<Booking> findByReferenceOrName(String toSearch);
+	
+	List<Booking> findForLocationByReferenceOrName(PitchLocation location, String toSearch);
 }

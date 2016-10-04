@@ -30,6 +30,7 @@ import nmarlor.kickabout.booking.BookingService;
 import nmarlor.kickabout.booking.DeleteBookingForm;
 import nmarlor.kickabout.booking.EditBookingForm;
 import nmarlor.kickabout.booking.EditBookingValidator;
+import nmarlor.kickabout.booking.ReferenceOrNameAdminForm;
 import nmarlor.kickabout.date.DateService;
 
 @Controller
@@ -315,11 +316,15 @@ public class PitchAvailabilityController {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String date = df.format(formattedDate);
 		
+		ReferenceOrNameAdminForm referenceOrNameForm = new ReferenceOrNameAdminForm();
+		referenceOrNameForm.setLocationId(locationId);
+		
 		mv.addObject("location", location);
 		mv.addObject("locationId", locationId);
 		mv.addObject("date", date);
 		mv.addObject("bookings", bookings);
 		mv.addObject("locationForm", locationForm);
+		mv.addObject("referenceOrNameForm", referenceOrNameForm);
 		
 		return mv;
 	}
@@ -350,11 +355,38 @@ public class PitchAvailabilityController {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		date = df.format(availabilityDate);
 		
+		ReferenceOrNameAdminForm referenceOrNameForm = new ReferenceOrNameAdminForm();
+		referenceOrNameForm.setLocationId(locationId);
+		
 		mv.addObject("locationForm", locationForm);
 		mv.addObject("location", location);
 		mv.addObject("locationId", locationId);
 		mv.addObject("date", date);
 		mv.addObject("bookings", bookings);
+		mv.addObject("referenceOrNameForm", referenceOrNameForm);
+				
+		return mv;
+	}
+	
+	@RequestMapping(value = "/findBookingsByReferenceOrName", method = RequestMethod.POST)
+	public ModelAndView findBookingsByReferenceOrName(@Valid @ModelAttribute("referenceOrNameForm") ReferenceOrNameAdminForm referenceOrNameForm, BindingResult bindingResult) {
+		ModelAndView mv = new ModelAndView("booking/findBookingsByReferenceOrName");
+		
+		Long locationId = referenceOrNameForm.getLocationId();
+		PitchLocation location = locationService.retrieve(locationId);
+		
+		Date formattedDate = dateService.getTodaysDate();
+		
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String date = df.format(formattedDate);
+		
+		String search = referenceOrNameForm.getSearch();
+		
+		List<Booking> bookings = bookingService.findBookingsForLocationByReferenceOrName(location, search);
+		
+		mv.addObject("bookings", bookings);
+		mv.addObject("location", location);
 				
 		return mv;
 	}

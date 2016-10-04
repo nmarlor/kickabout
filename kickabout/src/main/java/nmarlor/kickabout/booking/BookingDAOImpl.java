@@ -10,6 +10,7 @@ import com.googlecode.genericdao.search.Search;
 import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.lib.HibernateJPABase;
 import nmarlor.kickabout.pitch.Pitch;
+import nmarlor.kickabout.pitch.PitchLocation;
 
 @Repository
 public class BookingDAOImpl extends HibernateJPABase<Booking, Long> implements BookingDAO
@@ -47,6 +48,26 @@ public class BookingDAOImpl extends HibernateJPABase<Booking, Long> implements B
 		if (bookings.isEmpty()) 
 		{
 			Search nameSearch = new Search(Booking.class);
+			nameSearch.addFilterEqual("name", toSearch);
+			List<Booking> bookingsForName = super.search(nameSearch);
+			return bookingsForName;
+		}
+		
+		return bookings;
+	}
+
+	@Override
+	public List<Booking> findForLocationByReferenceOrName(PitchLocation location, String toSearch) {
+		Search referenceSearch = new Search(Booking.class);
+		referenceSearch.addFilterEqual("pitch.pitchLocation", location);
+		referenceSearch.addFilterEqual("bookingReference", toSearch);
+		
+		List<Booking> bookings = super.search(referenceSearch);
+		
+		if (bookings.isEmpty()) 
+		{
+			Search nameSearch = new Search(Booking.class);
+			nameSearch.addFilterEqual("pitch.pitchLocation", location);
 			nameSearch.addFilterEqual("name", toSearch);
 			List<Booking> bookingsForName = super.search(nameSearch);
 			return bookingsForName;
