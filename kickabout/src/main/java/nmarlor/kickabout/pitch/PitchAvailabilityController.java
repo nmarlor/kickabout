@@ -60,6 +60,9 @@ public class PitchAvailabilityController {
 	@Autowired
 	private EditBookingValidator editBookingValidator;
 	
+	@Autowired
+	private ReferenceOrNameSearchAdminValidator referenceOrNameValidator;
+	
 	@RequestMapping(value = "/availability", method = RequestMethod.GET)
 	public ModelAndView pitchAvailability(Long pitchId){
 		ModelAndView mv = new ModelAndView("pitchAvailability/availabilityAndFeatures");
@@ -375,11 +378,39 @@ public class PitchAvailabilityController {
 		Long locationId = referenceOrNameForm.getLocationId();
 		PitchLocation location = locationService.retrieve(locationId);
 		
+		LocationForm locationForm = new LocationForm();
+		locationForm.setLocationId(locationId);
+		
 		Date formattedDate = dateService.getTodaysDate();
 		
 		// Date to be displayed on the front end
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String date = df.format(formattedDate);
+		
+		referenceOrNameValidator.validate(referenceOrNameForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			ModelAndView thisMv = new ModelAndView("booking/viewBookingsForAllPitches");
+			
+			List<Pitch> pitches = pitchesService.findPitchesByLocation(location);
+			
+			List<Booking> bookings = new ArrayList<>();
+			for (Pitch pitch : pitches) 
+			{
+				List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+				bookings.addAll(pitchAvailabilities);
+			}
+			
+			thisMv.addObject("errors", bindingResult);			
+			thisMv.addObject("location", location);
+			thisMv.addObject("locationId", locationId);
+			thisMv.addObject("date", date);
+			thisMv.addObject("bookings", bookings);
+			thisMv.addObject("locationForm", locationForm);
+			thisMv.addObject("referenceOrNameForm", referenceOrNameForm);
+			
+			return thisMv;
+		}
 		
 		String search = referenceOrNameForm.getSearch();
 		
