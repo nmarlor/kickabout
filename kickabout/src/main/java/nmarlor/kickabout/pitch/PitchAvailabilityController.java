@@ -414,7 +414,30 @@ public class PitchAvailabilityController {
 		
 		String search = referenceOrNameForm.getSearch();
 		
-		List<Booking> bookings = bookingService.findBookingsForLocationByReferenceOrName(location, search);
+		List<Booking> bookings = new ArrayList<>();
+		bookings = bookingService.findBookingsForLocationByReferenceOrName(location, search);
+		
+		if (bookings.isEmpty()) 
+		{
+			ModelAndView errorMv = new ModelAndView("booking/noBookingsForReferenceOrName");
+			
+			List<Pitch> pitches = pitchesService.findPitchesByLocation(location);
+
+			for (Pitch pitch : pitches) 
+			{
+				List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+				bookings.addAll(pitchAvailabilities);
+			}
+			
+			errorMv.addObject("location", location);
+			errorMv.addObject("locationId", locationId);
+			errorMv.addObject("date", date);
+			errorMv.addObject("bookings", bookings);
+			errorMv.addObject("locationForm", locationForm);
+			errorMv.addObject("referenceOrNameForm", referenceOrNameForm);
+			
+			return errorMv;
+		}
 		
 		mv.addObject("bookings", bookings);
 		mv.addObject("location", location);
