@@ -23,8 +23,9 @@
 						<input type="submit" value="Search" class="btn btn-block btn-success create-button"/>
 					</div>
 				</div>
+					<br></br>
+					<p style="color:red" th:text="|No bookings found for *{search}, please try again|"></p>
 			</form>
-			<br></br>
 			<form method="post" th:action="@{/viewBookingsForAllPitches}" th:object="${locationForm}">
 				<div class="pitches-table-holder col-sm-12" align="center">
 				<input type="hidden" th:value="locationId" th:field="*{locationId}"/>

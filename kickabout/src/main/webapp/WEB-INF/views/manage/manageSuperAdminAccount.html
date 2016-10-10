@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div th:replace="fragments/newHeader">Header</div>
+	<form th:action="@{/manageSuperAdminAccount}" method="get" th:object="${accountForm}">
+	<input type="hidden" th:value="accountId" th:field="*{accountId}"/>
+	
+	<div class="jumbotron default">
+		<h2 class="text-center">Kickabout Admin</h2>
+		<div class="col-sm-12">
+			<div class="panel-body">
+	  			<div class="text-center">
+	  				<p><a class="u" href="/addNewUser" th:href="@{/addNewUser}">Add user</a></p>
+	  			</div>
+	  			<div class="text-center">
+	  				<p><a class="u" href="/viewAdminUsers" th:href="@{/viewAdminUsers}">View admin users</a></p>
+	  			</div>
+	  			<div class="text-center">
+	  				<p><a class="u" href="/viewStandardUsers" th:href="@{/viewStandardUsers}">View standard users</a></p>
+	  			</div>
+	  			<div class="text-center">
+	  				<p><a class="u" href="/viewAllBookings" th:href="@{/viewAllBookings}">View all bookings</a></p>
+	  			</div>
+	  			<div class="text-center">
+	  				<p><a class="u changeDetailsBtn" th:id="${account.id}" data-toggle="modal" data-target="#changeDetailsModal">Change account details</a></p>
+	  			</div>
+	  		</div>
+		</div>
+	</div>
+	
+	</form>
+	
+	<div id="changeDetailsModal" class="changeDetailsModal modal fade" tabindex="-1" role="dialog" aria-labelledby="changeDetailsModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	<script>
+		$(".changeDetailsBtn").click(function(){
+			var accountId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "editSuperAdminAccountInfo",
+			 	data: {id : accountId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+</body>
+</html>

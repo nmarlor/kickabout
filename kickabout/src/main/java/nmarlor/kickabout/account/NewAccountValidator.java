@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-@Component("updateAdminAccountInfoValidator")
-public class UpdateAdminAccountInfoValidator implements Validator {
+@Component("newAccountValidator")
+public class NewAccountValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -16,15 +16,19 @@ public class UpdateAdminAccountInfoValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) 
 	{
-		UpdateAdminAccountForm accountForm = (UpdateAdminAccountForm) target;
+		NewAccountForm newAccount = (NewAccountForm) target;
 		
-		if (StringUtil.isEmpty(accountForm.getEmail())) 
+		if (StringUtil.isEmpty(newAccount.getEmail())) 
 			errors.rejectValue("email", "email.message");
 		
-		if (StringUtil.isEmpty(accountForm.getName())) 
+		if (StringUtil.isEmpty(newAccount.getName())) 
 			errors.rejectValue("name", "name.message");
 		
-		if (StringUtil.isEmpty(accountForm.getTelephone())) 
-			errors.rejectValue("telephone", "telephoneEmpty.message");
+		if (StringUtil.isEmpty(newAccount.getPassword())) 
+			errors.rejectValue("password", "password.message");
+		
+		if (StringUtil.isEmpty(newAccount.getRole())) 
+			errors.rejectValue("role", "role.message");
 	}
+
 }

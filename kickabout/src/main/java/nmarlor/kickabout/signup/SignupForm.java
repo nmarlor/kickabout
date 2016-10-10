@@ -18,6 +18,9 @@ public class SignupForm {
 
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String password;
+    
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String telephone;
 
     public String getEmail() {
 		return email;
@@ -42,8 +45,16 @@ public class SignupForm {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
 
 	public Account createAccount() {
-        return new Account(getEmail(), getName(), getPassword(), "ROLE_USER");
+        return new Account(getEmail(), getName(), getPassword(), getTelephone(), "ROLE_USER");
 	}
 }

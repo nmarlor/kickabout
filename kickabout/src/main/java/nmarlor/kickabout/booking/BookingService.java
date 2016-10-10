@@ -5,6 +5,7 @@ import java.util.List;
 
 import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.pitch.Pitch;
+import nmarlor.kickabout.pitch.PitchLocation;
 
 public interface BookingService 
 {
@@ -19,4 +20,10 @@ public interface BookingService
 	public List<Booking> findBookingsByPitchAndDate(Pitch pitch, Date date);
 	
 	public void update(Booking booking);
+	
+	public List<Booking> findAllByDate(Date date);
+	
+	public List<Booking> findBookingsByReferenceOrName(String search);
+	
+	public List<Booking> findBookingsForLocationByReferenceOrName(PitchLocation location, String search);
 }

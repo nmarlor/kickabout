@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Kickabout</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -24,21 +23,8 @@
 					</div>
 				</div>
 			</form>
-			<br></br>
-			<form method="post" th:action="@{/viewBookingsForAllPitches}" th:object="${locationForm}">
+			<form method="post" th:action="@{/viewBookingsForAllPitches}">
 				<div class="pitches-table-holder col-sm-12" align="center">
-				<input type="hidden" th:value="locationId" th:field="*{locationId}"/>
-					<div class="col-sm-12">
-						<div id="availabilityDateCal">
-							<b><i class="fa fa-calendar fa-lg"></i> Booking Date</b>
-							<br></br>
-							<input type="text" id="availability-picker-date" class="datepicker datepicker-style" data-date-format="dd/mm/yyyy" name="date" th:href="@{/viewBookingsForAllPitches}"></input>
-							<button class="btn btn-default search-date-btn" type="submit"></button>
-						</div>
-						<span th:text="|Booking Schedule - ${date}|"></span>
-						<br></br>
-						<br></br>
-						</div>
 					<div class="bookings-table">
 					<table class="table">
 						<thead>
@@ -46,6 +32,7 @@
 								<th class="col-sm-2 text-center">Name</th>
 								<th class="col-sm-2 text-center">Reference</th>
 								<th class="col-sm-2 text-center">Pitch Number</th>
+								<th class="col-sm-1 text-center">Date</th>
 								<th class="col-sm-2 text-center">Time</th>
 								<th class="col-sm-1 text-center">Cost</th>
 								<th class="col-xs-1"></th>
@@ -57,8 +44,9 @@
 								<td class="col-sm-2 text-center" ><a class="accountInfoBtn" th:text="${booking.name}" th:id="${booking.account.id}" data-toggle="modal" data-target="#accountInfoModal"></a></td>
 								<td class="col-sm-2 text-center" th:text="${booking.bookingReference}"> </td>
 								<td class="col-sm-2 text-center" th:text="${booking.pitch.pitchNumber}"> </td>
+								<td class="col-sm-1 text-center" th:text="${booking.date}"></td>
 								<td class="col-sm-2 text-center" th:text="|${booking.bookedFrom} - ${booking.bookedTo}|"></td>
-								<td class="col-sm-2 text-center" th:text="${booking.cost}"></td>
+								<td class="col-sm-1 text-center" th:text="${booking.cost}"></td>
 								<td class="col-xs-1 text-center">
 									<span class="btn-group btn-group-xs">
 							  			<a class="btn btn-info editBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#editBookingModal"><i class="fa fa-pencil"></i></a>
@@ -66,8 +54,8 @@
 								</td>
 								<td class="col-xs-1 text-center">
 									<span class="btn-group btn-group-xs">
-							  			<a class="btn btn-danger cancelBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#cancelBookingModal"><i class="fa fa-trash-o danger"></i></a>
-							  		</span>
+										<a class="btn btn-danger cancelBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#cancelBookingModal"><i class="fa fa-trash-o danger"></i></a>
+								  	</span>
 								</td>
 							</tr>
 						</tbody>
@@ -117,7 +105,7 @@
 		$(".cancelBookingBtn").click(function(){
 			var bookingId = $(this).attr("id");
 			$.ajax({
-			 	url: base_url + "adminCancelBooking",
+			 	url: base_url + "cancelMyBooking",
 			 	data: {id : bookingId},
 			 	success: function(result){
 			 		$(".replaceable").html(result);
@@ -125,7 +113,5 @@
 			});
 		});
 	</script>
-	<script th:src="@{/resources/js/bootstrap-datepicker.js}"></script>
-	<script th:src="@{/resources/js/pitchAvailability.js}"></script>
 </body>
 </html>

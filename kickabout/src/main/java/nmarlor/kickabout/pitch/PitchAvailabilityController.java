@@ -28,6 +28,9 @@ import nmarlor.kickabout.booking.Booking;
 import nmarlor.kickabout.booking.BookingForm;
 import nmarlor.kickabout.booking.BookingService;
 import nmarlor.kickabout.booking.DeleteBookingForm;
+import nmarlor.kickabout.booking.EditBookingForm;
+import nmarlor.kickabout.booking.EditBookingValidator;
+import nmarlor.kickabout.booking.ReferenceOrNameAdminForm;
 import nmarlor.kickabout.date.DateService;
 
 @Controller
@@ -53,6 +56,12 @@ public class PitchAvailabilityController {
 	
 	@Autowired
 	private AdminBookingValidator bookingValidator;
+	
+	@Autowired
+	private EditBookingValidator editBookingValidator;
+	
+	@Autowired
+	private ReferenceOrNameSearchAdminValidator referenceOrNameValidator;
 	
 	@RequestMapping(value = "/availability", method = RequestMethod.GET)
 	public ModelAndView pitchAvailability(Long pitchId){
@@ -174,6 +183,119 @@ public class PitchAvailabilityController {
 		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitchAvailability/adminPitchAvailability");
 	}
 	
+	@RequestMapping(value = "adminEditBooking", method = RequestMethod.GET)
+	public ModelAndView adminEditBookingRequest(Long id){
+		ModelAndView mv = new ModelAndView("pitchAvailability/adminEditBooking");
+		
+		Booking booking = bookingService.retrieve(id);
+		
+		// Need to convert each of these to a string then set to booking form
+		Time bookedFrom = booking.getBookedFrom();
+		Time bookedTo = booking.getBookedTo();
+		Date date = booking.getDate();
+		
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String stringDate = df.format(date);
+		
+		String stringBookedFrom = bookedFrom.toString();
+		String stringBookedTo = bookedTo.toString();
+		
+		EditBookingForm bookingForm = new EditBookingForm();
+		bookingForm.setBookingId(booking.getId());
+		bookingForm.setName(booking.getName());
+		bookingForm.setBookedFrom(stringBookedFrom);
+		bookingForm.setBookedTo(stringBookedTo);
+		bookingForm.setDate(stringDate);
+		
+		mv.addObject("bookingForm", bookingForm);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "adminEditBooking", method = RequestMethod.POST)
+	public ModelAndView adminEditBooking(@ModelAttribute("bookingForm") EditBookingForm bookingForm, BindingResult result, HttpServletRequest request){
+		ModelAndView thisMv = new ModelAndView("pitchAvailability/adminEditBooking");
+		Booking booking = bookingService.retrieve(bookingForm.getBookingId());
+		
+		editBookingValidator.validate(bookingForm, result);
+		if (result.hasErrors()) 
+		{
+			thisMv.addObject("errors", result);
+			return thisMv;
+		}
+		
+		//Need to convert each of these to correct format then set to booking
+		String bookedFrom = bookingForm.getBookedFrom();
+		String bookedTo = bookingForm.getBookedTo();
+		
+		Time formattedBookedFrom = dateService.stringToTime(bookedFrom);
+		Time formattedBookedTo = dateService.stringToTime(bookedTo);
+		
+		String date = bookingForm.getDate();
+		Date formattedDate = dateService.stringToDate(date);
+		
+		if (formattedBookedTo != null && formattedBookedFrom != null) {
+			if (formattedBookedTo.before(formattedBookedFrom)) {
+				result.rejectValue("bookedTo", "bookedTo.error");
+				thisMv.addObject("errors", result);
+				return thisMv;
+			}
+		}
+		
+		if (formattedBookedFrom != null && formattedBookedTo != null) {
+			if (formattedBookedFrom.after(formattedBookedTo)) {
+				result.rejectValue("bookedFrom", "bookedFrom.error");
+				thisMv.addObject("errors", result);
+				return thisMv;
+			}
+		}
+		
+		Pitch pitch = booking.getPitch();
+		
+		booking.setName(bookingForm.getName());
+		booking.setDate(formattedDate);
+		booking.setBookedFrom(formattedBookedFrom);
+		booking.setBookedTo(formattedBookedTo);
+		
+		List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+		for (Booking bookedDate : bookedDates) 
+		{
+			if (formattedBookedFrom.before(bookedDate.getPitch().getAvailableFrom()) ) {
+				result.rejectValue("bookedFrom", "bookedBeforeAvailableFrom.message");
+				thisMv.addObject("errors", result);
+				return thisMv;
+			}
+			if (formattedBookedFrom.after(bookedDate.getPitch().getAvailableTo())) {
+				result.rejectValue("bookedFrom", "bookedAfterAvailableTo.message");
+				thisMv.addObject("errors", result);
+				return thisMv;
+			}
+			if (formattedBookedTo.before(bookedDate.getPitch().getAvailableFrom())) {
+				result.rejectValue("bookedTo", "bookedBeforeAvailableFrom.message");
+				thisMv.addObject("errors", result);
+				return thisMv;
+			}
+			if (formattedBookedTo.after(bookedDate.getPitch().getAvailableTo())) {
+				result.rejectValue("bookedTo", "bookedAfterAvailableTo.message");
+				thisMv.addObject("errors", result);
+				return thisMv;
+			}
+		}
+		
+		try 
+		{
+			bookingService.update(booking);
+		} 
+		catch (Exception e) {
+			return thisMv;
+		}
+		
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+		jsonView.setModelKey("redirect");
+		return new ModelAndView (jsonView, "redirect", request.getContextPath() + "pitchAvailability/adminPitchAvailability");
+	}
+	
 	@RequestMapping(value = "/viewBookingsForAllPitches", method = RequestMethod.GET)
 	public ModelAndView viewBookingsForAllPitches(Long locationId){
 		ModelAndView mv = new ModelAndView("booking/viewBookingsForAllPitches");
@@ -197,11 +319,15 @@ public class PitchAvailabilityController {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String date = df.format(formattedDate);
 		
+		ReferenceOrNameAdminForm referenceOrNameForm = new ReferenceOrNameAdminForm();
+		referenceOrNameForm.setLocationId(locationId);
+		
 		mv.addObject("location", location);
 		mv.addObject("locationId", locationId);
 		mv.addObject("date", date);
 		mv.addObject("bookings", bookings);
 		mv.addObject("locationForm", locationForm);
+		mv.addObject("referenceOrNameForm", referenceOrNameForm);
 		
 		return mv;
 	}
@@ -232,11 +358,89 @@ public class PitchAvailabilityController {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		date = df.format(availabilityDate);
 		
+		ReferenceOrNameAdminForm referenceOrNameForm = new ReferenceOrNameAdminForm();
+		referenceOrNameForm.setLocationId(locationId);
+		
 		mv.addObject("locationForm", locationForm);
 		mv.addObject("location", location);
 		mv.addObject("locationId", locationId);
 		mv.addObject("date", date);
 		mv.addObject("bookings", bookings);
+		mv.addObject("referenceOrNameForm", referenceOrNameForm);
+				
+		return mv;
+	}
+	
+	@RequestMapping(value = "/findBookingsByReferenceOrName", method = RequestMethod.POST)
+	public ModelAndView findBookingsByReferenceOrName(@Valid @ModelAttribute("referenceOrNameForm") ReferenceOrNameAdminForm referenceOrNameForm, BindingResult bindingResult) {
+		ModelAndView mv = new ModelAndView("booking/findBookingsByReferenceOrName");
+		
+		Long locationId = referenceOrNameForm.getLocationId();
+		PitchLocation location = locationService.retrieve(locationId);
+		
+		LocationForm locationForm = new LocationForm();
+		locationForm.setLocationId(locationId);
+		
+		Date formattedDate = dateService.getTodaysDate();
+		
+		// Date to be displayed on the front end
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String date = df.format(formattedDate);
+		
+		referenceOrNameValidator.validate(referenceOrNameForm, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			ModelAndView thisMv = new ModelAndView("booking/viewBookingsForAllPitches");
+			
+			List<Pitch> pitches = pitchesService.findPitchesByLocation(location);
+			
+			List<Booking> bookings = new ArrayList<>();
+			for (Pitch pitch : pitches) 
+			{
+				List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+				bookings.addAll(pitchAvailabilities);
+			}
+			
+			thisMv.addObject("errors", bindingResult);			
+			thisMv.addObject("location", location);
+			thisMv.addObject("locationId", locationId);
+			thisMv.addObject("date", date);
+			thisMv.addObject("bookings", bookings);
+			thisMv.addObject("locationForm", locationForm);
+			thisMv.addObject("referenceOrNameForm", referenceOrNameForm);
+			
+			return thisMv;
+		}
+		
+		String search = referenceOrNameForm.getSearch();
+		
+		List<Booking> bookings = new ArrayList<>();
+		bookings = bookingService.findBookingsForLocationByReferenceOrName(location, search);
+		
+		if (bookings.isEmpty()) 
+		{
+			ModelAndView errorMv = new ModelAndView("booking/noBookingsForReferenceOrName");
+			
+			List<Pitch> pitches = pitchesService.findPitchesByLocation(location);
+
+			for (Pitch pitch : pitches) 
+			{
+				List<Booking> pitchAvailabilities = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+				bookings.addAll(pitchAvailabilities);
+			}
+			
+			errorMv.addObject("location", location);
+			errorMv.addObject("locationId", locationId);
+			errorMv.addObject("date", date);
+			errorMv.addObject("bookings", bookings);
+			errorMv.addObject("locationForm", locationForm);
+			errorMv.addObject("referenceOrNameForm", referenceOrNameForm);
+			
+			return errorMv;
+		}
+		
+		mv.addObject("bookings", bookings);
+		mv.addObject("location", location);
 				
 		return mv;
 	}

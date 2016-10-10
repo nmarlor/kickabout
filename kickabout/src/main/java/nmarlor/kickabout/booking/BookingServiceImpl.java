@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.pitch.Pitch;
+import nmarlor.kickabout.pitch.PitchLocation;
 
 @Service
 @Transactional
@@ -48,5 +49,23 @@ public class BookingServiceImpl implements BookingService{
 	@Override
 	public void update(Booking booking) {
 		bookingDAO.save(booking);
+	}
+
+	@Override
+	public List<Booking> findAllByDate(Date date) {
+		List<Booking> bookings = bookingDAO.findAllByDate(date);
+		return bookings;
+	}
+
+	@Override
+	public List<Booking> findBookingsByReferenceOrName(String search) {
+		List<Booking> bookings = bookingDAO.findByReferenceOrName(search);
+		return bookings;
+	}
+
+	@Override
+	public List<Booking> findBookingsForLocationByReferenceOrName(PitchLocation location, String search) {
+		List<Booking> bookings = bookingDAO.findForLocationByReferenceOrName(location, search);
+		return bookings;
 	}
 }

@@ -1,0 +1,37 @@
+<form th:action="@{/adminAccountInfo}" method="get">
+
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close" disabled="disabled"><span data-dismiss="modal" aria-hidden="true">&times;</span></button>
+		        <h4 class="inline-block modal-title" id="myModalLabel" th:text="|${account.name} details|"></h4>
+			</div>
+			<div class="modal-body" id="">
+				<div class="form-group row">
+					<div class="col-sm-12">
+						<label>Name</label>
+						<br></br>
+						<span th:text="|${account.name}|"></span>
+						<br></br>
+						<br></br>
+						<label>Email address</label>
+						<br></br>
+						<span th:text="|${account.email}|"></span>
+						<br></br>
+						<br></br>
+						<label>Telephone number</label>
+						<br></br>
+						<span th:text="|${account.telephone}|"></span>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+		    	<h4 class="inline-block no-margin confirmationMessage"></h4>
+		    	<div class="pull-right">
+		    		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		        </div>
+	        </div>
+		</div>
+	</div>
+	
+</form>

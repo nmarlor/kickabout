@@ -123,3 +123,33 @@ body {
 	border-collapse: collapse;
 	background-color: transparent;
 }
+
+.general-table-holder {
+	overflow-y: auto;
+}
+
+.admin-users-table {
+	display: table;
+	margin-top: 20px;
+	width: 80%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	background-color: transparent;
+}
+
+.standard-users-table {
+	display: table;
+	margin-top: 20px;
+	width: 80%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	background-color: transparent;
+}
+
+.u {
+    text-decoration: underline;
+}
+
+.select-center {
+    padding: 0 0 0 125px;
+}
