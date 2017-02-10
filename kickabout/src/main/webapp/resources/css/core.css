@@ -9,6 +9,10 @@ body {
     background-color: #f5f5f5;
 }
 
+header {
+	min-height: 700px;
+}
+
 .form-narrow {
     max-width: 490px;
     padding: 19px 29px 29px;
@@ -152,4 +156,8 @@ body {
 
 .select-center {
     padding: 0 0 0 125px;
+}
+
+.bold {
+ font-weight: bold;
 }

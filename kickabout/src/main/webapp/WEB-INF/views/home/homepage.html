@@ -11,35 +11,51 @@
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head> 
-    <body>
-    <div th:replace="fragments/newHeader">Header</div>
-    <div class="container">
+
+<body>
+    <div th:replace="fragments/header">Header</div>
+    
+    <header>
+        <div class="container">
+        	<form method="post" th:action="@{/}" th:object="${locationForm}">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="intro-text">
+                        <h2>Book a sports venue today!</h2>
+                        <br></br>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-4">
+                        <input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" placeholder="Enter city or town to search..." th:field="*{name}"/>
+                        </div>
+                        <div class="col-md-2">
+                        <input type="submit" value="Search" class="btn btn-block btn-info"/>
+                    	</div>
+                    	<div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </header>
+    
+<!--     <div class="container">
     	<form method="post" th:action="@{/}" th:object="${locationForm}">
 	    	<div class="jumbotron text-center default">
 	    		<h2>Book a pitch today!</h2>
 	    		<br></br>
 	    		<div class="row">
-  					<div class="col-md-4"></div>
-					<div class="col-md-3">	    			
+  					<div class="col-md-3"></div>
+					<div class="col-md-4">	    			
 					  	<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" placeholder="Enter city or town to search..." th:field="*{name}"/>
 					</div>
 					<div class="col-md-2">
-						<input type="submit" value="Search" class="btn btn-block btn-success create-button"/>
-					</div>
-					<div class="col-md-3"></div>
-				</div>
-				<br></br>
-				<div class="row">
-  					<div class="col-md-4"></div>
-  					<div class="col-md-3"></div>
-					<div class="col-md-2">
-				  		<a class="btn btn-block btn-info pitchInfoBtn" th:href="@{/locations}">View All Pitches</a>
+						<input type="submit" value="Search" id="bold" class="btn btn-block btn-info create-button"/>
 					</div>
 					<div class="col-md-3"></div>
 				</div>
 			</div>
     	</form>
-    </div>
+    </div> -->
     
 </body>
 </html>
