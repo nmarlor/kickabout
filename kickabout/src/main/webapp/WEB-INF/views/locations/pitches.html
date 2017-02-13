@@ -17,7 +17,7 @@
 			<h2>
 			<span class="header-pitches" th:text="|${location.company}|"></span>
 			</h2>
-			<span class="header-pitches">Below you will see the pitch/ pitches available for this location</span>
+			<span>Below you will see the pitch/ pitches available for this location</span>
 		</div>
 		<form th:action="@{/locations/pitches}" method="get">
 			<div class="pitches-table-holder col-sm-offset-1 col-sm-10" align="center">
@@ -40,7 +40,7 @@
 							<td class="col-sm-2 text-center" th:text="|${pitch.availableFrom} - ${pitch.availableTo}|"></td>
 							<td class="col-sm-2 text-center">
 				  				<span class="btn-group">
-				  					<a class="btn btn-info pitchInfoBtn" th:href="@{availability(pitchId=${pitch.id})}">Features And Availability</a>
+				  					<a class="btn btn-info pitchInfoBtn" th:href="@{availability(pitchId=${pitch.id})}">Pitch Info</a>
 				  				</span>
 							</td>
 						</tr>

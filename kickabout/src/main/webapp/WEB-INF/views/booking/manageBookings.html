@@ -9,32 +9,34 @@
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
-		<div class="col-sm-12" align="center">
-			<h2 class="text-center">Manage Bookings</h2>
-			<div class="text-center">
-	  				<a>Add new booking</a>
-	  			</div>
-			<form th:action="@{/manageBookings}" method="get">
-				<div class="pitches-table-holder col-sm-12" align="center">
-					<div class="bookings-table">
-					<table class="table">
-						<thead>
-							<tr>
-								<th class="col-sm-2 text-center">Name</th>
-								<th class="col-sm-2 text-center">Pitch</th>
-								<th class="col-sm-2 text-center">Pitch Number</th>
-								<th class="col-sm-2 text-center">Date</th>
-								<th class="col-sm-2 text-center">Time</th>
-								<th class="col-sm-1 text-center">Cost</th>
-								<th class="col-sm-1"></th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
+		<div class = "general-header">
+			<div class="col-sm-12" align="center">
+				<h2 class="text-center">Manage Bookings</h2>
+				<div class="text-center">
+		  				<a>Add new booking</a>
+		  			</div>
+				<form th:action="@{/manageBookings}" method="get">
+					<div class="pitches-table-holder col-sm-12" align="center">
+						<div class="bookings-table">
+						<table class="table">
+							<thead>
+								<tr>
+									<th class="col-sm-2 text-center">Name</th>
+									<th class="col-sm-2 text-center">Pitch</th>
+									<th class="col-sm-2 text-center">Pitch Number</th>
+									<th class="col-sm-2 text-center">Date</th>
+									<th class="col-sm-2 text-center">Time</th>
+									<th class="col-sm-1 text-center">Cost</th>
+									<th class="col-sm-1"></th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						</div>
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</div>
 </body>

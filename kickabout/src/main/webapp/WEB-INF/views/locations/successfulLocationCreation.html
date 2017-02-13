@@ -9,40 +9,42 @@
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
-		<div class="col-sm-12" align="center">
-			 <h2 class="text-center">Pitch Locations</h2>
-			<form th:action="@{/accountsPitchLocations}" method="get">
-				<div class="pitches-table-holder col-sm-offset-2 col-sm-8" align="center">
-					<div class="bookings-table">
-					<div class="text-center">
-		  				<span style="color:red">Pitch location successfully added, select pitch/ pitches to begin adding a pitch</span>
-		  			</div>
-					<div class="text-center">
-	  				<a href="newPitchLocation" th:href="@{addPitchLocation(accountId=${accountId})}">Add new pitch location</a>
-	  				</div>
-					<table class="table">
-						<thead>
-							<tr>
-								<th class="col-sm-2 text-center">Company</th>
-								<th class="col-sm-5 text-center">Location</th>
-								<th class="col-sm-1"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="location : ${locationsForAccount}">
-								<td class="col-sm-2 text-center" th:text="${location.company}"></td>
-								<td class="col-sm-5 text-center" th:text="|${location.addressLine1}, ${location.addressLine2}, ${location.city}, ${location.county}, ${location.postCode}|"></td>
-								<td class="col-sm-1">
-								<span class="btn-group">
-				  					<a class="btn btn-info pitchInfoBtn" th:href="@{pitchesForAdminLocation(locationId=${location.id})}">Pitch/ Pitches</a>
-				  				</span>
-				  				</td>
-							</tr>
-						</tbody>
-					</table>
+		<div class = "general-header">
+			<div class="col-sm-12" align="center">
+				 <h2 class="text-center">Pitch Locations</h2>
+				<form th:action="@{/accountsPitchLocations}" method="get">
+					<div class="pitches-table-holder col-sm-offset-2 col-sm-8" align="center">
+						<div class="bookings-table">
+						<div class="text-center">
+			  				<span style="color:red">Pitch location successfully added, select pitch/ pitches to begin adding a pitch</span>
+			  			</div>
+						<div class="text-center">
+		  				<a href="newPitchLocation" th:href="@{addPitchLocation(accountId=${accountId})}">Add new pitch location</a>
+		  				</div>
+						<table class="table">
+							<thead>
+								<tr>
+									<th class="col-sm-2 text-center">Company</th>
+									<th class="col-sm-5 text-center">Location</th>
+									<th class="col-sm-1"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="location : ${locationsForAccount}">
+									<td class="col-sm-2 text-center" th:text="${location.company}"></td>
+									<td class="col-sm-5 text-center" th:text="|${location.addressLine1}, ${location.addressLine2}, ${location.city}, ${location.county}, ${location.postCode}|"></td>
+									<td class="col-sm-1">
+									<span class="btn-group">
+					  					<a class="btn btn-info pitchInfoBtn" th:href="@{pitchesForAdminLocation(locationId=${location.id})}">Pitch/ Pitches</a>
+					  				</span>
+					  				</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</div>
 </body>

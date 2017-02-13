@@ -11,29 +11,31 @@
 	<input type="hidden" th:value="accountId" th:field="*{accountId}"/>
 	
 		<div class="jumbotron default">
-			<h2 class="text-center">My Account</h2>
-			<div class="col-sm-offset-5 col-sm-2">
-	  			<div class="panel-body">
-	  			<div class="text-center">
-	  				<a href="myBookings" th:href="@{myBookings(accountId=${accountId})}">View my bookings</a>
- 	  				<a class="btn deleteAccountBtn" th:id="${accountId}" data-toggle="modal" data-target="#deleteAccountModal">Delete my account</a>
-	  			</div>
-	  			<br></br>
-	  				<span>Email address</span>
-	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>
-	  			<br></br>
-	  				<span>Name</span>
-	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" th:field="*{name}"/>
-	  			<br></br>
-	  				<span>Telephone number</span>
-	  				<input th:errorclass="input-form-error" type="text" class="form-control" id="telephone-input" th:field="*{telephone}"/>
-	  			</div>
-	  			<div class="create-btn col-sm-offset-2 col-sm-8" style="margin-bottom: 20px;">
-					<input type="submit" value="Save Changes" class="btn btn-block btn-success create-button" onclick="" />
+			<div class = "general-header">
+				<h2 class="text-center">My Account</h2>
+				<div class="col-sm-offset-5 col-sm-2">
+		  			<div class="panel-body">
+		  			<div class="text-center">
+		  				<a href="myBookings" th:href="@{myBookings(accountId=${accountId})}">View my bookings</a>
+	 	  				<a class="btn deleteAccountBtn" th:id="${accountId}" data-toggle="modal" data-target="#deleteAccountModal">Delete my account</a>
+		  			</div>
+		  			<br></br>
+		  				<span>Email address</span>
+		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>
+		  			<br></br>
+		  				<span>Name</span>
+		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" th:field="*{name}"/>
+		  			<br></br>
+		  				<span>Telephone number</span>
+		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="telephone-input" th:field="*{telephone}"/>
+		  			</div>
+		  			<div class="create-btn col-sm-offset-2 col-sm-8" style="margin-bottom: 20px;">
+						<input type="submit" value="Save Changes" class="btn btn-block btn-success create-button" onclick="" />
+					</div>
+					<div class="text-center" style="margin-bottom: 15px;">
+		  				<span style="color:red">Account info successfully updated, please logout for changes to take effect!</span>
+		  			</div>
 				</div>
-				<div class="text-center" style="margin-bottom: 15px;">
-	  				<span style="color:red">Account info successfully updated, please logout for changes to take effect!</span>
-	  			</div>
 			</div>
 		</div>
 	</form>

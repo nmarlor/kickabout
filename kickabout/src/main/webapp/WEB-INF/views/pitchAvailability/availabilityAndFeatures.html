@@ -46,8 +46,7 @@
 			<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
 				
 				<div class="availability-table">
-					<p style="color:red" th:text="|Please note this pitch is available ${pitch.availableFrom} - ${pitch.availableTo}|"></p>
-					<p>If the table below is empty there has currently been no bookings for this date</p>
+					<p style="color:red" th:text="|Opening times ${pitch.availableFrom} - ${pitch.availableTo}|"></p>
 				
 				<div class="col-sm-12">
 					<div id="availabilityDateCal">
@@ -73,7 +72,7 @@
 				<span class="btn-group">
 					<a class="btn btn-success bookingBtn" th:href="@{booking/newBooking(pitchId=${pitch.id}, date=${date})}">Book for this date!</a>
 				</span>
-				  	
+				<br></br><br></br> 
 				</div>
 			</div>
 	</form>

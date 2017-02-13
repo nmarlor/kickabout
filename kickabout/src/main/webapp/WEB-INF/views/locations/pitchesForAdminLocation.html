@@ -9,44 +9,46 @@
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
-		<div class="col-sm-12" align="center">
-			<form th:action="@{/pitchesForAdminLocation}" method="get">
-			 <h2 class="text-center" th:text="|${location.company} Pitches|"></h2>
-				<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
-					<div class="bookings-table">
-						<div class="text-center">
-							<a href="viewAllBookings" th:href="@{viewBookingsForAllPitches(locationId=${locationId})}">View bookings for all pitches</a>
-							<br></br>
-							<br></br>
-		  					<a href="addPitch" th:href="@{addPitch(locationId=${locationId})}">Add new pitch</a>
-		  				</div>
-					<table class="table">
-						<thead>
-							<tr>
-								<th class="col-sm-2 text-center">Pitch Number</th>
-								<th class="col-sm-1"></th>
-								<th class="col-sm-1"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="pitch : ${pitches}">
-								<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"></td>
-								<td class="col-sm-1">
-								<span class="btn-group">
-				  					<a class="btn btn-info managePitchBtn" th:href="@{managePitch(pitchId=${pitch.id})}">Manage Pitch</a>
-				  				</span>
-				  				</td>
-				  				<td class="col-sm-1">
-				  				<span class="btn-group">
-				  					<a class="btn btn-success viewBookingsBtn" th:href="@{adminPitchAvailability(pitchId=${pitch.id})}">Manage Bookings</a>
-				  				</span>
-				  				</td>
-							</tr>
-						</tbody>
-					</table>
+		<div class = "general-header">
+			<div class="col-sm-12" align="center">
+				<form th:action="@{/pitchesForAdminLocation}" method="get">
+				 <h2 class="text-center" th:text="|${location.company} Pitches|"></h2>
+					<div class="pitches-table-holder col-sm-offset-3 col-sm-6" align="center">
+						<div class="bookings-table">
+							<div class="text-center">
+								<a href="viewAllBookings" th:href="@{viewBookingsForAllPitches(locationId=${locationId})}">View bookings for all pitches</a>
+								<br></br>
+								<br></br>
+			  					<a href="addPitch" th:href="@{addPitch(locationId=${locationId})}">Add new pitch</a>
+			  				</div>
+						<table class="table">
+							<thead>
+								<tr>
+									<th class="col-sm-2 text-center">Pitch Number</th>
+									<th class="col-sm-1"></th>
+									<th class="col-sm-1"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="pitch : ${pitches}">
+									<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"></td>
+									<td class="col-sm-1">
+									<span class="btn-group">
+					  					<a class="btn btn-info managePitchBtn" th:href="@{managePitch(pitchId=${pitch.id})}">Manage Pitch</a>
+					  				</span>
+					  				</td>
+					  				<td class="col-sm-1">
+					  				<span class="btn-group">
+					  					<a class="btn btn-success viewBookingsBtn" th:href="@{adminPitchAvailability(pitchId=${pitch.id})}">Manage Bookings</a>
+					  				</span>
+					  				</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</div>
 </body>

@@ -8,11 +8,12 @@
 </head>
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
+	<br></br><br></br><br></br>
 	<div class="col-md-12 col-centered clearfix">
 	<div class="col-sm-6 pitch-nav">
 	<form method="post" th:action="@{/}" th:object="${locationForm}">
-	<h2>Locations Search</h2>
-	<span th:text="|Below you can see the pitches available to book in ${searchName}|"></span>
+	<h2>Select a venue</h2>
+	<span th:text="|Below you can see the venues available to book in ${searchName}|"></span>
 	</form>
 	</div>
 	</div>
@@ -38,7 +39,7 @@
 							<td class="col-xs-2" th:text="${location.telephone}"></td>
 							<td class="col-xs-1">
 								<span class="btn-group">
-				  					<a class="btn btn-info pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}">Pitch Info</a>
+				  					<a class="btn btn-info pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}">View</a>
 				  				</span>
 							</td>
 						</tr>
@@ -47,7 +48,7 @@
 				</div>
 			</div>
 			<div class="col-sm-6 map-position">
-			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2368.3277160323983!2d-2.2965176841524455!3d53.58761398003037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487ba4df34ce636d%3A0x45af05c69198ec3d!2sPlayFootball+Bury!5e0!3m2!1sen!2suk!4v1455633478697" width="720" height="550" frameborder="0" style="border:0"></iframe>
+			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2368.3277160323983!2d-2.2965176841524455!3d53.58761398003037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487ba4df34ce636d%3A0x45af05c69198ec3d!2sPlayFootball+Bury!5e0!3m2!1sen!2suk!4v1455633478697" width="720" height="500" frameborder="0" style="border:0"></iframe>
 			</div>
 		</form>
 	</div>

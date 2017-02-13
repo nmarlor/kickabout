@@ -10,27 +10,29 @@
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
-		<h2 class="text-center">Import bookings</h2>
-		<br></br>
-		<form class="upload-form" action="#" th:action="@{importBookings} + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token}" th:object="${pitchForm}" method="post" enctype="multipart/form-data">
-	    <div class="row">
-	    	<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
-  			<input hidden="hidden" id="uploadType" name="uploadType"></input>
-  			<div class="col-md-4">
-  			</div>
-			<div class="col-md-3">	    			
-				<input type="file" name="file" style="background-color: white;" class="form-control" id="file-name" readonly="readonly" />
+		<div class = "general-header">
+			<h2 class="text-center">Import bookings</h2>
+			<br></br>
+			<form class="upload-form" action="#" th:action="@{importBookings} + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token}" th:object="${pitchForm}" method="post" enctype="multipart/form-data">
+		    <div class="row">
+		    	<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
+	  			<input hidden="hidden" id="uploadType" name="uploadType"></input>
+	  			<div class="col-md-4">
+	  			</div>
+				<div class="col-md-3">	    			
+					<input type="file" name="file" style="background-color: white;" class="form-control" id="file-name" readonly="readonly" />
+				</div>
+				<div class="col-md-1">
+	  				<input type="submit" class="btn btn-block btn-success" value="Import" />
+	  			</div>
+				<div class="col-md-3"></div>
 			</div>
-			<div class="col-md-1">
-  				<input type="submit" class="btn btn-block btn-success" value="Import" />
-  			</div>
-			<div class="col-md-3"></div>
+			<br></br>
+			<div class="text-center" style="color:red" if="${#fields.hasAnyErrors()}">
+				<p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
+			</div>
+			</form>
 		</div>
-		<br></br>
-		<div class="text-center" style="color:red" if="${#fields.hasAnyErrors()}">
-			<p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
-		</div>
-		</form>
 	</div>
 	<script src="../../../resources/js/vendor/bootstrap.min.js" th:src="@{/resources/js/vendor/bootstrap.min.js}"></script>
 	<script src="../../../resources/js/main.js" th:src="@{/resources/js/main.js}">></script>
