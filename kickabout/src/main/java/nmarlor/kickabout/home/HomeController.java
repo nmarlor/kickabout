@@ -54,7 +54,11 @@ public class HomeController {
 		}
 		
 		String searchName = locationForm.getName();
-		List<PitchLocation> locations = pitchLocationService.findAllLocationsByTownCityOrPostcode(searchName);
+		List<PitchLocation> locations = pitchLocationService.findAllLocationsByTownOrCity(searchName);
+		
+		if (locations.isEmpty()) {
+			locations = pitchLocationService.findAllLocationsByCounty(searchName);
+		}
 		
 		if (locations.isEmpty()) {
 			ModelAndView failedSearch = new ModelAndView("home/failedLocationSearch");

@@ -11,7 +11,9 @@ public interface PitchLocationService
 	
 	public PitchLocation retrieve(Long locationId);
 	
-	public List<PitchLocation> findAllLocationsByTownCityOrPostcode(String name);
+	public List<PitchLocation> findAllLocationsByTownOrCity(String name);
+	
+	public List<PitchLocation> findAllLocationsByCounty(String name);
 	
 	public List<PitchLocation> findPitchLocationsByCompany(Company company);
 	

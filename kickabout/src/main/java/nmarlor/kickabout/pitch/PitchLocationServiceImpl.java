@@ -28,8 +28,13 @@ public class PitchLocationServiceImpl implements PitchLocationService {
 	}
 
 	@Override
-	public List<PitchLocation> findAllLocationsByTownCityOrPostcode(String name) {
-		return pitchLocationDAO.findAllLocationsByTownCityOrPostcode(name);
+	public List<PitchLocation> findAllLocationsByTownOrCity(String name) {
+		return pitchLocationDAO.findAllLocationsByTownOrCity(name);
+	}
+	
+	@Override
+	public List<PitchLocation> findAllLocationsByCounty(String name) {
+		return pitchLocationDAO.findAllLocationsByCounty(name);
 	}
 
 	@Override

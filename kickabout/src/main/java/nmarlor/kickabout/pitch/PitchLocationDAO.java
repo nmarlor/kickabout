@@ -9,7 +9,9 @@ import nmarlor.kickabout.company.Company;
 
 public interface PitchLocationDAO extends GenericDAO<PitchLocation, Long>
 {
-	public List<PitchLocation> findAllLocationsByTownCityOrPostcode (String name);
+	public List<PitchLocation> findAllLocationsByTownOrCity(String name);
+	
+	public List<PitchLocation> findAllLocationsByCounty(String name);
 	
 	public List<PitchLocation> findAllLocationsByCompany(Company company);
 	
