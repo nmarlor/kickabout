@@ -34,6 +34,9 @@ public class PitchController {
 	private PitchesService pitchService;
 	
 	@Autowired
+	private SportsService sportsService;
+	
+	@Autowired
 	private NewPitchValidator pitchValidator;
 	
 	@Autowired
@@ -90,6 +93,55 @@ public class PitchController {
 		
 		pitchService.createPitch(pitch);
 		
+		Sports sport1 = new Sports();
+		sport1.setSport("5 a side football");
+		sport1.setAvailable(false);
+		sport1.setPitch(pitch);
+		
+		sportsService.createSport(sport1);
+		
+		Sports sport2 = new Sports();
+		sport2.setSport("7 a side football");
+		sport2.setAvailable(false);
+		sport2.setPitch(pitch);
+		
+		sportsService.createSport(sport2);
+		
+		Sports sport3 = new Sports();
+		sport3.setSport("11 a side football");
+		sport3.setAvailable(false);
+		sport3.setPitch(pitch);
+		
+		sportsService.createSport(sport3);
+		
+		Sports sport4 = new Sports();
+		sport4.setSport("Badminton");
+		sport4.setAvailable(false);
+		sport4.setPitch(pitch);
+		
+		sportsService.createSport(sport4);
+		
+		Sports sport5 = new Sports();
+		sport5.setSport("Basketball");
+		sport5.setAvailable(false);
+		sport5.setPitch(pitch);
+		
+		sportsService.createSport(sport5);
+		
+		Sports sport6 = new Sports();
+		sport6.setSport("Hockey");
+		sport6.setAvailable(false);
+		sport6.setPitch(pitch);
+		
+		sportsService.createSport(sport6);
+		
+		Sports sport7 = new Sports();
+		sport7.setSport("Netball");
+		sport7.setAvailable(false);
+		sport7.setPitch(pitch);
+		
+		sportsService.createSport(sport7);
+		
 		List<Pitch> pitches = new ArrayList<>();
 		pitches = pitchService.findPitchesByLocation(pitchLocation);
 		
@@ -107,14 +159,84 @@ public class PitchController {
 		
 		Pitch pitch = pitchService.retrievePitch(pitchId);
 		List<PitchFeature> pitchFeatures = pitchFeatureService.findPitchFeaturesByPitch(pitch);
+		List<Sports> retrievedSports = sportsService.findSportsByPitch(pitch);
 		
 		PitchForm pitchForm = new PitchForm();
 		pitchForm.setPitchId(pitchId);
 		
+		SportsForm sportsForm = new SportsForm();
+		sportsForm.setPitchId(pitchId);
+		
+		ArrayList<Sport> pitchSports = new ArrayList<Sport>();
+		
+		for (Sports sport : retrievedSports) 
+		{
+			Sport newSport = new Sport();
+			newSport.setId(sport.getId());
+			newSport.setSport(sport.getSport());
+			
+			if (sport.getAvailable().equals(true)) 
+			{
+				newSport.setAvailable(true);
+			}
+			if (sport.getAvailable().equals(false)) 
+			{
+				newSport.setAvailable(false);
+			}
+			pitchSports.add(newSport);
+		}
+		
+		sportsForm.setPitchSports(pitchSports);
+		
 		mv.addObject("pitch", pitch);
 		mv.addObject("pitchId", pitchId);
 		mv.addObject("pitchFeatures", pitchFeatures);
+		mv.addObject("pitchSports", pitchSports);
 		mv.addObject("pitchForm", pitchForm);
+		mv.addObject("sportsForm", sportsForm);
+		return mv;
+	}
+	
+	@RequestMapping(value = "pitchSports", method = RequestMethod.POST)
+	public ModelAndView updateSports(@ModelAttribute("sportsForm") SportsForm sportsForm, BindingResult bindingResult, HttpServletRequest request){
+		
+		Long pitchId = sportsForm.getPitchId();
+		Pitch pitch = pitchService.retrievePitch(pitchId);
+		
+		List<Sport> pitchSports = sportsForm.getPitchSports();
+		
+		for (Sport sport : pitchSports)
+		{
+			Long id = sport.getId();
+			Sports dbSport = sportsService.retrieveSport(id);
+			
+			Boolean availability = sport.getAvailable();
+			
+			if (availability.equals(true)) 
+			{
+				dbSport.setAvailable(true);
+			}
+			
+			if (availability.equals(false)) 
+			{
+				dbSport.setAvailable(false);
+			}
+			
+			sportsService.update(dbSport);
+		}
+		
+		PitchForm pitchForm = new PitchForm();
+		pitchForm.setPitchId(pitchId);
+		
+		List<PitchFeature> pitchFeatures = pitchFeatureService.findPitchFeaturesByPitch(pitch);
+		
+		ModelAndView mv = new ModelAndView("pitches/managePitch");
+		mv.addObject("pitchId", pitchId);
+		mv.addObject("pitch", pitch);
+		mv.addObject("pitchSports", pitchSports);
+		mv.addObject("pitchFeatures", pitchFeatures);
+		mv.addObject("pitchForm", pitchForm);
+		
 		return mv;
 	}
 	

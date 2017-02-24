@@ -25,16 +25,16 @@
                         <br></br>
                         <div class="col-md-3"></div>
                         <div class="col-md-2">
-		  				<select class="form-control">
-							<option value="" >Select sport</option>
-							<option value="" >5 a side football</option>
-							<option value="" >7 a side football</option>
-							<option value="" >11 a side football</option>
-							<option value="" >Badminton</option>
-							<option value="" >Basketball</option>
-							<option value="" >Hockey</option>
-							<option value="" >Netball</option>
-						</select>
+			  				<select th:errorclass="input-form-error" class="form-control" id="sport-input" th:field="*{sport}">
+								<option value="" >Select sport</option>
+								<option value="5 a side football" >5 a side football</option>
+								<option value="7 a side football" >7 a side football</option>
+								<option value="11 a side football" >11 a side football</option>
+								<option value="Badminton" >Badminton</option>
+								<option value="Basketball" >Basketball</option>
+								<option value="Hockey" >Hockey</option>
+								<option value="Netball" >Netball</option>
+							</select>
 						</div>
                         <div class="col-md-3">
                         <input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" placeholder="Enter city, town or county" th:field="*{name}"/>

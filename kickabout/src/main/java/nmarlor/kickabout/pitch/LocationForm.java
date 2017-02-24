@@ -8,6 +8,7 @@ public class LocationForm
 	private Long locationId;
 	private Set<Long> locationIds;
 	private Long accountId;
+	private String sport;
 	
 	public Long getAccountId() {
 		return accountId;
@@ -40,4 +41,13 @@ public class LocationForm
 	public void setLocationIds(Set<Long> locationIds) {
 		this.locationIds = locationIds;
 	}
+
+	public String getSport() {
+		return sport;
+	}
+
+	public void setSport(String sport) {
+		this.sport = sport;
+	}
+	
 }

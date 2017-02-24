@@ -22,5 +22,8 @@ public class LocationSearchValidator implements Validator {
 		
 		if (StringUtil.isEmpty(locationForm.getName()))
 			errors.rejectValue("name", "locationSearchName.message");
+		
+		if (StringUtil.isEmpty(locationForm.getSport()))
+			errors.rejectValue("sport", "locationSport.message");
 	}
 }

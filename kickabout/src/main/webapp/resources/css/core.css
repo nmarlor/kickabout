@@ -35,7 +35,9 @@ body {
 
 .map-position {
     position: relative;
+    display: block;
     top: 20%;
+    height:500px;
 }
 
 .pitch-nav {
@@ -46,6 +48,12 @@ body {
 .scrollit {
 	overflow:scroll;
     height:500px;
+}
+
+.table-scroll {
+	display: block;
+	overflow-y: auto;
+	height:500px;
 }
 
 .location-buttons {
@@ -125,13 +133,23 @@ body {
 	display: none;
 }
 
-.bookings-table {
+.bookings-table, .features-table {
 	display: table;
 	margin-top: 20px;
 	width: 80%;
 	border-spacing: 0;
 	border-collapse: collapse;
 	background-color: transparent;
+}
+
+.sports-table {
+	display: table;
+	margin-top: 20px;
+	width: 80%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	background-color: transparent;
+	border: transparent;
 }
 
 .general-table-holder {

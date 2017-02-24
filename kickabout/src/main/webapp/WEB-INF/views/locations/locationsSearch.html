@@ -13,31 +13,31 @@
 	<div class="col-sm-6 pitch-nav">
 	<form method="post" th:action="@{/}" th:object="${locationForm}">
 	<h2>Select a venue</h2>
-	<span th:text="|Below you can see the venues available to book in ${searchName}|"></span>
+	<span th:text="|Below you can see the venues available to book in ${searchName} for ${sport}|"></span>
 	</form>
 	</div>
 	</div>
 	<div class="col-sm-12">
 		<form th:action="@{/locationsSearch}" method="get">
 			<div class="col-sm-6 no-padding col-centered">
-				<div class="scrollit">
+				<div class="table-scroll">
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th class="col-xs-4">Owner</th>
-							<th class="col-xs-4">Address</th>
-							<th class="col-xs-1">Email</th>
-							<th class="col-xs-2">Telephone</th>
-							<th></th>
+							<th class="col-sm-3"></th>
+							<th class="col-sm-3">Address</th>
+							<th class="col-sm-3">Email</th>
+							<th class="col-sm-2">Telephone</th>
+							<th class="col-sm-1"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="location : ${locations}">
-							<td class="col-xs-4" th:text="${location.company}"> </td>
-							<td class="col-xs-4" th:text="|${location.addressLine1}, ${location.addressLine2}, ${location.city}, ${location.county}, ${location.postCode}|"></td>
-							<td class="col-xs-1" th:text="${location.email}"></td>
-							<td class="col-xs-2" th:text="${location.telephone}"></td>
-							<td class="col-xs-1">
+							<td class="col-sm-3" th:text="${location.company}"> </td>
+							<td class="col-sm-3" th:text="|${location.addressLine1}, ${location.addressLine2}, ${location.city}, ${location.county}, ${location.postCode}|"></td>
+							<td class="col-sm-3" th:text="${location.email}"></td>
+							<td class="col-sm-2" th:text="${location.telephone}"></td>
+							<td class="col-sm-1">
 								<span class="btn-group">
 				  					<a class="btn btn-info pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}">View</a>
 				  				</span>
