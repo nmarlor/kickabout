@@ -27,7 +27,7 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th class="col-sm-2 text-center">Company</th>
+									<th class="col-sm-2 text-center">Name</th>
 									<th class="col-sm-2 text-center">Pitch Number</th>
 									<th class="col-sm-1"></th>
 									<th class="col-sm-1"></th>
@@ -35,7 +35,7 @@
 							</thead>
 							<tbody>
 								<tr th:each="pitch : ${pitches}">
-									<td class="col-sm-2 text-center" th:text="${pitch.pitchLocation.company}"></td>
+									<td class="col-sm-2 text-center" th:text="${pitch.pitchLocation.name}"></td>
 									<td class="col-sm-2 text-center" th:text="${pitch.pitchNumber}"></td>
 									<td class="col-sm-1">
 									<span class="btn-group">

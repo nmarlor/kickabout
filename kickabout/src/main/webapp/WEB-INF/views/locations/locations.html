@@ -30,7 +30,7 @@
 					</thead>
 					<tbody>
 						<tr th:each="location : ${locations}">
-							<td class="col-sm-1 text-center" th:text="${location.company}"> </td>
+							<td class="col-sm-1 text-center" th:text="${location.name}"> </td>
 							<td class="col-sm-2 text-center" th:text="|${location.addressLine1}, ${location.addressLine2}, ${location.city}, ${location.county}, ${location.postCode}|"></td>
 							<td class="col-sm-1 text-center" th:text="${location.email}"></td>
 							<td class="col-sm-1 text-center" th:text="${location.telephone}"></td>

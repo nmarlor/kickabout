@@ -29,7 +29,7 @@ public class PitchLocation implements Serializable{
 	private Account account;
 	
 	@Column
-	private String company;
+	private String name;
 	
 	@Column
 	private String email;
@@ -64,12 +64,12 @@ public class PitchLocation implements Serializable{
 		this.account = account;
 	}
 
-	public String getCompany() {
-		return company;
+	public String getName() {
+		return name;
 	}
 
-	public void setCompany(String company) {
-		this.company = company;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {

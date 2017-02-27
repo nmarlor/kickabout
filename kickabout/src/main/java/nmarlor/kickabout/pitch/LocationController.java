@@ -108,7 +108,7 @@ public class LocationController {
 		pitchLocation.setAddressLine1(pitchLocationForm.getAddressLine1());
 		pitchLocation.setAddressLine2(pitchLocationForm.getAddressLine2());
 		pitchLocation.setCity(pitchLocationForm.getCity());
-		pitchLocation.setCompany(pitchLocationForm.getCompany());
+		pitchLocation.setName(pitchLocationForm.getName());
 		pitchLocation.setCounty(pitchLocationForm.getCounty());
 		pitchLocation.setEmail(pitchLocationForm.getEmail());
 		pitchLocation.setPostCode(pitchLocationForm.getPostcode());

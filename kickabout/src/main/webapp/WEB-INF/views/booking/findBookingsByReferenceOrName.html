@@ -10,7 +10,7 @@
 	<div class="jumbotron default">
 		<div class = "general-header">
 			<div class="col-sm-12" align="center">
-				<h2 class="text-center" th:text="|${location.company} Bookings|"></h2>
+				<h2 class="text-center" th:text="|${location.name} Bookings|"></h2>
 				<br></br>
 				<form method="post" th:action="@{/findBookingsByReferenceOrName}" th:object="${referenceOrNameForm}">
 					<input type="hidden" th:value="locationId" th:field="*{locationId}"/>

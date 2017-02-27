@@ -11,7 +11,7 @@
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
 		<div class = "general-header">
-			<h2 class="text-center" th:text="|${pitch.pitchLocation.company} Pitch ${pitch.pitchNumber} Bookings|"></h2>
+			<h2 class="text-center" th:text="|${pitch.pitchLocation.name} Pitch ${pitch.pitchNumber} Bookings|"></h2>
 			<br></br>
 			<form method="post" th:action="@{/adminPitchAvailability}" th:object="${pitchForm}">
 				<div class="pitches-table-holder col-sm-offset-2 col-sm-8" align="center">

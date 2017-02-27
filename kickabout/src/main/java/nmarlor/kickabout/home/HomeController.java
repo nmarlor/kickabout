@@ -45,38 +45,6 @@ public class HomeController {
 		return mv;
 	}
 	
-//	@RequestMapping(value = "/", method = RequestMethod.POST)
-//	public ModelAndView index(@Valid @ModelAttribute("locationForm") LocationForm locationForm, BindingResult bindingResult){
-//		ModelAndView mv = new ModelAndView("locations/locationsSearch");
-//		
-//		locationSearchValidator.validate(locationForm, bindingResult);
-//		if (bindingResult.hasErrors()) 
-//		{
-//			ModelAndView thisMv = new ModelAndView("home/homepage");
-//			thisMv.addObject("errors", bindingResult);
-//			return thisMv;
-//		}
-//		
-//		String searchName = locationForm.getName();
-//		List<PitchLocation> locations = pitchLocationService.findAllLocationsByTownOrCity(searchName);
-//		
-//		if (locations.isEmpty()) {
-//			locations = pitchLocationService.findAllLocationsByCounty(searchName);
-//		}
-//		
-//		if (locations.isEmpty()) {
-//			ModelAndView failedSearch = new ModelAndView("home/failedLocationSearch");
-//			failedSearch.addObject("name", searchName);
-//			return failedSearch;
-//		}
-//		
-//		mv.addObject("locations", locations);
-//		mv.addObject("locationForm", locationForm);
-//		mv.addObject("searchName", searchName);
-//		
-//		return mv;
-//	}
-	
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public ModelAndView index(@Valid @ModelAttribute("locationForm") LocationForm locationForm, BindingResult bindingResult){
 		ModelAndView mv = new ModelAndView("locations/locationsSearch");

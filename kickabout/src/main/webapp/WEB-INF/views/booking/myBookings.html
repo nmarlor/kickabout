@@ -29,7 +29,7 @@
 							</thead>
 							<tbody>
 								<tr th:each="booking : ${bookings}">
-									<td class="col-sm-2 text-center" th:text="|${booking.pitch.pitchLocation.company} Pitch ${booking.pitch.pitchNumber}|"></td>
+									<td class="col-sm-2 text-center" th:text="|${booking.pitch.pitchLocation.name} Pitch ${booking.pitch.pitchNumber}|"></td>
 									<td class="col-xs-1 text-center">
 										<span class="btn-group btn-group-xs">
 											<a class="btn btn-info pitchInfoBtn" th:id="${booking.id}" data-toggle="modal" data-target="#pitchInfoModal"><i class="glyphicon glyphicon-info-sign"></i></a>

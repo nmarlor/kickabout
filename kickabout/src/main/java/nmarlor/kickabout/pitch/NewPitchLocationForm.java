@@ -3,7 +3,7 @@ package nmarlor.kickabout.pitch;
 public class NewPitchLocationForm {
 	
 	private long accountId;
-	private String company;
+	private String name;
 	private String addressLine1;
 	private String addressLine2;
 	private String city;
@@ -15,8 +15,8 @@ public class NewPitchLocationForm {
 	public long getAccountId() {
 		return accountId;
 	}
-	public String getCompany() {
-		return company;
+	public String getName() {
+		return name;
 	}
 	public String getAddressLine1() {
 		return addressLine1;
@@ -42,8 +42,8 @@ public class NewPitchLocationForm {
 	public void setAccountId(long accountId) {
 		this.accountId = accountId;
 	}
-	public void setCompany(String company) {
-		this.company = company;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public void setAddressLine1(String addressLine1) {
 		this.addressLine1 = addressLine1;

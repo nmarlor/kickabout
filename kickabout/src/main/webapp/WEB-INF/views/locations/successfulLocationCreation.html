@@ -24,14 +24,14 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th class="col-sm-2 text-center">Company</th>
+									<th class="col-sm-2 text-center">Name</th>
 									<th class="col-sm-5 text-center">Location</th>
 									<th class="col-sm-1"></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="location : ${locationsForAccount}">
-									<td class="col-sm-2 text-center" th:text="${location.company}"></td>
+									<td class="col-sm-2 text-center" th:text="${location.name}"></td>
 									<td class="col-sm-5 text-center" th:text="|${location.addressLine1}, ${location.addressLine2}, ${location.city}, ${location.county}, ${location.postCode}|"></td>
 									<td class="col-sm-1">
 									<span class="btn-group">

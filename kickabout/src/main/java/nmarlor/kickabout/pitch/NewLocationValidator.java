@@ -21,7 +21,7 @@ public class NewLocationValidator implements Validator{
 		String addressLine1 = pitchLocationForm.getAddressLine1();
 		String addressLine2 = pitchLocationForm.getAddressLine2();
 		String city = pitchLocationForm.getCity();
-		String company = pitchLocationForm.getCompany();
+		String name = pitchLocationForm.getName();
 		String county = pitchLocationForm.getCounty();
 		String email = pitchLocationForm.getEmail();
 		String postcode = pitchLocationForm.getPostcode();
@@ -36,8 +36,8 @@ public class NewLocationValidator implements Validator{
 		if (StringUtil.isEmpty(city)) 
 			errors.rejectValue("city", "cityEmpty.message");
 		
-		if (StringUtil.isEmpty(company)) 
-			errors.rejectValue("company", "companyEmpty.message");
+		if (StringUtil.isEmpty(name)) 
+			errors.rejectValue("name", "name.message");
 		
 		if (StringUtil.isEmpty(county)) 
 			errors.rejectValue("county", "countyEmpty.message");
