@@ -10,44 +10,6 @@
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
 			<div class="col-sm-12">
-			
-<!-- 				<div class="col-sm-4" align="center">
-					<h2 align="center">
-						<span class="header-pitches">Sports</span>
-					</h2>
-					<div class="pitches-table-holder col-sm-12" align="center">
-						
-						<form method="post" th:action="@{pitchSports}" th:object="${sportsForm}">
-						<input type="hidden" th:value="pitchId" th:field="*{pitchId}"/>
-						<input type="hidden" th:value="pitchSports" th:field="*{pitchSports}"/>
-						
-						<div class="sports-table">
-							<table class="table">
-									<tbody>
-										<tr th:each="pitchSport : ${pitchSports}">
-											<td class="col-sm-2  text-left" th:text="${pitchSport.sport}" th:field="*{pitchSports}"> </td>
-											<td class="col-sm-1 text-right">
-												<input type="checkbox" th:text="${pitchSport.available}" th:value="${pitchSport.available}" th:field="*{available}"/>
-											</td>
-											<td class="col-sm-2 text-right">
-											<select class="form-control" id="sport-input" th:field="*{available}">
-												<option value="" th:text="${pitchSport.availability}"></option>
-												<option value="available" >available</option>
-												<option value="unavailable" >unavailable</option>
-											</select>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-						</div>
-						<input type="submit" value="Save Sports" class="btn btn-success create-button"/>
-						</form>
-					</div>
-				</div> -->
-				
-				
-				
-				
 				<div class="col-sm-4" align="center">
 					<h2 align="center">
 						<span class="header-pitches">Sports</span>
@@ -76,11 +38,6 @@
 						</form>
 					</div>
 				</div>
-				
-				
-				
-				
-				
 				<form th:action="@{/managePitch}" method="get">
 				<div class="col-sm-4" align="center">
 					<h2 align="center">
@@ -109,10 +66,8 @@
 							</div>
 							<a class="btn btn-success addFeatureBtn" th:id="${pitch.id}" data-toggle="modal" data-target="#addFeatureModal">Add New Feature</a>
 						</div>
-					
 				</div>
 				</form>
-				
 				<div class="col-sm-4" align="center">
 					<h2 align="center">
 						<span class="header-pitches">Image for pitch</span>
