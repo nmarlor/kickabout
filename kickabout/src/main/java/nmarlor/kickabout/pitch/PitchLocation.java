@@ -51,6 +51,9 @@ public class PitchLocation implements Serializable{
 	
 	@Column(name="post_code")
 	private String postCode;
+	
+	@Column(name = "image", columnDefinition = "LONGBLOB")
+	private byte[] image;
 
 	public Long getId() {
 		return id;
@@ -126,6 +129,14 @@ public class PitchLocation implements Serializable{
 
 	public void setPostCode(String postCode) {
 		this.postCode = postCode;
+	}
+	
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 	
 }

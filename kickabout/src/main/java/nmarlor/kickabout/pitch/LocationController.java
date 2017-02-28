@@ -1,14 +1,18 @@
 package nmarlor.kickabout.pitch;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import nmarlor.kickabout.account.Account;
@@ -28,6 +32,9 @@ public class LocationController {
 	
 	@Autowired
 	private NewLocationValidator locationValidator;
+	
+	@Autowired
+	private PitchImageValidator imageValidator;
 
 	@RequestMapping(value = "/locations", method = RequestMethod.GET)
 	public ModelAndView Locations() {
@@ -89,8 +96,43 @@ public class LocationController {
 		return mv;
 	}
 	
+//	@RequestMapping(value = "addPitchLocation", method = RequestMethod.POST)
+//	public ModelAndView submitPitchLocation(@ModelAttribute("pitchLocationForm") NewPitchLocationForm pitchLocationForm, BindingResult bindingResult){
+//		ModelAndView thisMv = new ModelAndView("locations/newPitchLocation");
+//		
+//		Long accountId = pitchLocationForm.getAccountId();
+//		Account account = accountService.retrieveAccount(accountId);
+//		
+//		locationValidator.validate(pitchLocationForm, bindingResult);
+//		if (bindingResult.hasErrors()) 
+//		{
+//			thisMv.addObject("errors", bindingResult);
+//			return thisMv;
+//		}
+//		
+//		PitchLocation pitchLocation = new PitchLocation();
+//		pitchLocation.setAccount(account);
+//		pitchLocation.setAddressLine1(pitchLocationForm.getAddressLine1());
+//		pitchLocation.setAddressLine2(pitchLocationForm.getAddressLine2());
+//		pitchLocation.setCity(pitchLocationForm.getCity());
+//		pitchLocation.setName(pitchLocationForm.getName());
+//		pitchLocation.setCounty(pitchLocationForm.getCounty());
+//		pitchLocation.setEmail(pitchLocationForm.getEmail());
+//		pitchLocation.setPostCode(pitchLocationForm.getPostcode());
+//		pitchLocation.setTelephone(pitchLocationForm.getTelephone());
+//		
+//		pitchLocationService.createPitchLocation(pitchLocation);
+//		
+//		ModelAndView successMv = new ModelAndView("locations/successfulLocationCreation");
+//		List<PitchLocation> locationsForAccount = pitchLocationService.findPitchLocationsForAccount(account);
+//		successMv.addObject("locationsForAccount", locationsForAccount);
+//		successMv.addObject("accountId", accountId);
+//		
+//		return successMv;
+//	}
+	
 	@RequestMapping(value = "addPitchLocation", method = RequestMethod.POST)
-	public ModelAndView submitPitchLocation(@ModelAttribute("pitchLocationForm") NewPitchLocationForm pitchLocationForm, BindingResult bindingResult){
+	public ModelAndView submitPitchLocation(@ModelAttribute("pitchLocationForm") NewPitchLocationForm pitchLocationForm, BindingResult bindingResult, @RequestParam("file") MultipartFile uploadedFile){
 		ModelAndView thisMv = new ModelAndView("locations/newPitchLocation");
 		
 		Long accountId = pitchLocationForm.getAccountId();
@@ -113,6 +155,30 @@ public class LocationController {
 		pitchLocation.setEmail(pitchLocationForm.getEmail());
 		pitchLocation.setPostCode(pitchLocationForm.getPostcode());
 		pitchLocation.setTelephone(pitchLocationForm.getTelephone());
+		
+		Errors errors = bindingResult;
+		
+		imageValidator.validate(uploadedFile, bindingResult);
+		if (bindingResult.hasErrors()) 
+		{
+			errors.reject("image.errors.message", "X");
+			
+			thisMv.addObject("errors", bindingResult);
+			return thisMv;
+		}
+		
+		if (!uploadedFile.isEmpty()) 
+		{
+			try 
+			{
+				byte[] image = uploadedFile.getBytes();
+				pitchLocation.setImage(image);
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 		
 		pitchLocationService.createPitchLocation(pitchLocation);
 		

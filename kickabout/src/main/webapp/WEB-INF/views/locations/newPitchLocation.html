@@ -8,76 +8,85 @@
 </head>
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
-		<div class="container">
-			<form method="post" th:action="@{/addPitchLocation}" th:object="${pitchLocationForm}">
+			<form method="post" th:object="${pitchLocationForm}" th:action="@{addPitchLocation}  + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token}" enctype="multipart/form-data">
 			<input type="hidden" th:value="accountId" th:field="*{accountId}"/>
+			<input hidden="hidden" id="uploadType" name="uploadType"></input>
 			<div class="jumbotron default">
-				<div class = "general-header">
-					<h2 class="text-center">New pitch location</h2>
-					<br></br>
-					<div class="col-sm-offset-4 col-sm-2 text-center">
-						<span>Name</span>
+				<div class="col-sm-12">
+					<div class = "general-header">
+							<h2 class="text-center">New pitch location</h2>
+							<br></br>
 					</div>
-					<div class="col-sm-2" align="center">
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="company-input" th:field="*{name}"/>
-						<br></br>
-					</div>
-					<div class="col-sm-offset-4 col-sm-2 text-center">
-						<span>Address Line 1</span>
-					</div>
-					<div class="col-sm-2">
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="address-1-input" th:field="*{addressLine1}"/>
-						<br></br>
-					</div>
-					<div class="col-sm-offset-4 col-sm-2 text-center">
-						<span>Address Line 2</span>
-					</div>
-					<div class="col-sm-2">
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="address-2-input" th:field="*{addressLine2}"/>
-						<br></br>
-					</div>
-					<div class="col-sm-offset-4 col-sm-2 text-center">
-						<span>City</span>
-					</div>
-					<div class="col-sm-2">
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="city-input" th:field="*{city}"/>
-						<br></br>
-					</div>
-					<div class="col-sm-offset-4 col-sm-2 text-center">
-						<span>County</span>
-					</div>
-					<div class="col-sm-2">
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="county-input" th:field="*{county}"/>
-						<br></br>
-					</div>
-					<div class="col-sm-offset-4 col-sm-2 text-center">
-						<span>Email</span>
-					</div>
-					<div class="col-sm-2">
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>
-						<br></br>
-					</div>
-					<div class="col-sm-offset-4 col-sm-2 text-center">
-						<span>Postcode</span>
-					</div>
-					<div class="col-sm-2">
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="postcode-input" th:field="*{postcode}"/>
-						<br></br>
-					</div>
-					<div class="col-sm-offset-4 col-sm-2 text-center">
-						<span>Telephone</span>
-					</div>
-					<div class="col-sm-2">
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="telephone-input" th:field="*{telephone}"/>
-						<br></br>
-					</div>
-					<div class="create-btn col-sm-offset-4 col-sm-2"></div>
-					<div class="col-sm-2">
-						<input type="submit" value="Save location" class="btn btn-block btn-success create-button"/>
+					<div class="col-sm-offset-2 col-sm-8">
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Name</span>
+							</div>
+							<div class="col-sm-4">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="company-input" th:field="*{name}"/>
+								<br></br>
+							</div>
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Address Line 1</span>
+							</div>
+							<div class="col-sm-4">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="address-1-input" th:field="*{addressLine1}"/>
+								<br></br>
+							</div>
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Address Line 2</span>
+							</div>
+							<div class="col-sm-4">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="address-2-input" th:field="*{addressLine2}"/>
+								<br></br>
+							</div>
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>City</span>
+							</div>
+							<div class="col-sm-4">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="city-input" th:field="*{city}"/>
+								<br></br>
+							</div>
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>County</span>
+							</div>
+							<div class="col-sm-4">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="county-input" th:field="*{county}"/>
+								<br></br>
+							</div>
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Email</span>
+							</div>
+							<div class="col-sm-4">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>
+								<br></br>
+							</div>
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Postcode</span>
+							</div>
+							<div class="col-sm-4">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="postcode-input" th:field="*{postcode}"/>
+								<br></br>
+							</div>
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Telephone</span>
+							</div>
+							<div class="col-sm-4">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="telephone-input" th:field="*{telephone}"/>
+								<br></br>
+							</div>
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Image</span>
+							</div>
+							<div class="col-sm-4">
+								<input type="file" name="file" style="background-color: white;" class="form-control" id="file-name" readonly="readonly" />
+								<br></br>
+							</div>
+							<div class="col-sm-2" align="center">
+								<input type="submit" value="Save" class="btn btn-block btn-success create-button"/>
+							</div>
 					</div>
 				</div>
 			</div>
 			</form>
-		</div>
 </body>
 </html>
