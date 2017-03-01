@@ -18,13 +18,14 @@
     <header>
         <div class="container">
         	<form method="post" th:action="@{/}" th:object="${locationForm}">
+            <input type="hidden" th:value="sports" th:field="*{sports}"/>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="intro-text">
                         <h2>Book a sports venue today!</h2>
                         <br></br>
                         <div class="col-md-3"></div>
-                        <div class="col-md-2">
+<!--                         <div class="col-md-2">
 			  				<select th:errorclass="input-form-error" class="form-control" id="sport-input" th:field="*{sport}">
 								<option value="" >Select sport</option>
 								<option value="5 a side football" >5 a side football</option>
@@ -34,6 +35,14 @@
 								<option value="Basketball" >Basketball</option>
 								<option value="Hockey" >Hockey</option>
 								<option value="Netball" >Netball</option>
+							</select>
+						</div> -->
+						<div class="col-md-2">
+			  				<select th:errorclass="input-form-error" class="form-control" id="sport-input" th:field="*{sport}">
+								<option value="" >Select sport</option>
+								<option th:each="sport : ${sports}"
+				  				th:value="${sport}"
+				  				th:text="${sport}"></option>
 							</select>
 						</div>
                         <div class="col-md-3">

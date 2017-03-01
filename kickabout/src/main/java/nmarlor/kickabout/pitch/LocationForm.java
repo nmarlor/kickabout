@@ -1,5 +1,6 @@
 package nmarlor.kickabout.pitch;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class LocationForm 
@@ -9,6 +10,7 @@ public class LocationForm
 	private Set<Long> locationIds;
 	private Long accountId;
 	private String sport;
+	private ArrayList<String> sports;
 	
 	public Long getAccountId() {
 		return accountId;
@@ -48,6 +50,14 @@ public class LocationForm
 
 	public void setSport(String sport) {
 		this.sport = sport;
+	}
+
+	public ArrayList<String> getSports() {
+		return sports;
+	}
+
+	public void setSports(ArrayList<String> sports) {
+		this.sports = sports;
 	}
 	
 }

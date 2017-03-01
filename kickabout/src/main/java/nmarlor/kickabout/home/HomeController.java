@@ -21,6 +21,8 @@ import nmarlor.kickabout.pitch.PitchLocation;
 import nmarlor.kickabout.pitch.PitchLocationService;
 import nmarlor.kickabout.pitch.SortByLocationName;
 import nmarlor.kickabout.pitch.Sports;
+import nmarlor.kickabout.pitch.SportsChoice;
+import nmarlor.kickabout.pitch.SportsChoiceService;
 import nmarlor.kickabout.pitch.SportsService;
 
 @Controller
@@ -35,12 +37,28 @@ public class HomeController {
 	@Autowired
 	private LocationSearchValidator locationSearchValidator;
 	
+	@Autowired
+	private SportsChoiceService sportsChoiceService;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal){
 		ModelAndView mv = new ModelAndView("home/homepage");
 		
+		List<SportsChoice> sportsChoices = sportsChoiceService.findAll();
+		
+		ArrayList<String> sports = new ArrayList<>();
+		
+		for (SportsChoice sportsChoice : sportsChoices) 
+		{
+			String sport = sportsChoice.getSport();
+			sports.add(sport);
+		}
+		
 		LocationForm locationForm = new LocationForm();
+		locationForm.setSports(sports);
+		
 		mv.addObject("locationForm", locationForm);
+		mv.addObject("sports", sports);
 		
 		return mv;
 	}
@@ -54,6 +72,21 @@ public class HomeController {
 		{
 			ModelAndView thisMv = new ModelAndView("home/homepage");
 			thisMv.addObject("errors", bindingResult);
+			
+			List<SportsChoice> sportsChoices = sportsChoiceService.findAll();
+			
+			ArrayList<String> sports = new ArrayList<>();
+			
+			for (SportsChoice sportsChoice : sportsChoices) 
+			{
+				String sport = sportsChoice.getSport();
+				sports.add(sport);
+			}
+			
+			locationForm.setSports(sports);
+			
+			thisMv.addObject("locationForm", locationForm);
+			thisMv.addObject("sports", sports);
 			return thisMv;
 		}
 		
