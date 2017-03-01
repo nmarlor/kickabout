@@ -11,6 +11,7 @@
 			<form method="post" th:object="${pitchLocationForm}" th:action="@{addPitchLocation}  + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token}" enctype="multipart/form-data">
 			<input type="hidden" th:value="accountId" th:field="*{accountId}"/>
 			<input hidden="hidden" id="uploadType" name="uploadType"></input>
+			<input type="hidden" th:value="times" th:field="*{times}"/>
 			<div class="jumbotron default">
 				<div class="col-sm-12">
 					<div class = "general-header">
@@ -81,6 +82,163 @@
 								<input type="file" name="file" style="background-color: white;" class="form-control" id="file-name" readonly="readonly" />
 								<br></br>
 							</div>
+							
+							
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Monday</span>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="monday_from" th:field="*{monday_from}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="monday_to" th:field="*{monday_to}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Tuesday</span>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="tuesday_from" th:field="*{tuesday_from}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="tuesday_to" th:field="*{tuesday_to}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Wednesday</span>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="wednesday_from" th:field="*{wednesday_from}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="wednesday_to" th:field="*{wednesday_to}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Thursday</span>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="thursday_from" th:field="*{thursday_from}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="thursday_to" th:field="*{thursday_to}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Friday</span>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="friday_from" th:field="*{friday_from}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="friday_to" th:field="*{friday_to}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Saturday</span>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="saturday_from" th:field="*{saturday_from}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="saturday_to" th:field="*{saturday_to}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							
+							<div class="col-sm-offset-3 col-sm-2 text-left">
+								<span>Sunday</span>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="sunday_from" th:field="*{sunday_from}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							<div class="col-sm-2">
+				  				<select th:errorclass="input-form-error" class="form-control" id="sunday_to" th:field="*{sunday_to}">
+				  				<option value=""></option>
+				  				<option th:each="time : ${times}"
+				  				th:value="${time}"
+				  				th:text="${time}"></option>
+				  				</select>
+								<br></br>
+							</div>
+							
+							
 							<div class="col-sm-2" align="center">
 								<input type="submit" value="Save" class="btn btn-block btn-success create-button"/>
 							</div>
