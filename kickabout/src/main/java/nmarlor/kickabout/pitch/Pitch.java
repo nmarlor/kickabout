@@ -50,6 +50,12 @@ public class Pitch implements Serializable{
 	
 	@Column(name = "image", columnDefinition = "LONGBLOB")
 	private byte[] image;
+	
+	@Column(name = "surface")
+	private String surface;
+	
+	@Column(name = "environment")
+	private String environment;
 
 	public Long getId() {
 		return id;
@@ -109,6 +115,22 @@ public class Pitch implements Serializable{
 
 	public void setImage(byte[] image) {
 		this.image = image;
+	}
+
+	public String getSurface() {
+		return surface;
+	}
+
+	public String getEnvironment() {
+		return environment;
+	}
+
+	public void setSurface(String surface) {
+		this.surface = surface;
+	}
+
+	public void setEnvironment(String environment) {
+		this.environment = environment;
 	}
 	
 }

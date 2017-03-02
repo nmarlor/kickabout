@@ -1,5 +1,7 @@
 package nmarlor.kickabout.pitch;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -27,6 +29,15 @@ public class Sports {
 	
 	@Column(name="available")
 	private Boolean available;
+	
+	@Column(name="cost_per_fourty_five")
+	private BigDecimal costPerFourtyFive;
+	
+	@Column(name="cost_per_sixty")
+	private BigDecimal costPerSixty;
+	
+	@Column(name="cost_per_ninety")
+	private BigDecimal costPerNinety;
 
 	public Long getId() {
 		return id;
@@ -58,6 +69,30 @@ public class Sports {
 
 	public void setAvailable(Boolean available) {
 		this.available = available;
+	}
+
+	public BigDecimal getCostPerFourtyFive() {
+		return costPerFourtyFive;
+	}
+
+	public BigDecimal getCostPerSixty() {
+		return costPerSixty;
+	}
+
+	public BigDecimal getCostPerNinety() {
+		return costPerNinety;
+	}
+
+	public void setCostPerFourtyFive(BigDecimal costPerFourtyFive) {
+		this.costPerFourtyFive = costPerFourtyFive;
+	}
+
+	public void setCostPerSixty(BigDecimal costPerSixty) {
+		this.costPerSixty = costPerSixty;
+	}
+
+	public void setCostPerNinety(BigDecimal costPerNinety) {
+		this.costPerNinety = costPerNinety;
 	}
 	
 }
