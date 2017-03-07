@@ -23,4 +23,9 @@ public class AvailabilityServiceImpl implements AvailabilityService
 		}
 	}
 
+	@Override
+	public Availability findByLocationAndDay(PitchLocation pitchLocation, String dayOfWeek) {
+		return availabilityDAO.findByLocationAndDay(pitchLocation, dayOfWeek);
+	}
+
 }

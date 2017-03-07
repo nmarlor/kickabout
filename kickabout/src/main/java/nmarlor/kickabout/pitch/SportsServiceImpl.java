@@ -41,4 +41,10 @@ public class SportsServiceImpl implements SportsService{
 		return sportsDAO.findSportsByName(sport);
 	}
 
+	@Override
+	public List<Sports> findAvailableSportsByPitch(Pitch pitch) {
+		List<Sports> pitchSports = sportsDAO.findAvailableSportsByPitch(pitch);
+		return pitchSports;
+	}
+
 }

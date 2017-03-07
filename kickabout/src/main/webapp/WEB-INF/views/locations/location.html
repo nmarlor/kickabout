@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+	<div th:replace="fragments/header">Header</div>
+	<div class="jumbotron default">
+		<div class="col-sm-12" align="center">
+			<h2>
+			<span class="header-pitches" th:text="|${location.name}|"></span>
+			</h2>
+			<br></br>
+			<span th:text="|Open today ${from} - ${to}|"></span>
+			<div class="col-lg-12" align="center">
+			<br></br>
+			<div class="col-md-2">
+			</div>
+			<div class="col-md-2">
+				<select class="form-control">
+					<option value="">Select a sport</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<select class="form-control">
+					<option value="">Select a surface</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<select class="form-control">
+					<option value="">Select a duration</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<input type="submit" value="BOOK NOW" class="btn btn-block btn-success"/>
+			</div>
+			<div class="col-md-2">
+			</div>
+		</div>
+			<br></br><br></br><br></br><br></br><br></br>
+			<div class="col-sm-2">
+				<div class="facilities-table">
+					<table class="table">
+						<thead>
+						<tr>
+							<th class="text-left">Facilities</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr th:each="facility : ${facilities}">
+								<td class="col-sm-2" th:text="${facility}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="facilities-table">
+					<table class="table">
+						<thead>
+						<tr>
+							<th class="text-left">Sports available</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr th:each="sport : ${sports}">
+								<td class="col-sm-2" th:text="${sport}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="facilities-table">
+					<table class="table">
+						<thead>
+						<tr>
+							<th class="text-left">Surfaces</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr th:each="surface : ${surfaces}">
+								<td class="col-sm-2" th:text="${surface}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<br></br>
+			<div class="col-sm-6">
+				<div class="col-sm-12">
+					<img class="location-gallery" th:src="@{/locationImage(locationId=${location.id})}"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+</body>
+</html>

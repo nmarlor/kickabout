@@ -20,4 +20,6 @@ public interface PitchLocationService
 	public List<PitchLocation> findPitchLocationsForAccount(Account account);
 	
 	public void createPitchLocation(PitchLocation pitchLocation);
+	
+	public PitchLocation findByName(String name);
 }

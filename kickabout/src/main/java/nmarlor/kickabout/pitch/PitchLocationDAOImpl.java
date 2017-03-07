@@ -41,4 +41,11 @@ public class PitchLocationDAOImpl extends HibernateJPABase<PitchLocation, Long> 
 		return super.search(search);
 	}
 
+	@Override
+	public PitchLocation findByName(String name) {
+		Search search = new Search(PitchLocation.class);
+		search.addFilterEqual("name", name);
+		return searchUnique(search);
+	}
+
 }

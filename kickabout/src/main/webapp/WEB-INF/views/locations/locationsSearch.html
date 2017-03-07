@@ -12,6 +12,8 @@
 	<div class="col-md-12 col-centered clearfix">
 	<div class="col-sm-6 pitch-nav">
 	<form method="post" th:action="@{/}" th:object="${locationForm}">
+	<input type="hidden" th:value="sport" th:field="*{sport}"/>
+	<input type="hidden" th:value="name" th:field="*{name}"/>
 	<h2>Select a venue</h2>
 	<span th:text="|Below you can see the venues available to book in ${searchName} for ${sport}|"></span>
 	</form>
@@ -39,7 +41,7 @@
 							<td class="col-sm-2" th:text="${location.telephone}"></td>
 							<td class="col-sm-1">
 								<span class="btn-group">
-				  					<a class="btn btn-info pitchInfoBtn" th:href="@{pitches(locationId=${location.id})}">View</a>
+				  					<a class="btn btn-info pitchInfoBtn" th:href="@{location(name=${location.name}, sport=${sport})}">View</a>
 				  				</span>
 							</td>
 						</tr>

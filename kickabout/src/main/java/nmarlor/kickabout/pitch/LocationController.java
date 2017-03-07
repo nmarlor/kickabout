@@ -2,10 +2,19 @@ package nmarlor.kickabout.pitch;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -43,6 +52,12 @@ public class LocationController {
 	
 	@Autowired
 	private DateService dateService;
+	
+	@Autowired
+	private FacilitiesService facilitiesService;
+	
+	@Autowired
+	private SportsService sportsService;
 
 	@RequestMapping(value = "/locations", method = RequestMethod.GET)
 	public ModelAndView Locations() {
@@ -64,18 +79,114 @@ public class LocationController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "pitches", method=RequestMethod.GET)
-	public ModelAndView pitches(Long locationId) {
-		ModelAndView mv = new ModelAndView("/locations/pitches");
+	@RequestMapping(value = "location", method=RequestMethod.GET)
+	public ModelAndView pitches(String name, String sport) {
+		ModelAndView mv = new ModelAndView("/locations/location");
 		
-		PitchLocation location = pitchLocationService.retrieve(locationId);
+		PitchLocation location = pitchLocationService.findByName(name);
+		
+		ArrayList<String> facilities = new ArrayList<>();
+		List<Facilities> retrievedFacilities = facilitiesService.findFacilitiesForLocation(location);
+
+		for (Facilities retrievedFacility : retrievedFacilities) 
+		{
+			String facility = retrievedFacility.getFacility();
+			facilities.add(facility);
+		}
 		
 		List<Pitch> pitches = new ArrayList<>();
 		pitches = pitchesService.findPitchesByLocation(location);
 		
+		List<Sports> sportsAvailable = new ArrayList<>();
+		
+		for (Pitch pitch : pitches) 
+		{
+			List<Sports> sportsForPitch = sportsService.findAvailableSportsByPitch(pitch);
+			sportsAvailable.addAll(sportsForPitch);
+		}
+		
+		ArrayList<String> surfaces = new ArrayList<>();
+		ArrayList<String> sports = new ArrayList<>();
+		
+		Set<Sports> sortSports = new TreeSet<Sports>(new SortBySportName());
+		sortSports.addAll(sportsAvailable);
+		sportsAvailable.clear();
+		sportsAvailable.addAll(sortSports);
+		
+		for (Sports sportAvailable : sportsAvailable) 
+		{
+			String sportToAdd = sportAvailable.getSport();
+			sports.add(sportToAdd);
+		}
+		
+		Set<Pitch> sortSurfaces = new TreeSet<Pitch>(new SortBySurface());
+		sortSurfaces.addAll(pitches);
+		pitches.clear();
+		pitches.addAll(sortSurfaces);
+		
+		for (Pitch pitch : pitches) 
+		{
+			String surface = pitch.getSurface();
+			surfaces.add(surface);
+		}
+		
+		Calendar calendar = Calendar.getInstance();
+		String dayOfWeek = getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK));
+		
+		Availability availability = availabilityService.findByLocationAndDay(location, dayOfWeek);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		Date avaialableFrom = availability.getAvailableFrom();
+		String from = sdf.format(avaialableFrom);
+		Date avaialableTo = availability.getAvailableTo();
+		String to = sdf.format(avaialableTo);
+		
 		mv.addObject("location", location);
-		mv.addObject("pitches", pitches);
+		mv.addObject("sport", sport);
+		mv.addObject("facilities", facilities);
+		mv.addObject("surfaces", surfaces);
+		mv.addObject("sports", sports);
+		mv.addObject("from", from);
+		mv.addObject("to", to);
 		return mv;
+	}
+	
+	private String getDayOfWeek(int value){
+	    String day = "";
+	    switch(value){
+	    case 1:
+	        day="Sunday";
+	        break;
+	    case 2:
+	        day="Monday";
+	        break;
+	    case 3:
+	        day="Tuesday";
+	        break;
+	    case 4:
+	        day="Wednesday";
+	        break;
+	    case 5:
+	        day="Thursday";
+	        break;
+	    case 6:
+	        day="Friday";
+	        break;
+	    case 7:
+	        day="Saturday";
+	        break;
+	    }
+	    return day;
+	}
+	
+	@RequestMapping(value = "/locationImage", produces = MediaType.IMAGE_JPEG_VALUE) 
+	public ResponseEntity<byte[]> getLocationImage(Long locationId) throws IOException 
+	{ 
+		PitchLocation pitchLocation = pitchLocationService.retrieve(locationId);
+		byte[] imageContent =  pitchLocation.getImage();
+		HttpHeaders headers = new HttpHeaders(); 
+		headers.setContentType(MediaType.IMAGE_JPEG); 
+		return new ResponseEntity<byte[]>(imageContent, headers, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "pitchesForAdminLocation", method=RequestMethod.GET)

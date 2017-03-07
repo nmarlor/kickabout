@@ -13,4 +13,6 @@ public interface SportsService
 	public Sports update(Sports sport);
 	
 	public List<Sports> findSportsByName(String sport);
+	
+	public List<Sports> findAvailableSportsByPitch(Pitch pitch);
 }

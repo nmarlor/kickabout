@@ -16,4 +16,6 @@ public interface PitchLocationDAO extends GenericDAO<PitchLocation, Long>
 	public List<PitchLocation> findAllLocationsByCompany(Company company);
 	
 	public List<PitchLocation> findAllLocationsByAccount(Account account);
+	
+	public PitchLocation findByName (String name);
 }

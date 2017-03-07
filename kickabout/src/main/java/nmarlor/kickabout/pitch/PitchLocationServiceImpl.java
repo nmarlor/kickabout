@@ -54,4 +54,9 @@ public class PitchLocationServiceImpl implements PitchLocationService {
 		pitchLocationDAO.persist(pitchLocation);
 	}
 
+	@Override
+	public PitchLocation findByName(String name) {
+		return pitchLocationDAO.findByName(name);
+	}
+
 }
