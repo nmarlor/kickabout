@@ -16,6 +16,16 @@ body {
    background:#2C3E50;
 } */
 
+.requirements-form{
+    background: #f4f7f8;
+    margin: 0px auto;
+    padding: 10px;
+    background: #18BC9C;
+    border-radius: 10px;
+    width: 26%;
+    margin-left: 2cm;
+}
+
 .glyphicon.glyphicon-pencil{
     font-size: 30px;
 }
@@ -140,12 +150,13 @@ body {
 
 .location-gallery {
 	position: relative;
-	margin-top: 30px;
-	width: 80%;
-	height: 325px;
+	margin-top: 35px;
+	width: 100%;
+	height: 320px;
 	background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
+    margin-bottom: 35px;
 }
 
 .input-form-error {
@@ -184,7 +195,6 @@ body {
 
 .facilities-table {
 	display: table;
-	margin-top: 20px;
 	width: 80%;
 	border-spacing: 0;
 	border-collapse: collapse;

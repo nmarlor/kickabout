@@ -20,33 +20,9 @@
 			</h2>
 			<br></br>
 			<span th:text="|Open today ${from} - ${to}|"></span>
-			<div class="col-lg-12" align="center">
-			<br></br>
-			<div class="col-md-2">
-			</div>
-			<div class="col-md-2">
-				<select class="form-control">
-					<option value="">Select a sport</option>
-				</select>
-			</div>
-			<div class="col-md-2">
-				<select class="form-control">
-					<option value="">Select a surface</option>
-				</select>
-			</div>
-			<div class="col-md-2">
-				<select class="form-control">
-					<option value="">Select a duration</option>
-				</select>
-			</div>
-			<div class="col-md-2">
-				<input type="submit" value="BOOK NOW" class="btn btn-block btn-success"/>
-			</div>
-			<div class="col-md-2">
-			</div>
 		</div>
-			<br></br><br></br><br></br><br></br><br></br>
-			<div class="col-sm-2">
+		<div class="col-lg-4">
+			<div class="col-sm-6">
 				<div class="facilities-table">
 					<table class="table">
 						<thead>
@@ -62,7 +38,7 @@
 					</table>
 				</div>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-6">
 				<div class="facilities-table">
 					<table class="table">
 						<thead>
@@ -78,7 +54,23 @@
 					</table>
 				</div>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-6">
+				<div class="facilities-table">
+					<table class="table">
+						<thead>
+						<tr>
+							<th class="text-left">Environments</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr th:each="environment : ${environments}">
+								<td class="col-sm-2" th:text="${environment}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-sm-6">
 				<div class="facilities-table">
 					<table class="table">
 						<thead>
@@ -94,10 +86,77 @@
 					</table>
 				</div>
 			</div>
-			<br></br>
-			<div class="col-sm-6">
-				<div class="col-sm-12">
-					<img class="location-gallery" th:src="@{/locationImage(locationId=${location.id})}"/>
+		</div>
+		<div class="col-lg-4">
+			<div class="col-sm-12">
+				<img class="location-gallery" th:src="@{/locationImage(locationId=${location.id})}"/>
+			</div>
+			<div class="col-sm-12" align="center">
+				<span th:text="|${location.addressLine1},  ${location.addressLine2},  ${location.city}, ${location.county}, ${location.postCode}|"></span>
+				<br></br>
+				<span th:text="|${location.email}|"></span>
+				<br></br>
+				<span th:text="|${location.telephone}|"></span>
+			</div>
+		</div>
+		<div class="col-lg-4 requirements-form" align="center">
+		<h4>Book this venue</h4>
+		<br></br>
+			<div class="col-lg-12">
+				<div class="col-lg-offset-1 col-lg-10">
+					<select class="form-control">
+						<option value="">Select a date</option>
+					</select>
+				</div>
+			</div>
+			<br></br><br></br><br></br>
+			<div class="col-lg-12">
+				<div class="col-lg-offset-1 col-lg-10">
+					<select class="form-control">
+						<option value="">Select a time</option>
+					</select>
+				</div>
+			</div>
+			<br></br><br></br><br></br>
+			<div class="col-lg-12">
+				<div class="col-lg-offset-1 col-lg-10">
+					<select class="form-control">
+						<option value="">Select a duration</option>
+					</select>
+				</div>
+			</div>
+			<br></br><br></br><br></br>
+			<div class="col-lg-12">
+				<div class="col-lg-offset-1 col-lg-10">
+					<select class="form-control">
+						<option value="">Select a sport</option>
+					</select>
+				</div>
+			</div>
+			<br></br><br></br><br></br>
+			<div class="col-lg-12">
+				<div class="col-lg-offset-1 col-lg-10">
+					<select class="form-control">
+						<option value="">Select an environment</option>
+					</select>
+				</div>
+			</div>
+			<br></br><br></br><br></br>
+			<div class="col-lg-12">
+				<div class="col-lg-offset-1 col-lg-10">
+					<select class="form-control">
+						<option value="">Select a surface</option>
+					</select>
+				</div>
+			</div>
+			<br></br><br></br><br></br>
+			<div class="col-lg-12">
+				<div class="col-lg-5">
+				</div>
+				<div class="col-lg-6">
+					<input type="submit" value="Search" class="btn btn-block btn-info"/>
+				</div>
+				<div class="col-lg-1">
 				</div>
 			</div>
 		</div>

@@ -107,6 +107,7 @@ public class LocationController {
 		
 		ArrayList<String> surfaces = new ArrayList<>();
 		ArrayList<String> sports = new ArrayList<>();
+		ArrayList<String> environments = new ArrayList<>();
 		
 		Set<Sports> sortSports = new TreeSet<Sports>(new SortBySportName());
 		sortSports.addAll(sportsAvailable);
@@ -130,6 +131,17 @@ public class LocationController {
 			surfaces.add(surface);
 		}
 		
+		Set<Pitch> sortEnvironemnts = new TreeSet<Pitch>(new SortByEnvironment());
+		sortEnvironemnts.addAll(pitches);
+		pitches.clear();
+		pitches.addAll(sortEnvironemnts);
+		
+		for (Pitch pitch : pitches) 
+		{
+			String environment = pitch.getEnvironment();
+			environments.add(environment);
+		}
+		
 		Calendar calendar = Calendar.getInstance();
 		String dayOfWeek = getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK));
 		
@@ -148,6 +160,7 @@ public class LocationController {
 		mv.addObject("sports", sports);
 		mv.addObject("from", from);
 		mv.addObject("to", to);
+		mv.addObject("environments", environments);
 		return mv;
 	}
 	
