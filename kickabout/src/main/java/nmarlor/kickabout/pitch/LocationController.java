@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.account.AccountService;
+import nmarlor.kickabout.booking.BookVenueForm;
 import nmarlor.kickabout.date.DateService;
 
 @Controller
@@ -83,7 +84,10 @@ public class LocationController {
 	public ModelAndView pitches(String name, String sport) {
 		ModelAndView mv = new ModelAndView("/locations/location");
 		
+		BookVenueForm venueForm = new BookVenueForm();
+		
 		PitchLocation location = pitchLocationService.findByName(name);
+		Long locationId = location.getId();
 		
 		ArrayList<String> facilities = new ArrayList<>();
 		List<Facilities> retrievedFacilities = facilitiesService.findFacilitiesForLocation(location);
@@ -157,6 +161,8 @@ public class LocationController {
 		Date avaialableTo = availability.getAvailableTo();
 		String to = sdf.format(avaialableTo);
 		
+		venueForm.setLocationId(locationId);
+		
 		mv.addObject("location", location);
 		mv.addObject("sport", sport);
 		mv.addObject("facilities", facilities);
@@ -165,6 +171,7 @@ public class LocationController {
 		mv.addObject("from", from);
 		mv.addObject("to", to);
 		mv.addObject("environments", environments);
+		mv.addObject("venueForm", venueForm);
 		return mv;
 	}
 	
