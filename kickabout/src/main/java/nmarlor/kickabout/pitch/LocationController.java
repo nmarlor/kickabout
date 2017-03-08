@@ -97,6 +97,10 @@ public class LocationController {
 		List<Pitch> pitches = new ArrayList<>();
 		pitches = pitchesService.findPitchesByLocation(location);
 		
+		ArrayList<String> surfaces = new ArrayList<>();
+		ArrayList<String> sports = new ArrayList<>();
+		ArrayList<String> environments = new ArrayList<>();
+		
 		List<Sports> sportsAvailable = new ArrayList<>();
 		
 		for (Pitch pitch : pitches) 
@@ -104,10 +108,6 @@ public class LocationController {
 			List<Sports> sportsForPitch = sportsService.findAvailableSportsByPitch(pitch);
 			sportsAvailable.addAll(sportsForPitch);
 		}
-		
-		ArrayList<String> surfaces = new ArrayList<>();
-		ArrayList<String> sports = new ArrayList<>();
-		ArrayList<String> environments = new ArrayList<>();
 		
 		Set<Sports> sortSports = new TreeSet<Sports>(new SortBySportName());
 		sortSports.addAll(sportsAvailable);
@@ -120,23 +120,27 @@ public class LocationController {
 			sports.add(sportToAdd);
 		}
 		
+		List<Pitch> surfacesForPitches = pitchesService.findPitchesByLocation(location);
+			
 		Set<Pitch> sortSurfaces = new TreeSet<Pitch>(new SortBySurface());
-		sortSurfaces.addAll(pitches);
-		pitches.clear();
-		pitches.addAll(sortSurfaces);
+		sortSurfaces.addAll(surfacesForPitches);
+		surfacesForPitches.clear();
+		surfacesForPitches.addAll(sortSurfaces);
 		
-		for (Pitch pitch : pitches) 
+		for (Pitch pitch : surfacesForPitches) 
 		{
 			String surface = pitch.getSurface();
 			surfaces.add(surface);
 		}
 		
-		Set<Pitch> sortEnvironemnts = new TreeSet<Pitch>(new SortByEnvironment());
-		sortEnvironemnts.addAll(pitches);
-		pitches.clear();
-		pitches.addAll(sortEnvironemnts);
+		List<Pitch> environmentsForPitches = pitchesService.findPitchesByLocation(location);
 		
-		for (Pitch pitch : pitches) 
+		Set<Pitch> sortEnvironemnts = new TreeSet<Pitch>(new SortByEnvironment());
+		sortEnvironemnts.addAll(environmentsForPitches);
+		environmentsForPitches.clear();
+		environmentsForPitches.addAll(sortEnvironemnts);
+		
+		for (Pitch pitch : environmentsForPitches) 
 		{
 			String environment = pitch.getEnvironment();
 			environments.add(environment);
