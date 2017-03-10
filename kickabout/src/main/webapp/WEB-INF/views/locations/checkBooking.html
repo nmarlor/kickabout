@@ -52,90 +52,12 @@
 			<br></br>
 			<span th:text="|Open today ${from} - ${to}|"></span>
 		</div>
-		<div class="col-lg-4">
-			<div class="col-sm-6">
-				<div class="facilities-table">
-					<table class="table">
-						<thead>
-						<tr>
-							<th class="text-left">Facilities</th>
-						</tr>
-						</thead>
-						<tbody>
-							<tr th:each="facility : ${facilities}">
-								<td class="col-sm-2" th:text="${facility}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="col-sm-6">
-				<div class="facilities-table">
-					<table class="table">
-						<thead>
-						<tr>
-							<th class="text-left">Sports available</th>
-						</tr>
-						</thead>
-						<tbody>
-							<tr th:each="sport : ${sports}">
-								<td class="col-sm-2" th:text="${sport}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="col-sm-6">
-				<div class="facilities-table">
-					<table class="table">
-						<thead>
-						<tr>
-							<th class="text-left">Environments</th>
-						</tr>
-						</thead>
-						<tbody>
-							<tr th:each="environment : ${environments}">
-								<td class="col-sm-2" th:text="${environment}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="col-sm-6">
-				<div class="facilities-table">
-					<table class="table">
-						<thead>
-						<tr>
-							<th class="text-left">Surfaces</th>
-						</tr>
-						</thead>
-						<tbody>
-							<tr th:each="surface : ${surfaces}">
-								<td class="col-sm-2" th:text="${surface}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4">
-			<div class="col-sm-12">
-				<img class="location-gallery" th:src="@{/locationImage(locationId=${location.id})}"/>
-			</div>
-			<div class="col-sm-12" align="center">
-				<span th:text="|${location.addressLine1},  ${location.addressLine2},  ${location.city}, ${location.county}, ${location.postCode}|"></span>
-				<br></br>
-				<span th:text="|${location.email}|"></span>
-				<br></br>
-				<span th:text="|${location.telephone}|"></span>
-			</div>
-		</div>
 		<div class="col-lg-4 requirements-form" align="center">
-		<form method="post" th:action="@{location}" th:object="${venueForm}">
+		<form method="post" th:action="@{/checkBooking}" th:object="${venueForm}">
 		<input type="hidden" th:value="locationId" th:field="*{locationId}"/>
 		<input type="hidden" th:value="name" th:field="*{searchedName}"/>
 		<input type="hidden" th:value="sport" th:field="*{searchedSport}"/>
-		<h4>Book this venue</h4>
+		<h4>Search again</h4>
 		<br></br>
 			<div class="col-lg-12">
 				<div class="form-group col-lg-offset-1 col-lg-10">

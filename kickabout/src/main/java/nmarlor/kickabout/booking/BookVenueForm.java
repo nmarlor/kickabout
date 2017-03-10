@@ -2,6 +2,9 @@ package nmarlor.kickabout.booking;
 
 public class BookVenueForm 
 {
+	private String searchedName;
+	private String searchedSport;
+	
 	private Long locationId;
 	private String date;
 	private String time;
@@ -51,6 +54,18 @@ public class BookVenueForm
 	}
 	public void setSurface(String surface) {
 		this.surface = surface;
+	}
+	public String getSearchedName() {
+		return searchedName;
+	}
+	public String getSearchedSport() {
+		return searchedSport;
+	}
+	public void setSearchedName(String searchedName) {
+		this.searchedName = searchedName;
+	}
+	public void setSearchedSport(String searchedSport) {
+		this.searchedSport = searchedSport;
 	}
 	
 }

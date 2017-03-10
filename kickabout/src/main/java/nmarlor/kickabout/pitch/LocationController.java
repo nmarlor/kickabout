@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -59,6 +61,9 @@ public class LocationController {
 	
 	@Autowired
 	private SportsService sportsService;
+	
+	@Autowired
+	private CheckBookingValidator checkBookingValidator;
 
 	@RequestMapping(value = "/locations", method = RequestMethod.GET)
 	public ModelAndView Locations() {
@@ -162,8 +167,11 @@ public class LocationController {
 		String to = sdf.format(avaialableTo);
 		
 		venueForm.setLocationId(locationId);
+		venueForm.setSearchedName(name);
+		venueForm.setSearchedSport(sport);
 		
 		mv.addObject("location", location);
+		mv.addObject("locationId", locationId);
 		mv.addObject("sport", sport);
 		mv.addObject("facilities", facilities);
 		mv.addObject("surfaces", surfaces);
@@ -171,6 +179,134 @@ public class LocationController {
 		mv.addObject("from", from);
 		mv.addObject("to", to);
 		mv.addObject("environments", environments);
+		mv.addObject("venueForm", venueForm);
+		return mv;
+	}
+	
+	@RequestMapping(value = "location", method = RequestMethod.POST)
+	public ModelAndView venueCheck(@ModelAttribute("venueForm") BookVenueForm venueForm, BindingResult result, HttpServletRequest request){
+		ModelAndView mv = new ModelAndView("locations/checkBooking");
+		
+		String name = venueForm.getSearchedName();
+		String sport = venueForm.getSearchedSport();
+		
+		PitchLocation location = pitchLocationService.findByName(name);
+		Long locationId = location.getId();
+		
+		Calendar calendar = Calendar.getInstance();
+		String dayOfWeek = getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK));
+		
+		Availability availability = availabilityService.findByLocationAndDay(location, dayOfWeek);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		Date avaialableFrom = availability.getAvailableFrom();
+		String from = sdf.format(avaialableFrom);
+		Date avaialableTo = availability.getAvailableTo();
+		String to = sdf.format(avaialableTo);
+		
+		List<Pitch> pitches = new ArrayList<>();
+		pitches = pitchesService.findPitchesByLocation(location);
+		
+		ArrayList<String> sports = new ArrayList<>();
+		List<Sports> sportsAvailable = new ArrayList<>();
+		
+		for (Pitch pitch : pitches) 
+		{
+			List<Sports> sportsForPitch = sportsService.findAvailableSportsByPitch(pitch);
+			sportsAvailable.addAll(sportsForPitch);
+		}
+		
+		Set<Sports> sortSports = new TreeSet<Sports>(new SortBySportName());
+		sortSports.addAll(sportsAvailable);
+		sportsAvailable.clear();
+		sportsAvailable.addAll(sortSports);
+		
+		for (Sports sportAvailable : sportsAvailable) 
+		{
+			String sportToAdd = sportAvailable.getSport();
+			sports.add(sportToAdd);
+		}
+		
+		checkBookingValidator.validate(venueForm, result);
+		if (result.hasErrors()) 
+		{
+			ModelAndView thisMv = new ModelAndView("/locations/location");
+			
+			ArrayList<String> facilities = new ArrayList<>();
+			List<Facilities> retrievedFacilities = facilitiesService.findFacilitiesForLocation(location);
+
+			for (Facilities retrievedFacility : retrievedFacilities) 
+			{
+				String facility = retrievedFacility.getFacility();
+				facilities.add(facility);
+			}
+			
+			ArrayList<String> surfaces = new ArrayList<>();
+			
+			ArrayList<String> environments = new ArrayList<>();
+			
+			List<Pitch> surfacesForPitches = pitchesService.findPitchesByLocation(location);
+				
+			Set<Pitch> sortSurfaces = new TreeSet<Pitch>(new SortBySurface());
+			sortSurfaces.addAll(surfacesForPitches);
+			surfacesForPitches.clear();
+			surfacesForPitches.addAll(sortSurfaces);
+			
+			for (Pitch pitch : surfacesForPitches) 
+			{
+				String surface = pitch.getSurface();
+				surfaces.add(surface);
+			}
+			
+			List<Pitch> environmentsForPitches = pitchesService.findPitchesByLocation(location);
+			
+			Set<Pitch> sortEnvironemnts = new TreeSet<Pitch>(new SortByEnvironment());
+			sortEnvironemnts.addAll(environmentsForPitches);
+			environmentsForPitches.clear();
+			environmentsForPitches.addAll(sortEnvironemnts);
+			
+			for (Pitch pitch : environmentsForPitches) 
+			{
+				String environment = pitch.getEnvironment();
+				environments.add(environment);
+			}
+			
+			thisMv.addObject("name", name);
+			thisMv.addObject("sport", sport);
+			thisMv.addObject("location", location);
+			thisMv.addObject("locationId", locationId);
+			thisMv.addObject("facilities", facilities);
+			thisMv.addObject("surfaces", surfaces);
+			thisMv.addObject("sports", sports);
+			thisMv.addObject("from", from);
+			thisMv.addObject("to", to);
+			thisMv.addObject("environments", environments);
+			thisMv.addObject("venueForm", venueForm);
+			return thisMv;
+		}
+		
+		mv.addObject("venueForm", venueForm);
+		mv.addObject("name", name);
+		mv.addObject("sport", sport);
+		mv.addObject("location", location);
+		mv.addObject("from", from);
+		mv.addObject("to", to);
+		mv.addObject("sports", sports);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value="/checkBooking", method=RequestMethod.GET)
+	public ModelAndView checkBooking(@ModelAttribute("venueForm") BookVenueForm venueForm)
+	{
+		ModelAndView mv = new ModelAndView("locations/checkBooking");
+		mv.addObject("venueForm", venueForm);
+		return mv;
+	}
+	
+	@RequestMapping(value = "/checkBooking", method = RequestMethod.POST)
+	public ModelAndView checkBooking(@ModelAttribute("venueForm") BookVenueForm venueForm, BindingResult result, HttpServletRequest request){
+		ModelAndView mv = new ModelAndView("locations/checkBooking");
 		mv.addObject("venueForm", venueForm);
 		return mv;
 	}
