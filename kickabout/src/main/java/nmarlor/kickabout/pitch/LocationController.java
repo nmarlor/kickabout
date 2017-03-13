@@ -2,6 +2,7 @@ package nmarlor.kickabout.pitch;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +31,8 @@ import org.springframework.web.servlet.ModelAndView;
 import nmarlor.kickabout.account.Account;
 import nmarlor.kickabout.account.AccountService;
 import nmarlor.kickabout.booking.BookVenueForm;
+import nmarlor.kickabout.booking.Booking;
+import nmarlor.kickabout.booking.BookingService;
 import nmarlor.kickabout.date.DateService;
 
 @Controller
@@ -64,6 +67,9 @@ public class LocationController {
 	
 	@Autowired
 	private CheckBookingValidator checkBookingValidator;
+	
+	@Autowired
+	private BookingService bookingService;
 
 	@RequestMapping(value = "/locations", method = RequestMethod.GET)
 	public ModelAndView Locations() {
@@ -285,6 +291,75 @@ public class LocationController {
 			return thisMv;
 		}
 		
+		List<Pitch> pitchesForLocation = new ArrayList<>();
+		pitchesForLocation = pitchesService.findPitchesByLocation(location);
+					
+		List <Sports> sportsForNameAndPitch = new ArrayList<>();
+
+		for (Pitch pitch : pitchesForLocation)
+		{
+			List <Sports> findSportsForNameAndPitch = sportsService.findSportsByNameAndPitch(sport, pitch);
+			sportsForNameAndPitch.addAll(findSportsForNameAndPitch);
+		}
+					
+		List<Pitch> pitchesForLocationAndSport = new ArrayList<>();
+		
+		for (Sports sportForNameAndPitch : sportsForNameAndPitch) 
+		{
+			Pitch pitchForLocationAndSport = sportForNameAndPitch.getPitch();
+			pitchesForLocationAndSport.add(pitchForLocationAndSport);
+		}
+					
+		String date = venueForm.getDate();
+		String time = venueForm.getTime();
+		String duration = venueForm.getDuration();
+		
+		time = time.substring(0, 5);
+		String ending = ":00";
+		time = time.concat(ending);
+		
+		Integer durationInt = Integer.valueOf(duration);
+		
+		SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+		Date d = null;
+		try {
+			d = df.parse(time);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} 
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(d);
+		cal.add(Calendar.MINUTE, durationInt);
+		String endTime = df.format(cal.getTime());
+		
+		endTime = endTime.concat(ending);
+		
+		java.sql.Date formattedDate = dateService.stringToDate(date);
+		
+		Time formattedTime = dateService.stringToTime(time);
+		Time formattedEndTime = dateService.stringToTime(endTime);
+		
+		List<Pitch> pitchesToRemove = new ArrayList<>();
+		
+		for (Pitch pitch : pitchesForLocationAndSport) 
+		{
+			List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+			for (Booking booking : bookedDates) 
+			{
+				if ( formattedTime.after(booking.getBookedFrom()) && formattedTime.before(booking.getBookedTo()) 
+						|| formattedEndTime.after(booking.getBookedFrom()) && formattedEndTime.before(booking.getBookedTo())) 
+				{
+					pitchesToRemove.add(pitch);
+				}
+			}
+		}
+		
+		if (!pitchesToRemove.isEmpty()) 
+		{
+			pitchesForLocationAndSport.removeAll(pitchesToRemove);
+		}
+					
 		mv.addObject("venueForm", venueForm);
 		mv.addObject("name", name);
 		mv.addObject("sport", sport);

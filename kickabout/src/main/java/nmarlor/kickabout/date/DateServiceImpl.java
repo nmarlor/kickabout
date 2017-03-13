@@ -35,7 +35,7 @@ public class DateServiceImpl implements DateService{
 
 	@Override
 	public Time stringToTime(String time) {
-		DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+		DateFormat formatter = new SimpleDateFormat("kk:mm:ss");
 		Time formattedTime = null;
 		try {
 			java.util.Date toFormat = formatter.parse(time);

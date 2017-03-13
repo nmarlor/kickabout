@@ -15,4 +15,6 @@ public interface SportsService
 	public List<Sports> findSportsByName(String sport);
 	
 	public List<Sports> findAvailableSportsByPitch(Pitch pitch);
+	
+	public List<Sports> findSportsByNameAndPitch(String sport, Pitch pitch);
 }
