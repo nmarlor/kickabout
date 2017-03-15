@@ -194,7 +194,7 @@ public class LocationController {
 		ModelAndView mv = new ModelAndView("locations/checkBooking");
 		
 		String name = venueForm.getSearchedName();
-		String sport = venueForm.getSearchedSport();
+		String sport = venueForm.getSport();
 		
 		PitchLocation location = pitchLocationService.findByName(name);
 		Long locationId = location.getId();
@@ -359,7 +359,9 @@ public class LocationController {
 		{
 			pitchesForLocationAndSport.removeAll(pitchesToRemove);
 		}
-					
+		
+		List<Pitch> availablePitches = pitchesForLocationAndSport;
+		
 		mv.addObject("venueForm", venueForm);
 		mv.addObject("name", name);
 		mv.addObject("sport", sport);
@@ -367,6 +369,10 @@ public class LocationController {
 		mv.addObject("from", from);
 		mv.addObject("to", to);
 		mv.addObject("sports", sports);
+		mv.addObject("time", time);
+		mv.addObject("endTime", endTime);
+		mv.addObject("date", date);
+		mv.addObject("availablePitches", availablePitches);
 		
 		return mv;
 	}
@@ -412,6 +418,16 @@ public class LocationController {
 	        break;
 	    }
 	    return day;
+	}
+	
+	@RequestMapping(value = "/pitchImage", produces = MediaType.IMAGE_JPEG_VALUE) 
+	public ResponseEntity<byte[]> getPitchImage(Long pitchId) throws IOException 
+	{ 
+		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		byte[] imageContent =  pitch.getImage();
+		HttpHeaders headers = new HttpHeaders(); 
+		headers.setContentType(MediaType.IMAGE_JPEG); 
+		return new ResponseEntity<byte[]>(imageContent, headers, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/locationImage", produces = MediaType.IMAGE_JPEG_VALUE) 

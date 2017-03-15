@@ -26,6 +26,16 @@ body {
     margin-left: 2cm;
 }
 
+.search-again-form{
+    background: #f4f7f8;
+    margin: 19px auto;
+    padding: 25px;
+    background: #18BC9C;
+    border-radius: 10px;
+    width: 26%;
+    margin-left: 1cm;
+}
+
 .glyphicon.glyphicon-pencil{
     font-size: 30px;
 }
@@ -84,6 +94,12 @@ body {
 	display: block;
 	overflow-y: auto;
 	height:500px;
+}
+
+.pitches-scroll {
+	display: block;
+	overflow-y: auto;
+	height:400px;
 }
 
 .location-buttons {
@@ -157,6 +173,14 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     margin-bottom: 35px;
+}
+
+.pitches-gallery {
+	position: relative;
+	width: 95%;
+	height: 173px;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .input-form-error {

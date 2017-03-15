@@ -30,10 +30,10 @@
 	  <script>
 	  $( function() {
 	  $('#timepicker').timepicker({
-	    timeFormat: 'h:mm p',
+	    timeFormat: 'HH:mm',
 	    interval: 15,
 	    minTime: '12',
-	    maxTime: '11:00pm',
+	    maxTime: '23:00',
 	    startTime: '12:00',
 	    dynamic: false,
 	    dropdown: true,
@@ -50,10 +50,14 @@
 			<span class="header-pitches" th:text="|${location.name}|"></span>
 			</h2>
 			<br></br>
-			<span th:text="|Open today ${from} - ${to}|"></span>
+			<span th:text="|Bookings available for ${sport} for your time and date|"></span>
+			<br></br>
+			<span th:text="|Book now to avoid disappointment!|"></span>
+			<br></br><br></br>
 		</div>
-		<div class="col-lg-4 requirements-form" align="center">
-		<form method="post" th:action="@{/checkBooking}" th:object="${venueForm}">
+		
+		<div class="col-lg-4 search-again-form" align="center">
+		<form method="post" th:action="@{location}" th:object="${venueForm}">
 		<input type="hidden" th:value="locationId" th:field="*{locationId}"/>
 		<input type="hidden" th:value="name" th:field="*{searchedName}"/>
 		<input type="hidden" th:value="sport" th:field="*{searchedSport}"/>
@@ -105,6 +109,34 @@
 			</div>
 		</form>
 		</div>
+		
+		<div class="col-lg-8">
+		<br></br>
+		<div class="col-sm-12">
+			<div class="pitches-scroll">
+				<table class="table">
+					<tbody>
+						<tr th:each="pitch : ${availablePitches}">
+							<td class="col-sm-4"> 
+								<img class="pitches-gallery" style="vertical-align:middle" th:src="@{/pitchImage(pitchId=${pitch.id})}"/>
+							</td>
+							<td class="col-sm-1 text-center" style="vertical-align:middle" th:text="|Pitch ${pitch.pitchNumber}|"> </td>
+							<td class="col-sm-2 text-center" style="vertical-align:middle"> <span th:text="|${date}|" style="float: left; width: 100%;"></span><span th:text="|${time} - ${endTime}|"></span></td>
+							<td class="col-sm-2 text-center" style="vertical-align:middle"> <span th:text="${pitch.environment}" style="float: left; width: 100%;"></span><span th:text="${pitch.surface}"></span>
+							</td>
+							<td class="col-sm-1 text-center" style="vertical-align:middle" th:text="|&pound; ${pitch.cost}|"> </td>
+							<td class="col-sm-2 text-center" style="vertical-align:middle">
+								<span class="btn-group">
+				  					<a class="btn btn-success bookPitchBtn">Book now</a>
+				  				</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		</div>
+		
 	</div>
 </body>
 </html>
