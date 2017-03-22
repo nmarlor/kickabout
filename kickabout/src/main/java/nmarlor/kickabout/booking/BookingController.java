@@ -63,6 +63,9 @@ public class BookingController {
 	@Autowired
 	private ImportBookingValidator importBookingValidator;
 	
+	@Autowired
+	private BookingVenueFormValidator venueFormValidator;
+	
 	@RequestMapping(value = "booking/newBooking", method = RequestMethod.GET)
 	public ModelAndView viewNewBooking(Long pitchId, String date){
 		ModelAndView result = new ModelAndView("booking/newBooking");
@@ -188,6 +191,86 @@ public class BookingController {
 		ModelAndView successMv = new ModelAndView("booking/bookingSuccessful");
 		return successMv;
 	}
+	
+	
+	@RequestMapping(value = "booking/makeBooking", method = RequestMethod.POST)
+	public ModelAndView makeBooking(@ModelAttribute("venueForm") BookVenueForm venueForm, Principal principal, BindingResult result, HttpServletRequest request){
+		ModelAndView mv = new ModelAndView("booking/makeBooking");
+		
+		String date = venueForm.getDate();
+		Pitch pitch = pitchesService.retrievePitch(venueForm.getPitchId());
+		String sport = venueForm.getSport();
+		String time = venueForm.getTime();
+		String endTime = venueForm.getEndTime();
+		
+		venueFormValidator.validate(venueForm, result);
+		if (result.hasErrors()) 
+		{
+			mv.addObject("errors", result);
+			
+			mv.addObject("venueForm", venueForm);
+			mv.addObject("date", date);
+			mv.addObject("pitch", pitch);
+			mv.addObject("sport", sport);
+			mv.addObject("time", time);
+			mv.addObject("endTime", endTime);
+			
+			return mv;
+		}
+		
+		String name = venueForm.getName();
+		String email = venueForm.getEmail();
+		
+		Date formattedDate = dateService.stringToDate(date);
+		Time formattedBookedFrom = dateService.stringToTime(time);
+		Time formattedBookedTo = dateService.stringToTime(endTime);
+		
+		String accountName = principal.getName();
+		Account account = accountRepository.findByEmail(accountName);
+		
+		Booking booking = new Booking();
+		booking.setAccount(account);
+		booking.setPitch(pitch);
+		booking.setBookedFrom(formattedBookedFrom);
+		booking.setBookedTo(formattedBookedTo);
+		booking.setCost(pitch.getCost());
+		booking.setDate(formattedDate);
+		booking.setEmail(email);
+		booking.setName(name);
+		
+		String randomUUID = UUID.randomUUID().toString();
+		String bookingReference = randomUUID.substring(0, 13);
+		
+		booking.setBookingReference(bookingReference);
+		
+		try {
+			bookingService.createBooking(booking);
+		} catch (Exception e) {
+			ModelAndView errorMv = new ModelAndView("booking/bookingError");
+			errorMv.addObject("venueForm", venueForm);
+			errorMv.addObject("date", date);
+			errorMv.addObject("pitch", pitch);
+			errorMv.addObject("sport", sport);
+			errorMv.addObject("time", time);
+			errorMv.addObject("endTime", endTime);
+			
+			return errorMv;
+		}
+		
+		
+		if (account.getRole().equals("ROLE_USER")) 
+		{
+			ModelAndView successMv = new ModelAndView("booking/myBookings");
+			List<Booking> bookings = bookingService.findBookingsForAccount(account);
+			successMv.addObject("bookings", bookings);
+			return successMv;
+		}
+		
+		//TODO - Add logic for preventing an admin from booking from here?
+		ModelAndView successMv = new ModelAndView("booking/bookingSuccessful");
+		return successMv;
+	}
+	
 	
 	@RequestMapping(value = "myBookings", method = RequestMethod.GET)
 	public ModelAndView viewMyBookings(Long accountId){

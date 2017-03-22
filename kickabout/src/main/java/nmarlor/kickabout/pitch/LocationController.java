@@ -1,6 +1,7 @@
 package nmarlor.kickabout.pitch;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -195,6 +196,7 @@ public class LocationController {
 		
 		String name = venueForm.getSearchedName();
 		String sport = venueForm.getSport();
+		String duration = venueForm.getDuration();
 		
 		PitchLocation location = pitchLocationService.findByName(name);
 		Long locationId = location.getId();
@@ -312,7 +314,6 @@ public class LocationController {
 					
 		String date = venueForm.getDate();
 		String time = venueForm.getTime();
-		String duration = venueForm.getDuration();
 		
 		time = time.substring(0, 5);
 		String ending = ":00";
@@ -347,11 +348,21 @@ public class LocationController {
 			List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
 			for (Booking booking : bookedDates) 
 			{
-				if ( formattedTime.after(booking.getBookedFrom()) && formattedTime.before(booking.getBookedTo()) 
+				//TODO - delete once certain it isn't required
+/*				if ( formattedTime.after(booking.getBookedFrom()) && formattedTime.before(booking.getBookedTo()) 
 						|| formattedEndTime.after(booking.getBookedFrom()) && formattedEndTime.before(booking.getBookedTo())) 
 				{
 					pitchesToRemove.add(pitch);
+				}*/
+				
+				if (formattedTime.after(booking.getBookedFrom()) && formattedTime.before(booking.getBookedTo()) 
+						|| formattedTime.equals(booking.getBookedTo()) || formattedTime.equals(booking.getBookedFrom())
+						|| formattedEndTime.after(booking.getBookedFrom()) && formattedEndTime.before(booking.getBookedTo())
+						|| formattedEndTime.equals(booking.getBookedTo()) || formattedEndTime.equals(booking.getBookedFrom()))
+				{
+					pitchesToRemove.add(pitch);
 				}
+				
 			}
 		}
 		
@@ -362,7 +373,11 @@ public class LocationController {
 		
 		List<Pitch> availablePitches = pitchesForLocationAndSport;
 		
+		venueForm.setEndTime(endTime);
+		venueForm.setTime(time);
+		
 		mv.addObject("venueForm", venueForm);
+		mv.addObject("locationId", locationId);
 		mv.addObject("name", name);
 		mv.addObject("sport", sport);
 		mv.addObject("location", location);
@@ -372,13 +387,16 @@ public class LocationController {
 		mv.addObject("time", time);
 		mv.addObject("endTime", endTime);
 		mv.addObject("date", date);
+		mv.addObject("duration", duration);
 		mv.addObject("availablePitches", availablePitches);
+		mv.addObject("formattedTime", formattedTime);
+		mv.addObject("formattedEndTime", formattedEndTime);
 		
 		return mv;
 	}
 	
 	@RequestMapping(value="/checkBooking", method=RequestMethod.GET)
-	public ModelAndView checkBooking(@ModelAttribute("venueForm") BookVenueForm venueForm)
+	public ModelAndView checkBooking(BookVenueForm venueForm, Long id)
 	{
 		ModelAndView mv = new ModelAndView("locations/checkBooking");
 		mv.addObject("venueForm", venueForm);
@@ -387,8 +405,20 @@ public class LocationController {
 	
 	@RequestMapping(value = "/checkBooking", method = RequestMethod.POST)
 	public ModelAndView checkBooking(@ModelAttribute("venueForm") BookVenueForm venueForm, BindingResult result, HttpServletRequest request){
-		ModelAndView mv = new ModelAndView("locations/checkBooking");
+		ModelAndView mv = new ModelAndView("booking/makeBooking");
+		
+		String date = venueForm.getDate();
+		Pitch pitch = pitchesService.retrievePitch(venueForm.getPitchId());
+		String sport = venueForm.getSport();
+		String time = venueForm.getTime();
+		String endTime = venueForm.getEndTime();
+		
 		mv.addObject("venueForm", venueForm);
+		mv.addObject("date", date);
+		mv.addObject("pitch", pitch);
+		mv.addObject("sport", sport);
+		mv.addObject("time", time);
+		mv.addObject("endTime", endTime);
 		return mv;
 	}
 	
@@ -438,6 +468,37 @@ public class LocationController {
 		HttpHeaders headers = new HttpHeaders(); 
 		headers.setContentType(MediaType.IMAGE_JPEG); 
 		return new ResponseEntity<byte[]>(imageContent, headers, HttpStatus.OK);
+	}
+	
+	// TODO - May need to use this logic for finding the cost of a sport for a duration of time, for pitch
+	@RequestMapping(value = "/pitchCost") 
+	public BigDecimal getPitchCost(Long pitchId, String sport, String duration)
+	{ 
+		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		
+		//get sport by sport and pitch
+		Sports retrievedSport = sportsService.findSportByNameAndPitch(sport, pitch);
+		
+		// get price for sport by duration
+		if (duration.equals("45")) 
+		{
+			BigDecimal cost = retrievedSport.getCostPerFourtyFive();
+			return cost;
+		}
+		// get price for sport by duration
+		if (duration.equals("60")) 
+		{
+			BigDecimal cost = retrievedSport.getCostPerSixty();
+			return cost;
+		}
+		// get price for sport by duration
+		if (duration.equals("90")) 
+		{
+			BigDecimal cost = retrievedSport.getCostPerNinety();
+			return cost;
+		}
+		
+		return null;
 	}
 	
 	@RequestMapping(value = "pitchesForAdminLocation", method=RequestMethod.GET)

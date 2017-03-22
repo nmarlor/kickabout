@@ -113,6 +113,14 @@
 		<div class="col-lg-8">
 		<br></br>
 		<div class="col-sm-12">
+			<form method="post" th:action="@{/checkBooking}" th:object="${venueForm}">
+			<input type="hidden" th:value="locationId" th:field="*{locationId}"/>
+			<input type="hidden" th:value="sport" th:field="*{sport}"/>
+			<input type="hidden" th:value="date" th:field="*{date}"/>
+			<input type="hidden" th:value="formattedTime" th:field="*{formattedTime}"/>
+			<input type="hidden" th:value="formattedEndTime" th:field="*{formattedEndTime}"/>
+			<input type="hidden" th:value="time" th:field="*{time}"/>
+			<input type="hidden" th:value="endTime" th:field="*{endTime}"/>
 			<div class="pitches-scroll">
 				<table class="table">
 					<tbody>
@@ -120,23 +128,29 @@
 							<td class="col-sm-4"> 
 								<img class="pitches-gallery" style="vertical-align:middle" th:src="@{/pitchImage(pitchId=${pitch.id})}"/>
 							</td>
-							<td class="col-sm-1 text-center" style="vertical-align:middle" th:text="|Pitch ${pitch.pitchNumber}|"> </td>
+							<td class="col-sm-1 text-center" style="vertical-align:middle" th:text="|Pitch ${pitch.pitchNumber}|"></td>
 							<td class="col-sm-2 text-center" style="vertical-align:middle"> <span th:text="|${date}|" style="float: left; width: 100%;"></span><span th:text="|${time} - ${endTime}|"></span></td>
 							<td class="col-sm-2 text-center" style="vertical-align:middle"> <span th:text="${pitch.environment}" style="float: left; width: 100%;"></span><span th:text="${pitch.surface}"></span>
 							</td>
 							<td class="col-sm-1 text-center" style="vertical-align:middle" th:text="|&pound; ${pitch.cost}|"> </td>
 							<td class="col-sm-2 text-center" style="vertical-align:middle">
 								<span class="btn-group">
-				  					<a class="btn btn-success bookPitchBtn">Book now</a>
+								
+									<button type="submit" class="btn btn-success" name="pitchId" th:value="${pitch.id}" th:field="*{pitchId}">Book now</button>
+									
+									<!-- <input class="btn btn-success" type="submit" value="Book Now" name="pitchId" th:value="${pitch.id}" th:field="*{pitchId}"/> -->
+									<!-- <a class="btn btn-success bookPitchBtn" th:id="${pitch.id}" th:form="${venueForm}">Book now</a> -->
+				  					<!-- <a class="btn btn-success pitchInfoBtn" th:href="@{/checkBooking(pitchNumber=${pitch.pitchNumber})}">Book now</a> -->
+				  					
 				  				</span>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
+			</form>
 		</div>
 		</div>
-		
 	</div>
 </body>
 </html>

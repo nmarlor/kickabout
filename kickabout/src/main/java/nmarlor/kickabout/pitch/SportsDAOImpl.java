@@ -43,4 +43,13 @@ public class SportsDAOImpl extends HibernateJPABase<Sports, Long> implements Spo
 		return super.search(search);
 	}
 
+	@Override
+	public Sports findSportByNameAndPitch(String sport, Pitch pitch) {
+		Search search = new Search(Sports.class);
+		search.addFilterEqual("sport", sport);
+		search.addFilterEqual("pitch", pitch);
+		search.addFilterEqual("available", true);
+		return super.searchUnique(search);
+	}
+
 }

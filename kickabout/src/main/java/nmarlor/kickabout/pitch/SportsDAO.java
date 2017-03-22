@@ -13,4 +13,6 @@ public interface SportsDAO extends GenericDAO<Sports, Long>
 	List<Sports> findAvailableSportsByPitch(Pitch pitch);
 	
 	List<Sports> findSportsByNameAndPitch(String sport, Pitch pitch);
+	
+	Sports findSportByNameAndPitch(String sport, Pitch pitch);
 }

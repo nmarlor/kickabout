@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kickabout</title>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+	<div th:replace="fragments/header">Header</div>
+	<div class="jumbotron default">
+		<div class="col-sm-offset-1 col-sm-10" align="center">
+			<h2>
+			<span class="header-pitches">Make Booking</span>
+			</h2>
+		</div>
+		
+		<form method="post" th:action="@{/booking/makeBooking}" th:object="${venueForm}">
+				
+				<input type="hidden" th:value="${pitch.id}" th:field="*{pitchId}"/>
+				<input type="hidden" th:value="sport" th:field="*{sport}"/>
+				<input type="hidden" th:value="date" th:field="*{date}"/>
+				<input type="hidden" th:value="time" th:field="*{time}"/>
+				<input type="hidden" th:value="endTime" th:field="*{endTime}"/>
+				
+				<div class="col-sm-12">
+				
+				<div class="col-sm-3 booking-info-form" align="center">
+					<h4>Pitch Details</h4>
+					<br></br>
+					<img class="pitches-gallery" style="vertical-align:middle" th:src="@{/pitchImage(pitchId=${pitch.id})}"/>
+					<br></br><br></br>
+					<p th:text="|Location - ${pitch.pitchLocation.name}|"></p>
+					<p th:text="|Pitch Number - ${pitch.pitchNumber}|"></p>
+					<p th:text="|Environment - ${pitch.environment}|"></p>
+					<p th:text="|Surface - ${pitch.surface}|"></p>
+				</div>
+				
+				<div class="col-sm-3 booking-info-form" align="center">
+					<h4>Booking info</h4>
+					<br></br>
+					<p th:text="|Sport - ${sport}|"></p>
+					<p th:text="|Date - ${date}|"></p>
+					<p th:text="|Time - ${time}-${endTime}|"></p>
+					<p th:text="|Cost - &pound;${pitch.cost}|"></p>
+				</div>
+				
+				<div class="col-sm-6 enter-info-form">
+					<h4 align="center">Enter details</h4>
+					<div class="col-sm-12">
+						<br></br>
+						<div class="input-group form-group">
+							<span class="input-group-addon"><i class="fa fa-user"></i></span>
+							<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" placeholder="Enter Name..." th:field="*{name}"/>
+						</div>
+					</div>
+					
+					<div class="col-sm-12">
+						<div class="input-group form-group">
+							<span class="input-group-addon"><i class="fa fa-envelope-square"></i></span>
+							<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" placeholder="Enter Email..." th:field="*{email}"/>
+						</div>
+					</div>
+					
+					<div class="col-sm-12">
+						<div class="col-sm-3">
+							Pay by cash <input type="radio"/>
+						</div>
+						<div class="col-sm-3">
+							Pay by card <input type="radio"/>
+						</div>
+					</div>
+					
+					<div class="col-sm-offset-9 col-sm-3">
+						<br></br>
+						<input type="submit" value="Book" class="btn btn-block btn-success create-button" onclick="window.location.href=BookingSuccessful.html" />
+					</div>
+				</div>
+				
+				</div>
+				
+		</form>
+	
+	</div>
+
+</body>
+</html>

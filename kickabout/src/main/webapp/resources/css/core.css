@@ -36,6 +36,28 @@ body {
     margin-left: 1cm;
 }
 
+.booking-info-form{
+    margin: 26px auto;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    width: 25%;
+    margin-left: 1cm;
+    border-style: solid;
+    border-color: #18BC9C;
+}
+
+.enter-info-form{
+    margin: 26px auto;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    width: 40%;
+    margin-left: 1cm;
+    border-style: solid;
+    border-color: #18BC9C;
+}
+
 .glyphicon.glyphicon-pencil{
     font-size: 30px;
 }
@@ -99,7 +121,6 @@ body {
 .pitches-scroll {
 	display: block;
 	overflow-y: auto;
-	height:400px;
 }
 
 .location-buttons {

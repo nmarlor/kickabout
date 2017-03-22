@@ -1,5 +1,8 @@
 package nmarlor.kickabout.booking;
 
+import java.sql.Date;
+import java.sql.Time;
+
 public class BookVenueForm 
 {
 	private String searchedName;
@@ -8,10 +11,20 @@ public class BookVenueForm
 	private Long locationId;
 	private String date;
 	private String time;
+	private String endTime;
 	private String duration;
 	private String sport;
 	private String environment;
 	private String surface;
+	
+	private Long pitchId;
+	private Date bookingDate;
+	
+	private Time formattedTime;
+	private Time formattedEndTime;
+	
+	private String name;
+	private String email;
 	
 	public Long getLocationId() {
 		return locationId;
@@ -66,6 +79,48 @@ public class BookVenueForm
 	}
 	public void setSearchedSport(String searchedSport) {
 		this.searchedSport = searchedSport;
+	}
+	public Long getPitchId() {
+		return pitchId;
+	}
+	public void setPitchId(Long pitchId) {
+		this.pitchId = pitchId;
+	}
+	public Date getBookingDate() {
+		return bookingDate;
+	}
+	public void setBookingDate(Date bookingDate) {
+		this.bookingDate = bookingDate;
+	}
+	public Time getFormattedTime() {
+		return formattedTime;
+	}
+	public Time getFormattedEndTime() {
+		return formattedEndTime;
+	}
+	public void setFormattedTime(Time formattedTime) {
+		this.formattedTime = formattedTime;
+	}
+	public void setFormattedEndTime(Time formattedEndTime) {
+		this.formattedEndTime = formattedEndTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	public String getName() {
+		return name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }
