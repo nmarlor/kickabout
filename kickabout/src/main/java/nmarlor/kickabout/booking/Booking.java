@@ -58,6 +58,9 @@ public class Booking {
 	
 	@Column(name = "booking_reference", unique=true)
 	private String bookingReference;
+	
+	@Column
+	private String sport;
 
 	public Long getId() {
 		return id;
@@ -133,6 +136,14 @@ public class Booking {
 
 	public void setBookingReference(String bookingReference) {
 		this.bookingReference = bookingReference;
+	}
+
+	public String getSport() {
+		return sport;
+	}
+
+	public void setSport(String sport) {
+		this.sport = sport;
 	}
 
 }

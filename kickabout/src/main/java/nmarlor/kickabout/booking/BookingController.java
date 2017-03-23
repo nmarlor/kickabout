@@ -9,6 +9,7 @@ import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -237,6 +238,7 @@ public class BookingController {
 		booking.setDate(formattedDate);
 		booking.setEmail(email);
 		booking.setName(name);
+		booking.setSport(sport);
 		
 		String randomUUID = UUID.randomUUID().toString();
 		String bookingReference = randomUUID.substring(0, 13);
@@ -284,6 +286,8 @@ public class BookingController {
 			emptyBookingMv.addObject("bookings", bookings);
 			return emptyBookingMv;
 		}
+
+		Collections.sort(bookings, new SortByBookingDateAndTime());
 		
 		mv.addObject("bookings", bookings);
 		return mv;

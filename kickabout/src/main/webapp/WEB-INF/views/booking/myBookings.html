@@ -18,30 +18,32 @@
 						<table class="table">
 							<thead>
 								<tr>
+									<th class="col-sm-2 text-center">Sport</th>
 									<th class="col-sm-2 text-center">Location</th>
 									<th class="col-sm-1"></th>
-									<th class="col-sm-2 text-center">Date</th>
+									<th class="col-sm-1 text-center">Date</th>
 									<th class="col-sm-2 text-center">Time</th>
 									<th class="col-sm-2 text-center">Reference</th>
-									<th class="col-sm-2 text-center">Cost</th>
+									<th class="col-sm-1 text-center">Cost</th>
 									<th class="col-sm-1"></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="booking : ${bookings}">
+									<td class="col-sm-2 text-center" th:text="${booking.sport}"> </td>
 									<td class="col-sm-2 text-center" th:text="|${booking.pitch.pitchLocation.name} Pitch ${booking.pitch.pitchNumber}|"></td>
 									<td class="col-xs-1 text-center">
 										<span class="btn-group btn-group-xs">
 											<a class="btn btn-info pitchInfoBtn" th:id="${booking.id}" data-toggle="modal" data-target="#pitchInfoModal"><i class="glyphicon glyphicon-info-sign"></i></a>
 								  		</span>
 									</td>
-									<td class="col-sm-2 text-center" th:text="${booking.date}"> </td>
+									<td class="col-sm-1 text-center" th:text="${booking.date}"> </td>
 									<td class="col-sm-2 text-center" th:text="|${booking.bookedFrom} - ${booking.bookedTo}|"></td>
 									<td class="col-sm-2 text-center" th:text="${booking.bookingReference}"></td>
-									<td class="col-sm-2 text-center" th:text="${booking.cost}"></td>
+									<td class="col-sm-1 text-center" th:text="|&pound;${booking.cost}|"></td>
 									<td class="col-sm-1 text-center">
 										<span class="btn-group">
-						  					<a class="btn btn-danger cancelBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#cancelBookingModal">Cancel Booking</a>
+						  					<a class="btn btn-danger cancelBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#cancelBookingModal">Cancel</a>
 						  				</span>
 									</td>
 								</tr>
