@@ -264,6 +264,7 @@ public class BookingController {
 		{
 			ModelAndView successMv = new ModelAndView("booking/myBookings");
 			List<Booking> bookings = bookingService.findBookingsForAccount(account);
+			Collections.sort(bookings, new SortByBookingDateAndTime());
 			successMv.addObject("bookings", bookings);
 			return successMv;
 		}

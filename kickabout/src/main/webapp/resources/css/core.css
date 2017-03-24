@@ -41,7 +41,6 @@ body {
     padding: 20px;
     background: #f5f5f5;
     border-radius: 10px;
-    width: 25%;
     margin-left: 1cm;
     border-style: solid;
     border-color: #18BC9C;
@@ -54,8 +53,6 @@ body {
     border-radius: 10px;
     width: 40%;
     margin-left: 1cm;
-    border-style: solid;
-    border-color: #18BC9C;
 }
 
 .glyphicon.glyphicon-pencil{
@@ -200,6 +197,14 @@ body {
 	position: relative;
 	width: 95%;
 	height: 173px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.pitches-large-gallery {
+	position: relative;
+	width: 100%;
+	height: 520px;
     background-repeat: no-repeat;
     background-size: cover;
 }

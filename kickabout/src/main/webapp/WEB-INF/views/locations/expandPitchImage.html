@@ -1,0 +1,26 @@
+<form th:action="@{expandPitchImage}" method="get">
+
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close" disabled="disabled"><span data-dismiss="modal" aria-hidden="true">&times;</span></button>
+		        <h4 class="inline-block modal-title" id="myModalLabel" th:text="|${pitch.pitchLocation.name} Pitch ${pitch.pitchNumber}|"></h4>
+		        
+			</div>
+			<div class="modal-body" id="">
+ 				<div class="form-group row">
+					<div class="col-sm-12">
+						<img class="pitches-large-gallery" style="vertical-align:middle" th:src="@{/pitchImage(pitchId=${pitch.id})}"/>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+		    	<h4 class="inline-block no-margin confirmationMessage"></h4>
+		    	<div class="pull-right">
+		    		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		        </div>
+	        </div>
+		</div>
+	</div>
+	
+</form>

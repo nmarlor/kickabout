@@ -126,7 +126,7 @@
 					<tbody>
 						<tr th:each="pitch : ${availablePitches}">
 							<td class="col-sm-4"> 
-								<img class="pitches-gallery" style="vertical-align:middle" th:src="@{/pitchImage(pitchId=${pitch.id})}"/>
+								<img class="btn pitches-gallery pitchImageBtn" th:id="${pitch.id}" data-toggle="modal" data-target="#pitchImageModal" style="vertical-align:middle" th:src="@{/pitchImage(pitchId=${pitch.id})}"/>
 							</td>
 							<td class="col-sm-1 text-center" style="vertical-align:middle" th:text="|Pitch ${pitch.pitchNumber}|"></td>
 							<td class="col-sm-2 text-center" style="vertical-align:middle"> <span th:text="|${date}|" style="float: left; width: 100%;"></span><span th:text="|${time} - ${endTime}|"></span></td>
@@ -135,13 +135,7 @@
 							<td class="col-sm-1 text-center" style="vertical-align:middle" th:text="|&pound; ${pitch.cost}|"> </td>
 							<td class="col-sm-2 text-center" style="vertical-align:middle">
 								<span class="btn-group">
-								
 									<button type="submit" class="btn btn-success" name="pitchId" th:value="${pitch.id}" th:field="*{pitchId}">Book now</button>
-									
-									<!-- <input class="btn btn-success" type="submit" value="Book Now" name="pitchId" th:value="${pitch.id}" th:field="*{pitchId}"/> -->
-									<!-- <a class="btn btn-success bookPitchBtn" th:id="${pitch.id}" th:form="${venueForm}">Book now</a> -->
-				  					<!-- <a class="btn btn-success pitchInfoBtn" th:href="@{/checkBooking(pitchNumber=${pitch.pitchNumber})}">Book now</a> -->
-				  					
 				  				</span>
 							</td>
 						</tr>
@@ -152,5 +146,24 @@
 		</div>
 		</div>
 	</div>
+	
+	<div id="pitchImageModal" class="pitchImageModal modal fade" tabindex="-1" role="dialog" aria-labelledby="pitchImageModal">
+		<div class="replaceable">
+		</div>
+	</div>
+	
+	<script>
+		$(".pitchImageBtn").click(function(){
+			var bookingId = $(this).attr("id");
+			$.ajax({
+			 	url: base_url + "expandPitchImage",
+			 	data: {id : bookingId},
+			 	success: function(result){
+			 		$(".replaceable").html(result);
+			 	}
+			});
+		});
+	</script>
+	
 </body>
 </html>

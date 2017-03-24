@@ -470,6 +470,18 @@ public class LocationController {
 		return new ResponseEntity<byte[]>(imageContent, headers, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "expandPitchImage", method = RequestMethod.GET)
+	public ModelAndView expandPitchImage(Long id){
+		ModelAndView mv = new ModelAndView("locations/expandPitchImage");
+		
+		Long pitchId = id;
+		Pitch pitch = pitchesService.retrievePitch(pitchId);
+		
+		mv.addObject("pitchId", pitchId);
+		mv.addObject("pitch", pitch);
+		return mv;
+	}
+	
 	// TODO - May need to use this logic for finding the cost of a sport for a duration of time, for pitch
 	@RequestMapping(value = "/pitchCost") 
 	public BigDecimal getPitchCost(Long pitchId, String sport, String duration)

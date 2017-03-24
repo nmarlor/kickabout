@@ -46,9 +46,9 @@
 					<p th:text="|Cost - &pound;${pitch.cost}|"></p>
 				</div>
 				
-				<div class="col-sm-6 enter-info-form">
+				<div class="col-sm-5 enter-info-form">
 					<h4 align="center">Enter details</h4>
-					<div class="col-sm-12">
+					<div class="col-sm-offset-1 col-sm-10">
 						<br></br>
 						<div class="input-group form-group">
 							<span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -56,23 +56,23 @@
 						</div>
 					</div>
 					
-					<div class="col-sm-12">
+					<div class="col-sm-offset-1 col-sm-10">
 						<div class="input-group form-group">
 							<span class="input-group-addon"><i class="fa fa-envelope-square"></i></span>
 							<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" placeholder="Enter Email..." th:field="*{email}"/>
 						</div>
 					</div>
 					
-					<div class="col-sm-12">
-						<div class="col-sm-3">
+					<div class="col-sm-offset-1 col-sm-10">
+						<div class="col-sm-4">
 							Pay by cash <input type="radio"/>
 						</div>
-						<div class="col-sm-3">
+						<div class="col-sm-4">
 							Pay by card <input type="radio"/>
 						</div>
 					</div>
 					
-					<div class="col-sm-offset-9 col-sm-3">
+					<div class="col-sm-offset-8 col-sm-3">
 						<br></br>
 						<input type="submit" value="Book" class="btn btn-block btn-success create-button" onclick="window.location.href=BookingSuccessful.html" />
 					</div>
