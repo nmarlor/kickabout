@@ -132,7 +132,7 @@
 							<td class="col-sm-2 text-center" style="vertical-align:middle"> <span th:text="|${date}|" style="float: left; width: 100%;"></span><span th:text="|${time} - ${endTime}|"></span></td>
 							<td class="col-sm-2 text-center" style="vertical-align:middle"> <span th:text="${pitch.environment}" style="float: left; width: 100%;"></span><span th:text="${pitch.surface}"></span>
 							</td>
-							<td class="col-sm-1 text-center" style="vertical-align:middle" th:text="|&pound; ${pitch.cost}|"> </td>
+							<td class="col-sm-1 text-center" style="vertical-align:middle" th:text="|&pound;${pitch.cost}|"> </td>
 							<td class="col-sm-2 text-center" style="vertical-align:middle">
 								<span class="btn-group">
 									<button type="submit" class="btn btn-success" name="pitchId" th:value="${pitch.id}" th:field="*{pitchId}">Book now</button>

@@ -193,7 +193,6 @@ public class BookingController {
 		return successMv;
 	}
 	
-	
 	@RequestMapping(value = "booking/makeBooking", method = RequestMethod.POST)
 	public ModelAndView makeBooking(@ModelAttribute("venueForm") BookVenueForm venueForm, Principal principal, BindingResult result, HttpServletRequest request){
 		ModelAndView mv = new ModelAndView("booking/makeBooking");
