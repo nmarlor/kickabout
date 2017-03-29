@@ -50,13 +50,13 @@
 			<span class="header-pitches" th:text="|${location.name}|"></span>
 			</h2>
 			<br></br>
-			<span th:text="|Bookings available for ${sport} for your time and date|"></span>
+			<span th:text="|No bookings available for ${date} at the time of ${time} - ${endTime}|"></span>
 			<br></br>
-			<span th:text="|Book now to avoid disappointment!|"></span>
+			<span th:text="|Please see some alternative sugestions below, or search again...|"></span>
 			<br></br><br></br>
 		</div>
-		
-		<div class="col-lg-4 search-again-form" align="center">
+	
+			<div class="col-lg-4 search-again-form" align="center">
 		<form method="post" th:action="@{location}" th:object="${venueForm}">
 		<input type="hidden" th:value="locationId" th:field="*{locationId}"/>
 		<input type="hidden" th:value="name" th:field="*{searchedName}"/>
@@ -116,20 +116,23 @@
 			<form method="post" th:action="@{/checkBooking}" th:object="${venueForm}">
 			<input type="hidden" th:value="locationId" th:field="*{locationId}"/>
 			<input type="hidden" th:value="sport" th:field="*{sport}"/>
-			<input type="hidden" th:value="date" th:field="*{date}"/>
+			<input type="hidden" th:value="calendarDate" th:field="*{date}"/>
 			<input type="hidden" th:value="formattedTime" th:field="*{formattedTime}"/>
 			<input type="hidden" th:value="formattedEndTime" th:field="*{formattedEndTime}"/>
 			<input type="hidden" th:value="time" th:field="*{time}"/>
 			<input type="hidden" th:value="endTime" th:field="*{endTime}"/>
 			<div class="pitches-scroll">
+				<h5>
+					<span th:text="|Next available date for time - ${calendarDate}|"></span>
+				</h5>
 				<table class="table">
 					<tbody>
-						<tr th:each="pitch : ${availablePitches}">
+						<tr th:each="pitch : ${suggestedPitches}">
 							<td class="col-sm-4"> 
 								<img class="btn pitches-gallery pitchImageBtn" th:id="${pitch.id}" data-toggle="modal" data-target="#pitchImageModal" style="vertical-align:middle" th:src="@{/pitchImage(pitchId=${pitch.id})}"/>
 							</td>
 							<td class="col-sm-1 text-center" style="vertical-align:middle" th:text="|Pitch ${pitch.pitchNumber}|"></td>
-							<td class="col-sm-2 text-center" style="vertical-align:middle"> <span th:text="|${date}|" style="float: left; width: 100%;"></span><span th:text="|${time} - ${endTime}|"></span></td>
+							<td class="col-sm-2 text-center" style="vertical-align:middle"> <span th:text="|${calendarDate}|" style="float: left; width: 100%;"></span><span th:text="|${time} - ${endTime}|"></span></td>
 							<td class="col-sm-2 text-center" style="vertical-align:middle"> <span th:text="${pitch.environment}" style="float: left; width: 100%;"></span><span th:text="${pitch.surface}"></span>
 							</td>
 								<!-- <td class="col-sm-1 text-center"> -->
@@ -168,6 +171,6 @@
 			});
 		});
 	</script>
-	
+		
 </body>
 </html>

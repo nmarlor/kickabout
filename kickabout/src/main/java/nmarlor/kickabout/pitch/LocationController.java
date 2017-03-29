@@ -348,13 +348,6 @@ public class LocationController {
 			List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
 			for (Booking booking : bookedDates) 
 			{
-				//TODO - delete once certain it isn't required
-/*				if ( formattedTime.after(booking.getBookedFrom()) && formattedTime.before(booking.getBookedTo()) 
-						|| formattedEndTime.after(booking.getBookedFrom()) && formattedEndTime.before(booking.getBookedTo())) 
-				{
-					pitchesToRemove.add(pitch);
-				}*/
-				
 				if (formattedTime.after(booking.getBookedFrom()) && formattedTime.before(booking.getBookedTo()) 
 						|| formattedTime.equals(booking.getBookedTo()) || formattedTime.equals(booking.getBookedFrom())
 						|| formattedEndTime.after(booking.getBookedFrom()) && formattedEndTime.before(booking.getBookedTo())
@@ -376,6 +369,58 @@ public class LocationController {
 		venueForm.setEndTime(endTime);
 		venueForm.setTime(time);
 		
+		//TODO IF there are no available pitches, need to suggest other times/ dates to user
+		if (availablePitches.isEmpty()) 
+		{
+			ModelAndView suggestionMv = new ModelAndView("locations/bookingSuggestions");
+			
+			//TODO - decrement by an hour until available pitches are found for the duration on the date... make sure after the the current time & opening time
+			
+			//TODO - increment by an hour until available pitches are found for the duration on the date... make sure after the the current time & before closing time
+			
+			//find the next date available for available pitches for the time requested
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
+			
+			Calendar c = Calendar.getInstance(); 
+			c.setTime(formattedDate); 
+			c.add(Calendar.DATE, 1);
+			String calendarDate = dateFormat.format(c.getTime());
+			
+			java.sql.Date suggestedFormattedDate = dateService.stringToDate(calendarDate);
+			
+			List<Pitch> suggestedPitches = suggestedPitches(location, sport, formattedTime, formattedEndTime, suggestedFormattedDate);
+			
+			while (suggestedPitches.isEmpty()) 
+			{
+				c.add(Calendar.DATE, 1);
+				calendarDate = dateFormat.format(c.getTime());
+				java.sql.Date newSuggestedFormattedDate = dateService.stringToDate(calendarDate);
+				
+				suggestedPitches = suggestedPitches(location, sport, formattedTime, formattedEndTime, newSuggestedFormattedDate);
+			}
+			
+			venueForm.setDate(calendarDate);
+			
+			suggestionMv.addObject("venueForm", venueForm);
+			suggestionMv.addObject("locationId", locationId);
+			suggestionMv.addObject("name", name);
+			suggestionMv.addObject("sport", sport);
+			suggestionMv.addObject("location", location);
+			suggestionMv.addObject("from", from);
+			suggestionMv.addObject("to", to);
+			suggestionMv.addObject("sports", sports);
+			suggestionMv.addObject("time", time);
+			suggestionMv.addObject("endTime", endTime);
+			suggestionMv.addObject("calendarDate", calendarDate);
+			suggestionMv.addObject("duration", duration);
+			suggestionMv.addObject("formattedTime", formattedTime);
+			suggestionMv.addObject("formattedEndTime", formattedEndTime);
+			suggestionMv.addObject("suggestedPitches", suggestedPitches);
+			suggestionMv.addObject("date", date);
+			
+			return suggestionMv;
+		}
+		
 		mv.addObject("venueForm", venueForm);
 		mv.addObject("locationId", locationId);
 		mv.addObject("name", name);
@@ -393,6 +438,55 @@ public class LocationController {
 		mv.addObject("formattedEndTime", formattedEndTime);
 		
 		return mv;
+	}
+	
+	private List<Pitch> suggestedPitches(PitchLocation location, String sport, Time formattedTime, Time formattedEndTime, java.sql.Date formattedDate)
+	{
+		List<Pitch> pitchesForLocation = new ArrayList<>();
+		pitchesForLocation = pitchesService.findPitchesByLocation(location);
+					
+		List <Sports> sportsForNameAndPitch = new ArrayList<>();
+
+		for (Pitch pitch : pitchesForLocation)
+		{
+			List <Sports> findSportsForNameAndPitch = sportsService.findSportsByNameAndPitch(sport, pitch);
+			sportsForNameAndPitch.addAll(findSportsForNameAndPitch);
+		}
+					
+		List<Pitch> pitchesForLocationAndSport = new ArrayList<>();
+		
+		for (Sports sportForNameAndPitch : sportsForNameAndPitch) 
+		{
+			Pitch pitchForLocationAndSport = sportForNameAndPitch.getPitch();
+			pitchesForLocationAndSport.add(pitchForLocationAndSport);
+		}
+		
+		List<Pitch> pitchesToRemove = new ArrayList<>();
+		
+		for (Pitch pitch : pitchesForLocationAndSport) 
+		{
+			List<Booking> bookedDates = bookingService.findBookingsByPitchAndDate(pitch, formattedDate);
+			for (Booking booking : bookedDates) 
+			{
+				if (formattedTime.after(booking.getBookedFrom()) && formattedTime.before(booking.getBookedTo()) 
+						|| formattedTime.equals(booking.getBookedTo()) || formattedTime.equals(booking.getBookedFrom())
+						|| formattedEndTime.after(booking.getBookedFrom()) && formattedEndTime.before(booking.getBookedTo())
+						|| formattedEndTime.equals(booking.getBookedTo()) || formattedEndTime.equals(booking.getBookedFrom()))
+				{
+					pitchesToRemove.add(pitch);
+				}
+				
+			}
+		}
+		
+		if (!pitchesToRemove.isEmpty()) 
+		{
+			pitchesForLocationAndSport.removeAll(pitchesToRemove);
+		}
+		
+		List<Pitch> availablePitches = pitchesForLocationAndSport;
+		
+		return availablePitches;
 	}
 	
 	@RequestMapping(value="/checkBooking", method=RequestMethod.GET)
