@@ -8,38 +8,104 @@
 <body>
 	<div th:replace="fragments/newHeader">Header</div>
 	<form method="post" th:action="@{/manageClientAccount}" th:object="${accountForm}">
-	<input type="hidden" th:value="accountId" th:field="*{accountId}"/>
-	
+	<input type="hidden" th:value="accountId" th:field="*{accountId}"/>				
 		<div class="jumbotron default">
 			<div class = "general-header">
 				<h2 class="text-center">My Account</h2>
-				<div class="col-sm-offset-5 col-sm-2">
-		  			<div class="panel-body">
-		  			<div class="text-center">
-		  				<a href="myBookings" th:href="@{myBookings(accountId=${accountId})}">View my bookings</a>
-		  				<a class="btn deleteAccountBtn" th:id="${account.id}" data-toggle="modal" data-target="#deleteAccountModal">Delete my account</a>
-		  			</div>
-		  			<br></br>
-		  				<span>Email address</span>
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>
-		  			<br></br>
-		  				<span>Name</span>
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" th:field="*{name}"/>
-		  			<br></br>
-		  				<span>Telephone number</span>
-		  				<input th:errorclass="input-form-error" type="text" class="form-control" id="telephone-input" th:field="*{telephone}"/>
-		  			</div>
-		  			<div class="create-btn col-sm-offset-2 col-sm-8" style="margin-bottom: 20px;">
-						<input type="submit" value="Save Changes" class="btn btn-block btn-success create-button" onclick="" />
+			</div>
+				<div class="col-sm-offset-2 col-sm-8">
+					<div class="col-sm-12">
+						<div class="col-sm-6">
+							<br></br>
+							<h4>Your details</h4>
+				  			<br></br>
+				  			<div class="col-sm-4">
+				  				<label for="email-input">Email address: </label>
+				  			</div>
+				  			<div class="col-sm-8">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="email-input" th:field="*{email}"/>
+				  			</div>
+				  			<br></br><br></br>
+				  			<div class="col-sm-4">
+				  				<label for="name-input">Name: </label>
+				  			</div>
+				  			<div class="col-sm-8">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="name-input" th:field="*{name}"/>
+				  			</div>
+				  			<br></br><br></br>
+				  			<div class="col-sm-4">
+				  				<label for="telephone-input">Telephone number: </label>
+				  			</div>
+				  			<div class="col-sm-8">
+				  				<input th:errorclass="input-form-error" type="text" class="form-control" id="telephone-input" th:field="*{telephone}"/>
+							</div>
+							<br></br><br></br><br></br>
+							<div class="password-btn col-sm-5">
+							<input value="Change Password" class="btn btn-block btn-info password-button" onclick="" />
+							</div>
+						</div>
+						<div class="col-sm-offset-2 col-sm-3">
+							<br></br>
+							<h4>Your bookings</h4>
+					  		<br></br>
+					  		<a href="myBookings" th:href="@{myBookings(accountId=${accountId})}">Upcoming bookings</a>
+					  		<br></br><br></br>
+					  		<a>Rate past bookings</a>
+					  		<br></br><br></br>
+					  		<a>Saved cards</a>
+						</div>
 					</div>
 				</div>
-			</div>
+				<div class="col-sm-offset-2 col-sm-8">
+					<div class="col-sm-12">
+						<br></br>
+						<h4>Additional information</h4>
+						<br></br>
+						<span>Help improve our service, by telling us a bit about yourself!</span>
+						<br></br><br></br>
+						<div class="col-sm-3">
+				  			<label for="dob">Date of birth: </label>
+				  		</div>
+				  		<div class="col-sm-2">
+				  			<select class="form-control"></select>
+						</div>
+						<div class="col-sm-2">
+				  			<select class="form-control"></select>
+						</div>
+						<div class="col-sm-2">
+				  			<select class="form-control"></select>
+						</div>
+						<br></br><br></br>
+						<div class="col-sm-3">
+				  			<label for="dob">Gender: </label>
+				  		</div>
+				  		<div class="col-sm-3">
+				  			<select class="form-control"></select>
+						</div>
+						<br></br><br></br>
+						<div class="col-sm-3">
+				  			<label for="dob">How did you hear about us? </label>
+				  		</div>
+				  		<div class="col-sm-3">
+				  			<select class="form-control"></select>
+						</div>
+						<div class="col-sm-2"></div>
+						<div class="delete-btn col-sm-2">
+							<a class="btn btn-block btn-danger deleteAccountBtn" th:id="${account.id}" data-toggle="modal" data-target="#deleteAccountModal">Delete</a>
+						</div>
+						<div class="create-btn col-sm-2">
+							<input type="submit" value="Save Changes" class="btn btn-block btn-success create-button" onclick="" />
+						</div>
+					</div>
+				</div>
 		</div>
 	</form>
+	
 	<div id="deleteAccountModal" class="deleteAccountModal modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModal">
 		<div class="replaceable">
 		</div>
 	</div>
+	
 	<script>
 		$(".deleteAccountBtn").click(function(){
 			var accountId = $(this).attr("id");
@@ -52,5 +118,6 @@
 			});
 		});
 	</script>
+	
 </body>
 </html>
