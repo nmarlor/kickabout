@@ -10,10 +10,10 @@
 	<div th:replace="fragments/newHeader">Header</div>
 	<div class="jumbotron default">
 		<div class = "general-header">
-			<h2 class="text-center">Upcoming Bookings</h2>
+			<h2 class="text-center">Bookings in progress</h2>
 		</div>
-			<div class="col-sm-12" align="center">
-				<form th:action="@{/myBookings}" method="get">
+			<div class="col-sm-12" align="center">		
+				<form th:action="@{/bookingInProgress}" method="get">
 					<div class="pitches-table-holder col-sm-12" align="center">
 						<div class="bookings-table">
 						<table class="table">
@@ -26,7 +26,6 @@
 									<th class="col-sm-2 text-center">Time</th>
 									<th class="col-sm-2 text-center">Reference</th>
 									<th class="col-sm-1 text-center">Cost</th>
-									<th class="col-sm-1"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -42,11 +41,6 @@
 									<td class="col-sm-2 text-center" th:text="|${booking.bookedFrom} - ${booking.bookedTo}|"></td>
 									<td class="col-sm-2 text-center" th:text="${booking.bookingReference}"></td>
 									<td class="col-sm-1 text-center" th:text="|&pound;${booking.cost}|"></td>
-									<td class="col-sm-1 text-center">
-										<span class="btn-group">
-						  					<a class="btn btn-danger cancelBookingBtn" th:id="${booking.id}" data-toggle="modal" data-target="#cancelBookingModal">Cancel</a>
-						  				</span>
-									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -55,26 +49,10 @@
 				</form>
 			</div>
 	</div>
-	<div id="cancelBookingModal" class="cancelBookingModal modal fade" tabindex="-1" role="dialog" aria-labelledby="cancelBookingModal">
-		<div class="replaceable">
-		</div>
-	</div>
 	<div id="pitchInfoModal" class="pitchInfoModal modal fade" tabindex="-1" role="dialog" aria-labelledby="pitchInfoModal">
 		<div class="replaceable">
 		</div>
 	</div>
-	<script>
-		$(".cancelBookingBtn").click(function(){
-			var bookingId = $(this).attr("id");
-			$.ajax({
-			 	url: base_url + "cancelMyBooking",
-			 	data: {id : bookingId},
-			 	success: function(result){
-			 		$(".replaceable").html(result);
-			 	}
-			});
-		});
-	</script>
 	<script>
 		$(".pitchInfoBtn").click(function(){
 			var bookingId = $(this).attr("id");

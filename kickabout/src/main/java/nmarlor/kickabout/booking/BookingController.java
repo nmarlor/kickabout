@@ -9,6 +9,7 @@ import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -278,15 +279,150 @@ public class BookingController {
 	public ModelAndView viewMyBookings(Long accountId){
 		ModelAndView mv = new ModelAndView("booking/myBookings");
 		
-		Account account = accountService.retrieveAccount(accountId);
-		List<Booking> bookings = bookingService.findBookingsForAccount(account);
+		String todaysDate = dateService.getTodaysDate().toString();
 		
-		if (bookings.isEmpty()) {
+		Calendar cal = Calendar.getInstance();
+		Time currentTime = Time.valueOf(
+		          cal.get(Calendar.HOUR_OF_DAY) + ":" +
+		          cal.get(Calendar.MINUTE) + ":" +
+		          cal.get(Calendar.SECOND));
+		
+		Account account = accountService.retrieveAccount(accountId);
+		List<Booking> allBookings = bookingService.findBookingsForAccount(account);
+		
+		if (allBookings.isEmpty()) {
 			ModelAndView emptyBookingMv = new ModelAndView("booking/noBookings");
-			emptyBookingMv.addObject("bookings", bookings);
+			emptyBookingMv.addObject("bookings", allBookings);
 			return emptyBookingMv;
 		}
+		
+		List<Booking> bookingsToSort = new ArrayList<>();
+		List<Booking> bookings = new ArrayList<>();
+		
+		for (Booking booking : allBookings) 
+		{
+			String bookingDate = booking.getDate().toString();
+			
+			if (todaysDate.compareTo(bookingDate) < 0)
+			{
+				bookings.add(booking);
+			}
+			if (todaysDate.compareTo(bookingDate) == 0) 
+			{
+				bookingsToSort.add(booking);
+			}
+		}
+		
+		for (Booking booking : bookingsToSort) 
+		{
+			if (booking.getBookedFrom().equals(currentTime) || booking.getBookedFrom().after(currentTime))
+			{
+				bookings.add(booking);
+			}
+		}
 
+		Collections.sort(bookings, new SortByBookingDateAndTime());
+		
+		mv.addObject("bookings", bookings);
+		return mv;
+	}
+	
+	@RequestMapping(value = "previousBookings", method = RequestMethod.GET)
+	public ModelAndView previousBookings(Long accountId){
+		ModelAndView mv = new ModelAndView("booking/previousBookings");
+		
+		String todaysDate = dateService.getTodaysDate().toString();
+		
+		Calendar cal = Calendar.getInstance();
+		Time currentTime = Time.valueOf(
+		          cal.get(Calendar.HOUR_OF_DAY) + ":" +
+		          cal.get(Calendar.MINUTE) + ":" +
+		          cal.get(Calendar.SECOND));
+		
+		Account account = accountService.retrieveAccount(accountId);
+		
+		List<Booking> allBookings = bookingService.findBookingsForAccount(account);
+		
+		if (allBookings.isEmpty()) {
+			ModelAndView emptyBookingMv = new ModelAndView("booking/noBookings");
+			emptyBookingMv.addObject("bookings", allBookings);
+			return emptyBookingMv;
+		}
+		
+		List<Booking> bookingsToSort = new ArrayList<>();
+		List<Booking> bookings = new ArrayList<>();
+		
+		for (Booking booking : allBookings) 
+		{
+			String bookingDate = booking.getDate().toString();
+			
+			if (todaysDate.compareTo(bookingDate) > 0)
+			{
+				bookings.add(booking);
+			}
+			if (todaysDate.compareTo(bookingDate) == 0) 
+			{
+				bookingsToSort.add(booking);
+			}
+		}
+		
+		for (Booking booking : bookingsToSort) 
+		{
+			if (currentTime.after(booking.getBookedTo())) 
+			{
+				bookings.add(booking);
+			}
+		}
+		
+		Collections.sort(bookings, new SortByBookingDateAndTime());
+		
+		mv.addObject("bookings", bookings);
+		return mv;
+	}
+	
+	@RequestMapping(value = "bookingInProgress", method = RequestMethod.GET)
+	public ModelAndView bookingInProgress(Long accountId){
+		ModelAndView mv = new ModelAndView("booking/bookingInProgress");
+		
+		String todaysDate = dateService.getTodaysDate().toString();
+		
+		Calendar cal = Calendar.getInstance();
+		Time currentTime = Time.valueOf(
+		          cal.get(Calendar.HOUR_OF_DAY) + ":" +
+		          cal.get(Calendar.MINUTE) + ":" +
+		          cal.get(Calendar.SECOND));
+		
+		Account account = accountService.retrieveAccount(accountId);
+		
+		List<Booking> allBookings = bookingService.findBookingsForAccount(account);
+		
+		if (allBookings.isEmpty()) {
+			ModelAndView emptyBookingMv = new ModelAndView("booking/noBookings");
+			emptyBookingMv.addObject("bookings", allBookings);
+			return emptyBookingMv;
+		}
+		
+		List<Booking> bookingsToSort = new ArrayList<>();
+		List<Booking> bookings = new ArrayList<>();
+		
+		for (Booking booking : allBookings) 
+		{
+			String bookingDate = booking.getDate().toString();
+			
+			if (todaysDate.compareTo(bookingDate) == 0) 
+			{
+				bookingsToSort.add(booking);
+			}
+		}
+		
+		for (Booking booking : bookingsToSort) 
+		{
+			if (currentTime.after(booking.getBookedFrom()) && currentTime.before(booking.getBookedTo()))
+			{
+				bookings.add(booking);
+			}
+		}
+		
 		Collections.sort(bookings, new SortByBookingDateAndTime());
 		
 		mv.addObject("bookings", bookings);
