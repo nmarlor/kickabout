@@ -290,12 +290,6 @@ public class BookingController {
 		Account account = accountService.retrieveAccount(accountId);
 		List<Booking> allBookings = bookingService.findBookingsForAccount(account);
 		
-		if (allBookings.isEmpty()) {
-			ModelAndView emptyBookingMv = new ModelAndView("booking/noBookings");
-			emptyBookingMv.addObject("bookings", allBookings);
-			return emptyBookingMv;
-		}
-		
 		List<Booking> bookingsToSort = new ArrayList<>();
 		List<Booking> bookings = new ArrayList<>();
 		
@@ -343,12 +337,6 @@ public class BookingController {
 		
 		List<Booking> allBookings = bookingService.findBookingsForAccount(account);
 		
-		if (allBookings.isEmpty()) {
-			ModelAndView emptyBookingMv = new ModelAndView("booking/noBookings");
-			emptyBookingMv.addObject("bookings", allBookings);
-			return emptyBookingMv;
-		}
-		
 		List<Booking> bookingsToSort = new ArrayList<>();
 		List<Booking> bookings = new ArrayList<>();
 		
@@ -395,12 +383,6 @@ public class BookingController {
 		Account account = accountService.retrieveAccount(accountId);
 		
 		List<Booking> allBookings = bookingService.findBookingsForAccount(account);
-		
-		if (allBookings.isEmpty()) {
-			ModelAndView emptyBookingMv = new ModelAndView("booking/noBookings");
-			emptyBookingMv.addObject("bookings", allBookings);
-			return emptyBookingMv;
-		}
 		
 		List<Booking> bookingsToSort = new ArrayList<>();
 		List<Booking> bookings = new ArrayList<>();
