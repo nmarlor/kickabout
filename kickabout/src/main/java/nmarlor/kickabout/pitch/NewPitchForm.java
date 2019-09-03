@@ -11,6 +11,8 @@ public class NewPitchForm {
 	private Time availableTo;
 	private BigDecimal cost;
 	private String pitchSize;
+	private String environment;
+	private String surface;
 	
 	public long getLocationId() {
 		return locationId;
@@ -47,6 +49,18 @@ public class NewPitchForm {
 	}
 	public void setPitchSize(String pitchSize) {
 		this.pitchSize = pitchSize;
+	}
+	public String getEnvironment() {
+		return environment;
+	}
+	public void setEnvironment(String environment) {
+		this.environment = environment;
+	}
+	public String getSurface() {
+		return surface;
+	}
+	public void setSurface(String surface) {
+		this.surface = surface;
 	}
 	
 }

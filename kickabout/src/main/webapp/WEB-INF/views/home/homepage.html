@@ -28,9 +28,16 @@
 						<div class="col-md-2">
 			  				<select th:errorclass="input-form-error" class="form-control" id="sport-input" th:field="*{sport}">
 								<option value="" >Select sport</option>
-								<option th:each="sport : ${sports}"
+<!-- 								<option th:each="sport : ${sports}"
 				  				th:value="${sport}"
-				  				th:text="${sport}"></option>
+				  				th:text="${sport}"></option> -->
+								<option value="5 a side football" >5 a side football</option>
+								<option value="7 a side football" >7 a side football</option>
+								<option value="11 a side football" >11 a side football</option>
+								<option value="Badminton" >Badminton</option>
+								<option value="Basketball" >Basketball</option>
+								<option value="Hockey" >Hockey</option>
+								<option value="Netball" >Netball</option>
 							</select>
 						</div>
                         <div class="col-md-3">

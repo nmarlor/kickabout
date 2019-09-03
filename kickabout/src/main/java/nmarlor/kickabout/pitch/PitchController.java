@@ -90,6 +90,8 @@ public class PitchController {
 		pitch.setCost(pitchForm.getCost());
 		pitch.setPitchNumber(pitchNumber);
 		pitch.setPitchSize(pitchForm.getPitchSize());
+		pitch.setEnvironment(pitchForm.getEnvironment());
+		pitch.setSurface(pitchForm.getSurface());
 		
 		pitchService.createPitch(pitch);
 		

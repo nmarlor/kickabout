@@ -119,7 +119,7 @@ public class HomeController {
 		
 		for (PitchLocation pitchLocation : locationsForSports) 
 		{
-			if (pitchLocation.getCity().equalsIgnoreCase(searchName) || pitchLocation.getCounty().equalsIgnoreCase(searchName)) 
+			if (pitchLocation.getCity().equalsIgnoreCase(searchName) || pitchLocation.getCounty().equalsIgnoreCase(searchName) || pitchLocation.getAddressLine2().equalsIgnoreCase(searchName)) 
 			{
 				locations.add(pitchLocation);
 			}

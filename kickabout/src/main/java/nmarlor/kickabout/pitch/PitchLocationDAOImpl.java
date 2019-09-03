@@ -12,12 +12,23 @@ import nmarlor.kickabout.lib.HibernateJPABase;
 
 @Repository
 public class PitchLocationDAOImpl extends HibernateJPABase<PitchLocation, Long> implements PitchLocationDAO{
-
+	
 	@Override
 	public List<PitchLocation> findAllLocationsByTownOrCity(String name) {
 		Search search = new Search(PitchLocation.class);
 		search.addFilterEqual("city", name);
-		return super.search(search);
+		
+		List<PitchLocation> locations = super.search(search);
+		
+		if (locations.isEmpty()) 
+		{
+			Search townSearch = new Search(PitchLocation.class);
+			townSearch.addFilterEqual("addressLine2", name);
+			List<PitchLocation> townLocations = super.search(townSearch);
+			return townLocations;
+		}
+		
+		return locations;
 	}
 	
 	@Override
